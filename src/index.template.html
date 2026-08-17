@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f5f2">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; worker-src 'self' blob:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<title>PDF Compare</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2316624f'/%3E%3Cpath d='M17 15h23l8 8v27H17z' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M39 15v10h10M24 32h17M24 40h9' fill='none' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='42' cy='41' r='7' fill='%23f5f5f2'/%3E%3Cpath d='M39 41h6M42 38v6' stroke='%2316624f' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{color-scheme:light;--bg:#f5f5f2;--surface:#fff;--surface-muted:#f0f0ed;--surface-hover:#e9e9e5;--text:#20211f;--muted:#666963;--line:#dadbd6;--line-strong:#bfc1ba;--accent:#16624f;--accent-hover:#0e503f;--accent-soft:#e1f0ea;--danger:#b3261e;--focus:#4d8bc7;--shadow-sm:0 1px 2px rgba(25,28,24,.08),0 1px 6px rgba(25,28,24,.04);--shadow-md:0 12px 34px rgba(25,28,24,.12);--header-height:66px}
+*{box-sizing:border-box}html{min-height:100%;background:var(--bg);scroll-behavior:smooth}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,.drop:focus-visible{outline:3px solid color-mix(in srgb,var(--focus) 55%,transparent);outline-offset:2px}
+header{position:sticky;z-index:40;top:0;min-height:var(--header-height);border-bottom:1px solid color-mix(in srgb,var(--line) 82%,transparent);background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(16px)}
+.header-inner{width:min(1280px,100%);min-height:var(--header-height);margin:auto;padding:10px clamp(14px,2.8vw,30px);display:flex;align-items:center;gap:14px}.brand{display:flex;align-items:center;gap:10px;min-width:0}.mark{display:grid;place-items:center;width:38px;height:38px;flex:0 0 auto;border-radius:11px;background:var(--accent);color:white;box-shadow:var(--shadow-sm)}.mark svg{width:21px}.brand-name{margin:0;font-size:17px;line-height:1.2;white-space:nowrap}.badge{display:inline-flex;margin-left:7px;padding:1px 6px;border:1px solid var(--line);border-radius:999px;background:var(--surface-muted);color:var(--muted);font-size:10px;vertical-align:2px}.brand-meta{margin:2px 0 0;color:var(--muted);font-size:12px}.header-actions{margin-left:auto;display:flex;align-items:center;gap:14px}.header-button{padding:5px 1px;border:0;background:transparent;color:var(--muted);font-weight:750;font-size:12px}.header-button:hover{color:var(--text)}.header-button svg{width:20px;height:20px;display:block}
+main{width:min(1280px,100%);margin:auto;padding:22px clamp(14px,2.8vw,30px) 92px}.intro{display:flex;justify-content:space-between;gap:20px;padding:0 2px 18px}.intro h2{margin:0;font-size:clamp(21px,3vw,27px);line-height:1.28;letter-spacing:-.025em}.intro p{margin:6px 0 0;max-width:780px;color:var(--muted);font-size:13px}.local{display:inline-flex;align-items:center;gap:7px;height:max-content;margin-top:3px;padding:7px 10px;border:1px solid color-mix(in srgb,var(--accent) 24%,var(--line));border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:700;white-space:nowrap}.local svg{width:15px}
+.panel{border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--shadow-sm)}.upload{padding:18px;margin-bottom:14px}.upload-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px}.drop{position:relative;display:flex;min-height:138px;padding:17px;border:1px dashed var(--line-strong);border-radius:14px;background:#fbfbf9;cursor:pointer;transition:.15s}.drop.drag{border-color:var(--accent);background:var(--accent-soft);transform:translateY(-1px)}.drop.loaded{border-style:solid}.drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.drop-inner{display:flex;align-items:center;gap:13px;width:100%;min-width:0;pointer-events:none}.drop-icon{display:grid;place-items:center;width:42px;height:42px;flex:0 0 auto;border-radius:12px;background:var(--surface-muted);color:var(--accent)}.drop-icon svg{width:22px}.drop-copy{min-width:0}.drop-label{font-size:11px;color:var(--muted);font-weight:750}.drop-title{display:block;margin:3px 0 2px;font-size:15px;font-weight:780;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.drop-sub{display:block;color:var(--muted);font-size:11px}.swap{display:grid;place-items:center}
+.button,.icon-button{border:1px solid var(--line);background:var(--surface);border-radius:10px;font-weight:720;transition:.15s}.button{min-height:40px;padding:8px 13px}.button.compact{min-height:34px;padding:6px 10px;font-size:12px}.icon-button{display:grid;place-items:center;width:40px;height:40px;padding:0}.icon-button svg{width:18px}.button:hover,.icon-button:hover{border-color:var(--line-strong);background:var(--surface-hover)}.button.primary{border-color:var(--accent);background:var(--accent);color:white}.button.primary:hover{background:var(--accent-hover)}.button.danger{color:var(--danger)}
+.upload-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}.status{min-height:20px;color:var(--muted);font-size:12px}.status.error{color:var(--danger)}.progress{display:none;height:5px;margin-top:9px;border-radius:999px;background:var(--surface-muted);overflow:hidden}.progress.show{display:block}.progress>div{height:100%;width:0;background:var(--accent);transition:width .15s}
+.results{display:none}.results.show{display:block}.summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:12px}.summary-card{padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow-sm)}.summary-value{display:block;font-size:20px;font-weight:820}.summary-label{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+.toolbar{position:sticky;z-index:25;top:calc(var(--header-height) + 8px);display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;padding:9px}.modes,.actions{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.mode{min-height:34px;padding:6px 10px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:12px;font-weight:750}.mode:hover{background:var(--surface-muted);color:var(--text)}.mode.active{background:var(--accent-soft);color:var(--accent)}
+.workspace{display:grid;grid-template-columns:240px minmax(0,1fr);gap:12px;align-items:start}.page-panel{position:sticky;top:calc(var(--header-height) + 62px);max-height:calc(100dvh - var(--header-height) - 84px);overflow:hidden}.page-head{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-bottom:1px solid var(--line);font-size:12px}.filter{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:10px}.filter input{accent-color:var(--accent)}.page-list{max-height:calc(100dvh - var(--header-height) - 132px);padding:7px;overflow:auto}.page-item{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:8px;width:100%;padding:8px;border:0;border-radius:10px;background:transparent;text-align:left}.page-item:hover{background:var(--surface-muted)}.page-item.active{background:var(--accent-soft)}.page-num{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--surface-muted);font-size:11px;font-weight:780}.page-title{display:block;min-width:0;font-size:11px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.page-sub{display:block;margin-top:2px;color:var(--muted);font-size:9px}.dot{width:8px;height:8px;border-radius:50%;background:var(--line-strong)}.dot.changed{background:#c3483c}.dot.added{background:#32735e}.dot.deleted{background:#a15f19}
+.viewer{overflow:hidden}.viewer-head{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}.viewer-title{font-size:13px;font-weight:780}.viewer-meta{margin-top:3px;color:var(--muted);font-size:10px}.viewer-actions{display:flex;gap:6px}.zoom-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:5px;padding:7px 10px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--surface) 94%,var(--surface-muted))}.zoom-button{display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--surface);font-size:18px;font-weight:650;line-height:1}.zoom-button:hover{border-color:var(--line-strong);background:var(--surface-hover)}.zoom-button:disabled{opacity:.38;cursor:not-allowed}.zoom-value{min-width:58px;height:34px;padding:0 8px;border:1px solid var(--line);border-radius:9px;background:var(--surface);font-size:11px;font-weight:780;font-variant-numeric:tabular-nums}.zoom-fit{min-height:34px;padding:5px 9px;border:1px solid var(--line);border-radius:9px;background:var(--surface);font-size:11px;font-weight:720}.zoom-fit:hover,.zoom-value:hover{border-color:var(--line-strong);background:var(--surface-hover)}.zoom-hint{margin-right:auto;color:var(--muted);font-size:10px}.canvas-area{position:relative;min-height:420px;padding:14px;background:#e9e9e5;overflow:auto;overscroll-behavior:contain}.stage{position:relative;width:max-content;min-width:100%;margin:auto;display:flex;justify-content:center;align-items:flex-start;gap:12px}.empty{display:grid;place-items:center;min-height:380px;color:var(--muted);font-size:12px;text-align:center}.paper,.overlay-stage{position:relative;flex:0 0 auto;background:white;box-shadow:0 4px 18px rgba(0,0,0,.13);overflow:hidden}.paper canvas,.overlay-stage canvas{display:block;max-width:none}.overlay-stage canvas{position:absolute;inset:0}.overlay-stage canvas:first-child{position:relative}.paper-label{position:absolute;z-index:8;left:8px;top:8px;padding:4px 7px;border-radius:7px;background:rgba(32,33,31,.76);color:white;font-size:9px;font-weight:750;pointer-events:none}.slider-clip{position:absolute;inset:0 auto 0 0;overflow:hidden;pointer-events:none}.slider-clip canvas{position:absolute;left:0;top:0}.slider-line{position:absolute;z-index:7;top:0;bottom:0;width:2px;background:white;box-shadow:0 0 0 1px rgba(0,0,0,.3);pointer-events:none}.region-box{position:absolute;z-index:6;border:2px solid rgba(195,72,60,.88);background:rgba(195,72,60,.06);border-radius:2px;pointer-events:none}.blink-new.hidden{opacity:0}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 14px;border-top:1px solid var(--line)}.control{padding:9px 10px;border-radius:10px;background:var(--surface-muted)}.control-head{display:flex;justify-content:space-between;gap:8px;margin-bottom:5px;font-size:10px;font-weight:750}.control-value{color:var(--muted);font-variant-numeric:tabular-nums}.control input[type=range]{width:100%;accent-color:var(--accent)}.control select{width:100%;min-height:30px;border:1px solid var(--line);border-radius:8px;background:white;font-size:11px}
+.details{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:12px;margin-top:12px}.detail{padding:14px}.detail h3{margin:0 0 9px;font-size:13px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.metric{padding:9px;border-radius:9px;background:var(--surface-muted)}.metric strong{display:block;font-size:14px}.metric span{color:var(--muted);font-size:9px}.regions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.region-button{padding:5px 8px;border:1px solid var(--line);border-radius:999px;background:white;font-size:10px}.region-button:hover{background:var(--surface-hover)}details.text{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}details.text summary{cursor:pointer;font-size:11px;font-weight:750}.text-diff{margin-top:10px;max-height:260px;padding:11px;border-radius:10px;background:#fbfbf9;overflow:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;line-height:1.75;white-space:pre-wrap;word-break:break-word}.add{background:#dcefe7}.del{background:#f8dedd;text-decoration:line-through;color:#7c332d}.eq{color:var(--muted)}.privacy{color:var(--muted);font-size:10px;line-height:1.65}.privacy strong{color:var(--text)}
+.mobile-nav{display:none}.toast{position:fixed;right:18px;bottom:18px;z-index:70;max-width:min(360px,calc(100vw - 36px));padding:11px 14px;border:1px solid var(--line);border-radius:11px;background:white;box-shadow:var(--shadow-md);opacity:0;transform:translateY(12px);pointer-events:none;transition:.18s}.toast.show{opacity:1;transform:none}
+dialog{width:min(640px,calc(100% - 28px));max-height:min(760px,calc(100dvh - 28px));padding:0;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:white;color:var(--text);box-shadow:var(--shadow-md)}dialog::backdrop{background:rgba(15,17,14,.52);backdrop-filter:blur(4px)}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}.dialog-head h2{margin:0;font-size:17px}.dialog-body{padding:18px 20px 24px;overflow:auto;max-height:calc(100dvh - 102px)}.dialog-body h3{margin:22px 0 7px;padding-top:17px;border-top:1px solid var(--line);font-size:13px}.dialog-body h3:first-child{margin-top:0;padding-top:0;border-top:0}.dialog-body p,.dialog-body li{color:var(--muted);font-size:12px;line-height:1.7}.dialog-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--line)}.password{width:100%;min-height:42px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}.password-error{min-height:18px;margin-top:5px;color:var(--danger);font-size:11px}.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[hidden]{display:none!important}
+@media(max-width:960px){.summary{grid-template-columns:repeat(3,1fr)}.workspace{grid-template-columns:190px minmax(0,1fr)}.details{grid-template-columns:1fr}.privacy-panel{display:none}}
+@media(max-width:760px){:root{--header-height:60px}.header-inner{padding:8px 14px}.mark{width:36px;height:36px}.brand-meta{display:none}.header-actions{gap:10px}main{padding:14px 10px calc(84px + env(safe-area-inset-bottom))}.intro{padding:0 4px 12px}.intro h2{font-size:20px}.intro p{font-size:11px}.local{display:none}.upload{padding:10px}.upload-grid{grid-template-columns:1fr 36px 1fr;gap:6px}.drop{min-height:104px;padding:10px}.drop-inner{display:block}.drop-icon{width:30px;height:30px;margin-bottom:6px}.drop-icon svg{width:17px}.drop-title{font-size:11px}.drop-label,.drop-sub{font-size:9px}.swap .icon-button{width:34px;height:34px}.upload-foot{margin-top:8px}.status{font-size:10px}.summary{display:flex;overflow:auto;gap:6px;margin:0 -10px 8px;padding:0 10px 4px;scrollbar-width:none}.summary-card{min-width:105px;padding:9px}.summary-value{font-size:17px}.toolbar{top:calc(var(--header-height) + 4px);margin:0 -2px 8px;padding:5px;overflow:auto;flex-wrap:nowrap}.modes{flex-wrap:nowrap}.mode{white-space:nowrap;padding:6px 8px}.actions{display:none}.workspace{display:block}.page-panel{position:static;max-height:none;margin-bottom:8px}.page-head{padding:8px 10px}.page-list{display:flex;max-height:none;padding:5px;overflow-x:auto;overflow-y:hidden}.page-item{flex:0 0 auto;width:92px;grid-template-columns:28px 1fr;padding:6px;gap:5px}.page-item .dot{display:none}.page-num{width:27px;height:27px}.page-title{font-size:9px}.page-sub{font-size:8px}.viewer-head{padding:9px 10px}.viewer-actions{display:none}.zoom-toolbar{justify-content:center;padding:6px 7px;gap:4px}.zoom-hint{display:none}.zoom-button{width:36px;height:34px}.zoom-value{min-width:54px}.zoom-fit{padding-inline:8px}.canvas-area{min-height:300px;padding:7px}.stage{justify-content:flex-start;gap:6px}.controls{grid-template-columns:1fr 1fr;padding:8px;gap:6px}.controls .control:last-child{grid-column:1/-1}.detail{padding:10px}.details{margin-top:8px}.text-diff{max-height:180px}.mobile-nav{position:fixed;z-index:55;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:44px 1fr 44px;gap:7px;padding:7px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.94);box-shadow:var(--shadow-md);backdrop-filter:blur(14px)}.mobile-nav .icon-button{width:44px;height:42px}.mobile-page{display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:10px;background:white;font-size:11px;font-weight:750}.toast{right:10px;bottom:calc(76px + env(safe-area-inset-bottom))}.dialog-foot{padding-bottom:calc(12px + env(safe-area-inset-bottom))}}
+@media(max-width:430px){.badge{display:none}.upload-grid{grid-template-columns:1fr 32px 1fr}.drop{min-height:94px}.drop-icon{display:none}.controls{grid-template-columns:1fr}.controls .control:last-child{grid-column:auto}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h9l5 5V20H5z"/><path d="M14 3.5V9h5M8 13h8M8 16h5"/><circle cx="17.5" cy="17.5" r="3"/><path d="M17.5 16v3M16 17.5h3"/></svg></div>
+      <div><h1 class="brand-name">PDF Compare <span class="badge" id="version">v1.0.0</span></h1><p class="brand-meta" data-i18n="brandMeta">PDFの変更点を端末内だけで比較</p></div>
+    </div>
+    <div class="header-actions">
+      <button class="header-button" id="lang" type="button" aria-label="Switch language">EN</button>
+      <button class="header-button" id="help" type="button" data-i18n-aria="helpAria" aria-label="使い方と注意事項"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 0 1 4.55.8c0 1.8-2.35 2-2.35 4"/><path d="M12 17h.01"/></svg></button>
+    </div>
+  </div>
+</header>
+<main>
+  <section class="intro">
+    <div><h2 data-i18n="introTitle">2つのPDFの「どこが変わった？」を見つける。</h2><p data-i18n="introText">ページ追加・削除にも追従して対応付け。見た目の差分とテキスト差分を、アップロードせずに確認できます。</p></div>
+    <div class="local"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg><span data-i18n="localOnly">完全ローカル処理</span></div>
+  </section>
+
+  <section class="panel upload">
+    <h2 class="sr" data-i18n="uploadHeading">比較するPDF</h2>
+    <div class="upload-grid">
+      <label class="drop" id="oldDrop" tabindex="0">
+        <input id="oldInput" type="file" accept="application/pdf,.pdf">
+        <span class="drop-inner"><span class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 12h6M9 16h4"/></svg></span><span class="drop-copy"><span class="drop-label" data-i18n="before">変更前</span><span class="drop-title" id="oldTitle">PDFを選択</span><span class="drop-sub" id="oldSub">タップ / ドロップ</span></span></span>
+      </label>
+      <div class="swap"><button class="icon-button" id="swap" type="button" data-i18n-aria="swapAria" aria-label="変更前と変更後を入れ替え"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m8 7-3 3 3 3"/><path d="M5 10h11a3 3 0 0 1 3 3v1"/><path d="m16 17 3-3-3-3"/></svg></button></div>
+      <label class="drop" id="newDrop" tabindex="0">
+        <input id="newInput" type="file" accept="application/pdf,.pdf">
+        <span class="drop-inner"><span class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 12h6M9 16h6"/></svg></span><span class="drop-copy"><span class="drop-label" data-i18n="after">変更後</span><span class="drop-title" id="newTitle">PDFを選択</span><span class="drop-sub" id="newSub">タップ / ドロップ</span></span></span>
+      </label>
+    </div>
+    <div class="upload-foot"><div class="status" id="status" aria-live="polite">2つのPDFを選択してください。</div><button class="button compact danger" id="reset" type="button" hidden data-i18n="reset">やり直す</button></div>
+    <div class="progress" id="progress"><div id="progressBar"></div></div>
+  </section>
+
+  <section class="results" id="results">
+    <div class="summary">
+      <div class="summary-card"><span class="summary-value" id="pairs">-</span><span class="summary-label" data-i18n="summaryPairs">対応ページ</span></div>
+      <div class="summary-card"><span class="summary-value" id="changed">-</span><span class="summary-label" data-i18n="summaryChanged">変更あり</span></div>
+      <div class="summary-card"><span class="summary-value" id="added">-</span><span class="summary-label" data-i18n="summaryAdded">追加ページ</span></div>
+      <div class="summary-card"><span class="summary-value" id="deleted">-</span><span class="summary-label" data-i18n="summaryDeleted">削除ページ</span></div>
+      <div class="summary-card"><span class="summary-value" id="overall">-</span><span class="summary-label" data-i18n="summaryVisual">見た目の変更量</span></div>
+    </div>
+    <div class="panel toolbar">
+      <div class="modes" role="tablist">
+        <button class="mode active" data-mode="diff" type="button" data-i18n="modeDiff">差分</button>
+        <button class="mode" data-mode="side" type="button" data-i18n="modeSide">左右</button>
+        <button class="mode" data-mode="overlay" type="button" data-i18n="modeOverlay">重ねる</button>
+        <button class="mode" data-mode="slider" type="button" data-i18n="modeSlider">スライダー</button>
+        <button class="mode" data-mode="blink" type="button" data-i18n="modeBlink">点滅</button>
+      </div>
+      <div class="actions"><button class="button compact" id="savePng" type="button" data-i18n="saveDiffPng">差分PNG</button><button class="button compact" id="saveCsv" type="button" data-i18n="exportCsv">レポートCSV</button></div>
+    </div>
+
+    <div class="workspace">
+      <aside class="panel page-panel">
+        <div class="page-head"><strong data-i18n="pages">ページ</strong><label class="filter"><input id="changedOnly" type="checkbox"><span data-i18n="changedOnly">変更のみ</span></label></div>
+        <div class="page-list" id="pageList"></div>
+      </aside>
+      <div>
+        <section class="panel viewer">
+          <div class="viewer-head"><div><div class="viewer-title" id="viewerTitle">-</div><div class="viewer-meta" id="viewerMeta">-</div></div><div class="viewer-actions"><button class="button compact" id="prev" type="button" data-i18n="prev">前へ</button><button class="button compact" id="next" type="button" data-i18n="next">次へ</button></div></div>
+          <div class="zoom-toolbar" aria-label="Zoom controls"><span class="zoom-hint" data-i18n="zoomHint">拡大して細部を確認できます</span><button class="zoom-button" id="zoomOut" type="button" data-i18n-aria="zoomOut" aria-label="縮小">−</button><button class="zoom-value" id="zoomReset" type="button" data-i18n-aria="zoomReset" aria-label="100%に戻す"><span id="zoomValue">100%</span></button><button class="zoom-button" id="zoomIn" type="button" data-i18n-aria="zoomIn" aria-label="拡大">＋</button><button class="zoom-fit" id="zoomFit" type="button" data-i18n="zoomFit">画面に合わせる</button></div>
+          <div class="canvas-area" id="canvasArea"><div class="empty" id="empty" data-i18n="selectPage">ページを選択してください。</div><div class="stage" id="stage" hidden></div></div>
+          <div class="controls">
+            <div class="control"><div class="control-head"><span data-i18n="sensitivity">差分感度</span><span class="control-value" id="thresholdValue">28</span></div><input id="threshold" type="range" min="6" max="72" step="2" value="28"></div>
+            <div class="control"><div class="control-head"><span data-i18n="regionSize">小さな差分を無視</span><span class="control-value" id="regionValue">0.03%</span></div><input id="minRegion" type="range" min="0" max="20" step="1" value="3"></div>
+            <div class="control"><div class="control-head"><span data-i18n="quality">表示品質</span><span class="control-value" id="shiftValue">AUTO</span></div><select id="quality"><option value="standard" data-i18n="qualityStandard">標準</option><option value="high" data-i18n="qualityHigh">高精細</option></select></div>
+          </div>
+        </section>
+        <div class="details">
+          <section class="panel detail">
+            <h3 data-i18n="pageAnalysis">このページの分析</h3>
+            <div class="metrics"><div class="metric"><strong id="metricVisual">-</strong><span data-i18n="metricVisual">視覚差分</span></div><div class="metric"><strong id="metricText">-</strong><span data-i18n="metricText">テキスト類似度</span></div><div class="metric"><strong id="metricShift">-</strong><span data-i18n="metricShift">位置ずれ補正</span></div></div>
+            <div class="regions" id="regions"></div>
+            <details class="text"><summary data-i18n="textDiff">テキスト差分を見る</summary><div class="text-diff" id="textDiff"></div></details>
+          </section>
+          <aside class="panel detail privacy-panel"><h3 data-i18n="privacyTitle">端末の外に出しません</h3><p class="privacy" data-i18n-html="privacyText"><strong>PDFはアップロードされません。</strong><br>PDF.jsもHTML内に埋め込み、解析・描画・差分計算はこのブラウザ内で実行します。</p><p class="privacy" data-i18n="matchingNote">ページ番号だけでなく、見た目と抽出テキストを使って変更前後のページを自動対応付けします。</p></aside>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<nav class="mobile-nav" id="mobileNav" hidden><button class="icon-button" id="mobilePrev" type="button" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button><div class="mobile-page" id="mobilePage">-</div><button class="icon-button" id="mobileNext" type="button" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button></nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<dialog id="helpDialog"><div class="dialog-head"><h2 data-i18n="helpTitle">使い方と注意事項</h2><button class="header-button" data-close="helpDialog" type="button" aria-label="Close">✕</button></div><div class="dialog-body">
+<h3 data-i18n="helpHowTitle">使い方</h3><ol><li data-i18n="help1">変更前と変更後のPDFを選びます。</li><li data-i18n="help2">ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。</li><li data-i18n="help3">差分・左右・重ねる・スライダー・点滅を切り替えて確認します。</li><li data-i18n="helpZoom">表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。</li><li data-i18n="help4">感度を上げたいときは「差分感度」の値を小さくします。</li></ol>
+<h3 data-i18n="helpPrivacyTitle">プライバシー</h3><p data-i18n="helpPrivacy">PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。</p>
+<h3 data-i18n="helpDiffTitle">差分の見方</h3><p data-i18n="helpDiff">数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。</p>
+<h3 data-i18n="helpLimitsTitle">制限事項</h3><ul><li data-i18n="limit1">OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。</li><li data-i18n="limit2">巨大なPDFや高精細表示は端末のメモリを多く使用します。</li><li data-i18n="limit3">署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。</li></ul>
+<h3 data-i18n="helpBuildTitle">ビルド情報</h3><p id="buildInfo">-</p></div></dialog>
+
+<dialog id="resetDialog"><div class="dialog-head"><h2 data-i18n="resetTitle">比較をやり直しますか？</h2></div><div class="dialog-body"><p data-i18n="resetText">選択したPDFと解析結果をこの画面から消去します。元のPDFファイルは変更されません。</p></div><div class="dialog-foot"><button class="button" data-close="resetDialog" type="button" data-i18n="cancel">キャンセル</button><button class="button danger" id="confirmReset" type="button" data-i18n="reset">やり直す</button></div></dialog>
+
+<dialog id="passwordDialog"><div class="dialog-head"><h2 data-i18n="passwordTitle">PDFのパスワード</h2></div><form id="passwordForm"><div class="dialog-body"><p id="passwordMessage"></p><input class="password" id="passwordInput" type="password" autocomplete="current-password" data-i18n-placeholder="passwordPlaceholder" placeholder="パスワード"><div class="password-error" id="passwordError"></div></div><div class="dialog-foot"><button class="button" id="passwordCancel" type="button" data-i18n="cancel">キャンセル</button><button class="button primary" type="submit" data-i18n="openPdf">開く</button></div></form></dialog>
+
+<script type="application/json" id="app-config">__APP_CONFIG_JSON__</script>
+<script type="application/json" id="build-manifest">__BUILD_MANIFEST_JSON__</script>
+<script type="application/octet-stream" id="embedded-assets">__EMBEDDED_ASSET_BUNDLE_BASE64__</script>
+
+<script>
+(() => {
+"use strict";
+const $=id=>document.getElementById(id);
+const app=JSON.parse($("app-config").textContent),manifest=JSON.parse($("build-manifest").textContent);
+$("version").textContent="v"+app.version;
+
+const I={
+ja:{
+brandMeta:"PDFの変更点を端末内だけで比較",helpAria:"使い方と注意事項",introTitle:"2つのPDFの「どこが変わった？」を見つける。",introText:"ページ追加・削除にも追従して対応付け。見た目の差分とテキスト差分を、アップロードせずに確認できます。",localOnly:"完全ローカル処理",uploadHeading:"比較するPDF",before:"変更前",after:"変更後",choosePdf:"PDFを選択",dropHint:"タップ / ドロップ",swapAria:"変更前と変更後を入れ替え",ready:"2つのPDFを選択してください。",reset:"やり直す",summaryPairs:"対応ページ",summaryChanged:"変更あり",summaryAdded:"追加ページ",summaryDeleted:"削除ページ",summaryVisual:"見た目の変更量",modeDiff:"差分",modeSide:"左右",modeOverlay:"重ねる",modeSlider:"スライダー",modeBlink:"点滅",saveDiffPng:"差分PNG",exportCsv:"レポートCSV",pages:"ページ",changedOnly:"変更のみ",prev:"前へ",next:"次へ",selectPage:"ページを選択してください。",sensitivity:"差分感度",regionSize:"小さな差分を無視",quality:"表示品質",qualityStandard:"標準",qualityHigh:"高精細",pageAnalysis:"このページの分析",metricVisual:"視覚差分",metricText:"テキスト類似度",metricShift:"位置ずれ補正",textDiff:"テキスト差分を見る",privacyTitle:"端末の外に出しません",privacyText:"<strong>PDFはアップロードされません。</strong><br>PDF.jsもHTML内に埋め込み、解析・描画・差分計算はこのブラウザ内で実行します。",matchingNote:"ページ番号だけでなく、見た目と抽出テキストを使って変更前後のページを自動対応付けします。",helpTitle:"使い方と注意事項",helpHowTitle:"使い方",help1:"変更前と変更後のPDFを選びます。",help2:"ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。",help3:"差分・左右・重ねる・スライダー・点滅を切り替えて確認します。",help4:"感度を上げたいときは「差分感度」の値を小さくします。",helpPrivacyTitle:"プライバシー",helpPrivacy:"PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。",helpDiffTitle:"差分の見方",helpDiff:"数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。",helpLimitsTitle:"制限事項",limit1:"OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。",limit2:"巨大なPDFや高精細表示は端末のメモリを多く使用します。",limit3:"署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。",helpBuildTitle:"ビルド情報",resetTitle:"比較をやり直しますか？",resetText:"選択したPDFと解析結果をこの画面から消去します。元のPDFファイルは変更されません。",cancel:"キャンセル",passwordTitle:"PDFのパスワード",passwordPlaceholder:"パスワード",openPdf:"開く",passwordText:"このPDFはパスワードで保護されています。",wrongPassword:"パスワードが正しくありません。",loadingEngine:"PDFエンジンを準備しています…",reading:"PDFを読み込んでいます…",analyzing:"ページを解析しています…",matching:"ページの対応を探しています…",done:"比較の準備ができました。ページを選ぶと詳細差分を計算します。",invalidPdf:"PDFファイルを選択してください。",tooLarge:"ファイルが大きいため、端末によっては処理できない場合があります。",openFailed:"PDFを開けませんでした。",cancelled:"処理をキャンセルしました。",page:"ページ",added:"追加",deleted:"削除",changed:"変更あり",unchanged:"ほぼ同じ",comparing:"詳細差分を計算中…",noText:"抽出できるテキストがありません。",noTextChange:"抽出テキストに大きな差はありません。",region:"差分",regionCount:"{n}か所の変更領域",saved:"保存しました。",csvSaved:"CSVレポートを保存しました。",noDiffPng:"差分表示を準備してから保存してください。",zoomHint:"拡大して細部を確認できます",zoomIn:"拡大",zoomOut:"縮小",zoomReset:"100%に戻す",zoomFit:"画面に合わせる",helpZoom:"表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。",engineFailed:"埋め込みPDFエンジンの初期化に失敗しました。ビルド済みHTMLを使用してください。"
+},
+en:{
+brandMeta:"Compare PDF changes entirely on your device",helpAria:"How to use and notes",introTitle:"Find exactly what changed between two PDFs.",introText:"Pages are matched even when pages are inserted or removed. Review visual and text differences without uploading either file.",localOnly:"100% local",uploadHeading:"PDFs to compare",before:"Before",after:"After",choosePdf:"Choose PDF",dropHint:"Tap / drop",swapAria:"Swap before and after",ready:"Choose two PDF files.",reset:"Reset",summaryPairs:"Matched pages",summaryChanged:"Changed",summaryAdded:"Added pages",summaryDeleted:"Removed pages",summaryVisual:"Visual change",modeDiff:"Diff",modeSide:"Side by side",modeOverlay:"Overlay",modeSlider:"Slider",modeBlink:"Blink",saveDiffPng:"Diff PNG",exportCsv:"CSV report",pages:"Pages",changedOnly:"Changed only",prev:"Previous",next:"Next",selectPage:"Select a page.",sensitivity:"Difference threshold",regionSize:"Ignore tiny regions",quality:"Render quality",qualityStandard:"Standard",qualityHigh:"High",pageAnalysis:"Page analysis",metricVisual:"Visual difference",metricText:"Text similarity",metricShift:"Auto alignment",textDiff:"Show text differences",privacyTitle:"Your PDFs stay on this device",privacyText:"<strong>Your PDFs are never uploaded.</strong><br>PDF.js is embedded in the HTML; parsing, rendering, and comparison all run in this browser.",matchingNote:"Pages are matched using both appearance and extracted text instead of assuming page numbers are unchanged.",helpTitle:"How to use & notes",helpHowTitle:"How to use",help1:"Choose the before and after PDF files.",help2:"Pages are automatically aligned using appearance and extracted text, including inserted and deleted pages.",help3:"Switch among Diff, Side by side, Overlay, Slider, and Blink views.",help4:"Lower the difference threshold to detect subtler changes.",helpPrivacyTitle:"Privacy",helpPrivacy:"PDFs and comparison results are never sent to a server. Runtime networking is disabled by CSP.",helpDiffTitle:"Understanding the diff",helpDiff:"A few pixels of translation are automatically corrected before pixel differences are calculated. Text diff is available only when the PDF contains extractable text.",helpLimitsTitle:"Limitations",limit1:"OCR is not included. Scanned PDFs can still be visually compared, but image-only text is excluded from text diff.",limit2:"Very large PDFs and high-quality rendering use significant device memory.",limit3:"This is not a forensic checker for signatures, forms, annotations, or other internal PDF objects.",helpBuildTitle:"Build info",resetTitle:"Reset this comparison?",resetText:"This clears selected PDFs and analysis from the page. Original files are not modified.",cancel:"Cancel",passwordTitle:"PDF password",passwordPlaceholder:"Password",openPdf:"Open",passwordText:"This PDF is password protected.",wrongPassword:"The password is incorrect.",loadingEngine:"Preparing the PDF engine…",reading:"Reading PDFs…",analyzing:"Analyzing pages…",matching:"Matching pages…",done:"Comparison is ready. Detailed differences are calculated when you open a page.",invalidPdf:"Choose a PDF file.",tooLarge:"This file is large and may exceed the memory available on this device.",openFailed:"Could not open the PDF.",cancelled:"Operation cancelled.",page:"Page",added:"Added",deleted:"Removed",changed:"Changed",unchanged:"Nearly identical",comparing:"Calculating detailed differences…",noText:"No extractable text is available.",noTextChange:"No substantial extracted-text change was found.",region:"Change",regionCount:"{n} change regions",saved:"Saved.",csvSaved:"CSV report saved.",noDiffPng:"Open Diff view before saving the PNG.",zoomHint:"Zoom in to inspect fine details",zoomIn:"Zoom in",zoomOut:"Zoom out",zoomReset:"Reset to 100%",zoomFit:"Fit to view",helpZoom:"Use − / + to zoom from 50% to 400%. Choose Fit to view to return to the default fitted size.",engineFailed:"The embedded PDF engine could not be initialized. Use a built standalone HTML file."
+}};
+let lang=(navigator.language||"").toLowerCase().startsWith("ja")?"ja":"en";
+const S={pdfjs:null,workerUrl:null,workerPort:null,assetBase:null,enginePromise:null,oldFile:null,newFile:null,oldDoc:null,newDoc:null,oldPages:[],newPages:[],pairs:[],current:0,mode:"diff",zoom:1,detailed:new Map(),session:0,password:null,blink:null};
+const t=(k,v={})=>{let s=(I[lang]&&I[lang][k])||I.ja[k]||k;for(const [a,b] of Object.entries(v))s=s.replaceAll("{"+a+"}",b);return s};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function applyLang(){
+document.documentElement.lang=lang;$("lang").textContent=lang==="ja"?"EN":"JA";
+document.querySelectorAll("[data-i18n]").forEach(e=>{const k=e.dataset.i18n;if(I[lang][k]!=null)e.textContent=I[lang][k]});
+document.querySelectorAll("[data-i18n-html]").forEach(e=>{const k=e.dataset.i18nHtml;if(I[lang][k]!=null)e.innerHTML=I[lang][k]});
+document.querySelectorAll("[data-i18n-aria]").forEach(e=>{const k=e.dataset.i18nAria;if(I[lang][k]!=null)e.setAttribute("aria-label",I[lang][k])});
+document.querySelectorAll("[data-i18n-placeholder]").forEach(e=>{const k=e.dataset.i18nPlaceholder;if(I[lang][k]!=null)e.placeholder=I[lang][k]});
+updateFiles();if(S.pairs.length){renderList();selectPair(S.current,true)}}
+function status(s,error=false){$("status").textContent=s;$("status").classList.toggle("error",error)}
+function progress(n){if(n==null){$("progress").classList.remove("show");$("progressBar").style.width="0";return}$("progress").classList.add("show");$("progressBar").style.width=Math.max(0,Math.min(100,n))+"%"}
+function toast(s){$("toast").textContent=s;$("toast").classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("toast").classList.remove("show"),1800)}
+function bytes(n){const u=["B","KB","MB","GB"];let i=0;while(n>=1024&&i<u.length-1){n/=1024;i++}return n.toFixed(i?1:0)+" "+u[i]}
+function b64Blob(base64,type="application/octet-stream"){const clean=base64.replace(/\s+/g,""),chunks=[];for(let o=0;o<clean.length;o+=32768){const bin=atob(clean.slice(o,o+32768)),a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);chunks.push(a)}return new Blob(chunks,{type})}
+async function assetBytes(asset){return new Uint8Array(await b64Blob(asset.base64,asset.mime).arrayBuffer())}
+async function initEngine(){
+if(S.pdfjs)return S.pdfjs;if(S.enginePromise)return S.enginePromise;
+S.enginePromise=(async()=>{try{
+status(t("loadingEngine"));progress(4);
+const bundle=JSON.parse(await b64Blob($("embedded-assets").textContent).text()),dep=bundle.dependencies.pdfjs;if(!dep)throw Error("pdfjs missing");
+const main=dep.assets.main,worker=dep.assets.worker;if(!main||!worker)throw Error("pdfjs main/worker missing");
+const PDFJS_BASE="https://pdf-compare.invalid/";
+const supportAssets={};for(const [key,value] of Object.entries(dep.assets)){if(key!=="main"&&key!=="worker")supportAssets[key]=value.base64}
+const mimeFor=path=>/\.wasm$/i.test(path)?"application/wasm":/\.(mjs|js)$/i.test(path)?"text/javascript":/\.json$/i.test(path)?"application/json":/\.ttf$/i.test(path)?"font/ttf":/\.otf$/i.test(path)?"font/otf":/\.pfb$/i.test(path)?"application/x-font-type1":"application/octet-stream";
+const responseForAsset=url=>{if(typeof url!=="string"||!url.startsWith(PDFJS_BASE))return null;const key=decodeURIComponent(url.slice(PDFJS_BASE.length)),encoded=supportAssets[key];if(typeof encoded!=="string")return new Response("Embedded PDF.js asset not found",{status:404});return new Response(b64Blob(encoded,mimeFor(key)),{status:200,headers:{"Content-Type":mimeFor(key),"Cache-Control":"public, max-age=31536000, immutable"}})};
+const previousFetch=globalThis.fetch?.bind(globalThis);globalThis.fetch=async(input,init)=>{const url=typeof input==="string"?input:input?.url,embedded=responseForAsset(url);if(embedded)return embedded;throw new TypeError("External network access is disabled in PDF Compare.")};
+const workerPrelude=`const pdfjsAssetBase=${JSON.stringify(PDFJS_BASE)};const pdfjsAssets=${JSON.stringify(supportAssets)};const __decodeBase64Bytes__=value=>{const binary=atob(String(value||"")),bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);return bytes};const __assetMimeType__=path=>/\\.wasm$/i.test(path)?"application/wasm":/\\.(mjs|js)$/i.test(path)?"text/javascript":/\\.json$/i.test(path)?"application/json":/\\.ttf$/i.test(path)?"font/ttf":/\\.otf$/i.test(path)?"font/otf":/\\.pfb$/i.test(path)?"application/x-font-type1":"application/octet-stream";globalThis.fetch=async input=>{const url=typeof input==="string"?input:input?.url;if(typeof url==="string"&&url.startsWith(pdfjsAssetBase)){const key=decodeURIComponent(url.slice(pdfjsAssetBase.length)),encoded=pdfjsAssets[key];if(typeof encoded!=="string")return new Response("Embedded PDF.js asset not found",{status:404});return new Response(__decodeBase64Bytes__(encoded),{status:200,headers:{"Content-Type":__assetMimeType__(key),"Cache-Control":"public, max-age=31536000, immutable"}})}throw new TypeError("External network access is disabled in PDF Compare worker.")};\n`;
+const mainUrl=URL.createObjectURL(new Blob([await assetBytes(main)],{type:main.mime})),workerSource=workerPrelude+await b64Blob(worker.base64,worker.mime).text();S.workerUrl=URL.createObjectURL(new Blob([workerSource],{type:"text/javascript"}));
+const pdfjs=await import(mainUrl);URL.revokeObjectURL(mainUrl);
+const useFakeWorker=async()=>{const workerModule=await import(S.workerUrl);globalThis.pdfjsWorker=workerModule;pdfjs.GlobalWorkerOptions.workerSrc=S.workerUrl};
+if(location.protocol==="file:"){await useFakeWorker()}else{try{S.workerPort=new Worker(S.workerUrl,{type:"module",name:"pdfjs-worker"});pdfjs.GlobalWorkerOptions.workerPort=S.workerPort}catch(workerError){console.warn("PDF.js module worker unavailable; using an embedded fake worker.",workerError);await useFakeWorker()}}
+S.pdfjs=pdfjs;S.assetBase=PDFJS_BASE;return pdfjs
+}catch(e){console.error(e);status(t("engineFailed"),true);throw e}})();return S.enginePromise}
+function passwordDialog(name,wrong=false){return new Promise((resolve,reject)=>{S.password={resolve,reject};$("passwordMessage").textContent=name+" — "+t("passwordText");$("passwordError").textContent=wrong?t("wrongPassword"):"";$("passwordInput").value="";$("passwordDialog").showModal();setTimeout(()=>$("passwordInput").focus(),20)})}
+async function loadPdf(file,session){
+const pdfjs=await initEngine(),data=new Uint8Array(await file.arrayBuffer()),task=pdfjs.getDocument({data,cMapUrl:S.assetBase+"cmaps/",cMapPacked:true,standardFontDataUrl:S.assetBase+"standard_fonts/",wasmUrl:S.assetBase+"wasm/",iccUrl:S.assetBase+"iccs/",useWorkerFetch:true,useWasm:true,useSystemFonts:true,isEvalSupported:false,enableXfa:false,verbosity:0});
+task.onPassword=async(update,reason)=>{try{update(await passwordDialog(file.name,reason===pdfjs.PasswordResponses.INCORRECT_PASSWORD))}catch{try{await task.destroy()}catch{}}};
+const doc=await task.promise;if(session!==S.session){try{await doc.destroy()}catch{};throw Error("cancelled")}return doc}
+function norm(s){return(s||"").normalize("NFKC").replace(/\s+/g," ").trim().toLowerCase()}
+function shingles(text){const s=norm(text).replace(/\s/g,"");if(!s)return new Set();if(s.length<3)return new Set([s]);const out=new Set(),step=Math.max(1,Math.floor(s.length/1800));for(let i=0;i<=s.length-3;i+=step)out.add(s.slice(i,i+3));return out}
+function jaccard(a,b){if(!a.size&&!b.size)return 1;if(!a.size||!b.size)return 0;let x=0,sm=a.size<b.size?a:b,lg=a.size<b.size?b:a;for(const v of sm)if(lg.has(v))x++;return x/(a.size+b.size-x)}
+async function renderPage(page,target,maxPixels=1800000){const base=page.getViewport({scale:1});let scale=Math.min(target/base.width,Math.sqrt(maxPixels/(base.width*base.height)));scale=Math.max(.18,scale);const vp=page.getViewport({scale}),c=document.createElement("canvas");c.width=Math.max(1,Math.round(vp.width));c.height=Math.max(1,Math.round(vp.height));const ctx=c.getContext("2d",{alpha:false,willReadFrequently:true});ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);await page.render({canvasContext:ctx,viewport:vp,background:"white"}).promise;return c}
+function signature(c,size=28){const x=document.createElement("canvas");x.width=size;x.height=size;const k=x.getContext("2d",{alpha:false,willReadFrequently:true});k.drawImage(c,0,0,size,size);const d=k.getImageData(0,0,size,size).data,a=new Uint8Array(size*size);for(let i=0,j=0;i<d.length;i+=4,j++)a[j]=Math.round(d[i]*.299+d[i+1]*.587+d[i+2]*.114);return a}
+function visual(a,b){let n=Math.min(a.length,b.length),sum=0;for(let i=0;i<n;i++)sum+=Math.abs(a[i]-b[i]);return Math.max(0,1-sum/(n*255))}
+
+async function analyze(doc,label,session,start,span){const out=[];for(let i=1;i<=doc.numPages;i++){if(session!==S.session)throw Error("cancelled");const p=await doc.getPage(i);let text="";try{const tc=await p.getTextContent({disableNormalization:false});text=tc.items.map(x=>x.str||"").join(" ")}catch{}const th=await renderPage(p,96,260000);out.push({index:i,text,shingles:shingles(text),signature:signature(th),aspect:th.width/th.height});p.cleanup();progress(start+span*i/doc.numPages);status(`${t("analyzing")} ${label} ${i}/${doc.numPages}`);await new Promise(r=>setTimeout(r,0))}return out}
+function sim(a,b){const vis=visual(a.signature,b.signature),has=a.text.trim().length>8||b.text.trim().length>8,txt=has?jaccard(a.shingles,b.shingles):vis,asp=Math.max(0,1-Math.abs(a.aspect-b.aspect)/Math.max(a.aspect,b.aspect,.01));return{score:(has?.54:.78)*vis+(has?.38:.14)*txt+.08*asp,visual:vis,text:txt}}
+function match(oldP,newP){const n=oldP.length,m=newP.length,g=-.34,dp=Array.from({length:n+1},()=>new Float64Array(m+1)),bt=Array.from({length:n+1},()=>new Int8Array(m+1)),sims=Array.from({length:n},()=>Array(m));for(let i=1;i<=n;i++){dp[i][0]=i*g;bt[i][0]=1}for(let j=1;j<=m;j++){dp[0][j]=j*g;bt[0][j]=2}for(let i=1;i<=n;i++)for(let j=1;j<=m;j++){const s=sim(oldP[i-1],newP[j-1]);sims[i-1][j-1]=s;const bias=.06*(1-Math.min(1,Math.abs(i/(n||1)-j/(m||1))*2)),ma=dp[i-1][j-1]+1.8*s.score-.9+bias,de=dp[i-1][j]+g,ad=dp[i][j-1]+g;if(ma>=de&&ma>=ad){dp[i][j]=ma;bt[i][j]=0}else if(de>=ad){dp[i][j]=de;bt[i][j]=1}else{dp[i][j]=ad;bt[i][j]=2}}
+const pairs=[];let i=n,j=m;while(i>0||j>0){const d=bt[i][j];if(i>0&&j>0&&d===0){const s=sims[i-1][j-1];pairs.push({oldIndex:i,newIndex:j,status:"matched",similarity:s.score,textSimilarity:s.text,quickDiff:Math.max(0,1-s.visual)});i--;j--}else if(i>0&&(j===0||d===1)){pairs.push({oldIndex:i,newIndex:null,status:"deleted",textSimilarity:0,quickDiff:1});i--}else{pairs.push({oldIndex:null,newIndex:j,status:"added",textSimilarity:0,quickDiff:1});j--}}pairs.reverse();pairs.forEach(p=>p.changed=p.status!=="matched"||p.quickDiff>.014||p.textSimilarity<.985);return pairs}
+async function compare(){if(!S.oldFile||!S.newFile)return;const session=++S.session;S.detailed.clear();S.pairs=[];clearBlink();$("reset").hidden=false;try{status(t("reading"));progress(2);if(S.oldDoc)try{await S.oldDoc.destroy()}catch{};if(S.newDoc)try{await S.newDoc.destroy()}catch{};[S.oldDoc,S.newDoc]=await Promise.all([loadPdf(S.oldFile,session),loadPdf(S.newFile,session)]);updateFiles();S.oldPages=await analyze(S.oldDoc,t("before"),session,10,34);S.newPages=await analyze(S.newDoc,t("after"),session,45,34);status(t("matching"));progress(84);await new Promise(r=>setTimeout(r,5));S.pairs=match(S.oldPages,S.newPages);S.current=0;summary();renderList();$("results").classList.add("show");$("mobileNav").hidden=false;progress(100);status(t("done"));setTimeout(()=>progress(null),450);const c=S.pairs.findIndex(p=>p.changed);await selectPair(c>=0?c:0)}catch(e){if(e.message==="cancelled"){status(t("cancelled"));return}console.error(e);progress(null);status(t("openFailed")+" "+(e.message||""),true)}}
+function updateFiles(){for(const side of["old","new"]){const f=S[side+"File"],doc=S[side+"Doc"],drop=$(side+"Drop"),title=$(side+"Title"),sub=$(side+"Sub");drop.classList.toggle("loaded",!!f);title.textContent=f?f.name:t("choosePdf");sub.textContent=f?bytes(f.size)+(doc?` · ${doc.numPages} ${t("pages")}`:""):t("dropHint")}}
+function summary(){const matched=S.pairs.filter(p=>p.status==="matched"),changed=matched.filter(p=>p.changed).length,added=S.pairs.filter(p=>p.status==="added").length,deleted=S.pairs.filter(p=>p.status==="deleted").length,overall=matched.length?matched.reduce((x,p)=>x+p.quickDiff,0)/matched.length:0;$("pairs").textContent=matched.length;$("changed").textContent=changed;$("added").textContent=added;$("deleted").textContent=deleted;$("overall").textContent=(overall*100).toFixed(1)+"%"}
+function label(p){return p.status==="added"?`${t("added")} · ${t("page")} ${p.newIndex}`:p.status==="deleted"?`${t("deleted")} · ${t("page")} ${p.oldIndex}`:`${t("page")} ${p.oldIndex} → ${p.newIndex}`}
+function pstatus(p){return p.status==="added"?t("added"):p.status==="deleted"?t("deleted"):p.changed?t("changed"):t("unchanged")}
+function visible(){const a=[];S.pairs.forEach((p,i)=>{if(!$("changedOnly").checked||p.changed)a.push(i)});return a}
+function renderList(){$("pageList").innerHTML="";S.pairs.forEach((p,i)=>{if($("changedOnly").checked&&!p.changed)return;const b=document.createElement("button"),num=p.newIndex??p.oldIndex??i+1,dot=p.status==="added"?"added":p.status==="deleted"?"deleted":p.changed?"changed":"",qd=p.status==="matched"?(p.quickDiff*100).toFixed(1)+"%":"";b.className="page-item"+(i===S.current?" active":"");b.type="button";b.innerHTML=`<span class="page-num">${num}</span><span><span class="page-title">${esc(label(p))}</span><span class="page-sub">${esc(pstatus(p))}${qd?" · "+qd:""}</span></span><span class="dot ${dot}"></span>`;b.onclick=()=>selectPair(i);$("pageList").appendChild(b)})}
+function clearBlink(){if(S.blink){clearInterval(S.blink);S.blink=null}}
+function estimateShift(a,b,maxShift=12){const scale=Math.min(1,260/Math.max(a.width,a.height,b.width,b.height)),ac=document.createElement("canvas"),bc=document.createElement("canvas");ac.width=Math.max(20,Math.round(a.width*scale));ac.height=Math.max(20,Math.round(a.height*scale));bc.width=Math.max(20,Math.round(b.width*scale));bc.height=Math.max(20,Math.round(b.height*scale));ac.getContext("2d").drawImage(a,0,0,ac.width,ac.height);bc.getContext("2d").drawImage(b,0,0,bc.width,bc.height);const ad=ac.getContext("2d",{willReadFrequently:true}).getImageData(0,0,ac.width,ac.height).data,bd=bc.getContext("2d",{willReadFrequently:true}).getImageData(0,0,bc.width,bc.height).data,lim=Math.max(1,Math.round(maxShift*scale));let best={dx:0,dy:0,score:Infinity};for(let dy=-lim;dy<=lim;dy++)for(let dx=-lim;dx<=lim;dx++){let total=0,count=0,x0=Math.max(0,-dx),x1=Math.min(ac.width,bc.width-dx),y0=Math.max(0,-dy),y1=Math.min(ac.height,bc.height-dy);for(let y=y0;y<y1;y+=2)for(let x=x0;x<x1;x+=2){const ai=(y*ac.width+x)*4,bi=((y+dy)*bc.width+x+dx)*4,ag=ad[ai]*.299+ad[ai+1]*.587+ad[ai+2]*.114,bg=bd[bi]*.299+bd[bi+1]*.587+bd[bi+2]*.114;if(ag>248&&bg>248)continue;total+=Math.abs(ag-bg);count++}const score=count?total/count:999;if(score<best.score)best={dx,dy,score}}return{dx:Math.round(best.dx/scale),dy:Math.round(best.dy/scale),score:best.score}}
+function normalizePair(a,b,shift){const left=Math.min(0,shift.dx),top=Math.min(0,shift.dy),right=Math.max(a.width,b.width+shift.dx),bottom=Math.max(a.height,b.height+shift.dy),w=Math.max(1,right-left),h=Math.max(1,bottom-top),mk=()=>{const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d",{alpha:false});x.fillStyle="#fff";x.fillRect(0,0,w,h);return c},ao=mk(),bo=mk();ao.getContext("2d").drawImage(a,-left,-top);bo.getContext("2d").drawImage(b,shift.dx-left,shift.dy-top);return{oldCanvas:ao,newCanvas:bo}}
+function findRegions(mask,w,h,minRegion){const cell=Math.max(12,Math.round(Math.max(w,h)/55)),cols=Math.ceil(w/cell),rows=Math.ceil(h/cell),grid=new Uint8Array(cols*rows),seen=new Uint8Array(cols*rows),regions=[];for(let gy=0;gy<rows;gy++)for(let gx=0;gx<cols;gx++){let count=0,total=0,x2=Math.min(w,(gx+1)*cell),y2=Math.min(h,(gy+1)*cell);for(let y=gy*cell;y<y2;y+=2)for(let x=gx*cell;x<x2;x+=2){total++;count+=mask[y*w+x]}if(total&&count/total>.055)grid[gy*cols+gx]=1}for(let gy=0;gy<rows;gy++)for(let gx=0;gx<cols;gx++){const idx=gy*cols+gx;if(!grid[idx]||seen[idx])continue;let minx=gx,maxx=gx,miny=gy,maxy=gy;const q=[[gx,gy]];seen[idx]=1;while(q.length){const[x,y]=q.pop();minx=Math.min(minx,x);maxx=Math.max(maxx,x);miny=Math.min(miny,y);maxy=Math.max(maxy,y);for(const[nx,ny]of[[x-1,y],[x+1,y],[x,y-1],[x,y+1]])if(nx>=0&&ny>=0&&nx<cols&&ny<rows){const ni=ny*cols+nx;if(grid[ni]&&!seen[ni]){seen[ni]=1;q.push([nx,ny])}}}const x=minx*cell,y=miny*cell,rw=Math.min(w,(maxx+1)*cell)-x,rh=Math.min(h,(maxy+1)*cell)-y,area=rw*rh/(w*h)*100;if(area>=minRegion/100)regions.push({x,y,w:rw,h:rh,area})}return regions.sort((a,b)=>b.area-a.area).slice(0,30)}
+function makeDiff(a,b,threshold,minRegion){const w=a.width,h=a.height,ad=a.getContext("2d",{willReadFrequently:true}).getImageData(0,0,w,h),bd=b.getContext("2d",{willReadFrequently:true}).getImageData(0,0,w,h),out=new ImageData(w,h),mask=new Uint8Array(w*h);let changed=0;for(let p=0,i=0;p<mask.length;p++,i+=4){const delta=(Math.abs(ad.data[i]-bd.data[i])+Math.abs(ad.data[i+1]-bd.data[i+1])+Math.abs(ad.data[i+2]-bd.data[i+2]))/3,base=(bd.data[i]+bd.data[i+1]+bd.data[i+2])/3;if(delta>=threshold){mask[p]=1;changed++;out.data[i]=205;out.data[i+1]=64;out.data[i+2]=54;out.data[i+3]=225}else{const g=Math.round(base*.18+225*.82);out.data[i]=g;out.data[i+1]=g;out.data[i+2]=g;out.data[i+3]=255}}const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").putImageData(out,0,0);return{canvas:c,regions:findRegions(mask,w,h,minRegion),percent:changed/(w*h)}}
+async function detailed(index){const p=S.pairs[index],key=`${index}:${$("quality").value}:${$("threshold").value}:${$("minRegion").value}`;if(S.detailed.has(key))return S.detailed.get(key);const target=$("quality").value==="high"?1500:1050,max=$("quality").value==="high"?5000000:2700000,item={pair:p,oldCanvas:null,newCanvas:null,diffCanvas:null,regions:[],diffPercent:1,shift:{dx:0,dy:0}};if(p.status!=="matched"){if(p.oldIndex)item.oldCanvas=await renderPage(await S.oldDoc.getPage(p.oldIndex),target,max);if(p.newIndex)item.newCanvas=await renderPage(await S.newDoc.getPage(p.newIndex),target,max);S.detailed.set(key,item);return item}const[op,np]=await Promise.all([S.oldDoc.getPage(p.oldIndex),S.newDoc.getPage(p.newIndex)]),[oc,nc]=await Promise.all([renderPage(op,target,max),renderPage(np,target,max)]),shift=estimateShift(oc,nc),normed=normalizePair(oc,nc,shift),diff=makeDiff(normed.oldCanvas,normed.newCanvas,+$("threshold").value,+$("minRegion").value);Object.assign(item,{oldCanvas:normed.oldCanvas,newCanvas:normed.newCanvas,diffCanvas:diff.canvas,regions:diff.regions,diffPercent:diff.percent,shift});S.detailed.set(key,item);return item}
+function cloneCanvas(c){if(!c)return null;const x=document.createElement("canvas");x.width=c.width;x.height=c.height;x.getContext("2d").drawImage(c,0,0);return x}
+function dims(c,max){const available=Math.max(280,Math.min(max,$("canvasArea").clientWidth-30)),scale=Math.min(1,available/c.width);return{w:Math.round(c.width*scale),h:Math.round(c.height*scale),scale}}
+function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
+
+    function renderRegions(detail){
+      $("regions").innerHTML="";
+      if(!detail.regions || !detail.regions.length) return;
+      const note=document.createElement("span");
+      note.className="page-sub";
+      note.textContent=t("regionCount",{n:detail.regions.length});
+      $("regions").appendChild(note);
+      detail.regions.slice(0,8).forEach((r,i)=>{
+        const b=document.createElement("button");
+        b.className="region-button"; b.type="button";
+        b.textContent=`${t("region")} ${i+1} · ${r.area.toFixed(2)}%`;
+        b.addEventListener("click",()=>focusRegion(r));
+        $("regions").appendChild(b);
+      });
+    }
+
+    function focusRegion(region){
+      const canvas=$("stage").querySelector("canvas");
+      if(!canvas) return;
+      const rect=canvas.getBoundingClientRect();
+      const scale=rect.width/canvas.width;
+      $("canvasArea").scrollTo({
+        left:Math.max(0,region.x*scale-28),
+        top:Math.max(0,region.y*scale-28),
+        behavior:"smooth"
+      });
+    }
+
+    function cloneCanvas(source){
+      if(!source) return null;
+      const c=document.createElement("canvas");
+      c.width=source.width; c.height=source.height;
+      c.getContext("2d").drawImage(source,0,0);
+      return c;
+    }
+
+    function displayDims(canvas,maxWidth){
+      const available=Math.max(260,Math.min(maxWidth,$("canvasArea").clientWidth-26));
+      const fitScale=Math.min(1,available/canvas.width);
+      const scale=fitScale*S.zoom;
+      return {w:Math.max(1,Math.round(canvas.width*scale)),h:Math.max(1,Math.round(canvas.height*scale)),scale};
+    }
+    function sizeCanvas(canvas,dims){canvas.style.width=dims.w+"px";canvas.style.height=dims.h+"px"}
+
+    function makePaper(canvas,label,dims){
+      const p=document.createElement("div");
+      p.className="paper";
+      p.style.width=dims.w+"px"; p.style.height=dims.h+"px";
+      if(canvas){
+        const c=cloneCanvas(canvas); sizeCanvas(c,dims); p.appendChild(c);
+      }
+      const l=document.createElement("span");
+      l.className="paper-label"; l.textContent=label; p.appendChild(l);
+      return p;
+    }
+
+    function addRegionBoxes(container,detail,dims){
+      for(const r of detail.regions || []){
+        const box=document.createElement("div");
+        box.className="region-box";
+        box.style.left=(r.x*dims.scale)+"px";
+        box.style.top=(r.y*dims.scale)+"px";
+        box.style.width=(r.w*dims.scale)+"px";
+        box.style.height=(r.h*dims.scale)+"px";
+        container.appendChild(box);
+      }
+    }
+
+    function updateZoomUi(){
+      const percent=Math.round(S.zoom*100);
+      $("zoomValue").textContent=percent+"%";
+      $("zoomOut").disabled=S.zoom<=.5;
+      $("zoomIn").disabled=S.zoom>=4;
+    }
+
+    function currentDetail(){
+      return [...S.detailed.entries()].find(([key])=>key.startsWith(S.current+":"))?.[1] || null;
+    }
+
+    function setZoom(next,{preserveCenter=true}={}){
+      const clamped=Math.max(.5,Math.min(4,Math.round(next*4)/4));
+      if(Math.abs(clamped-S.zoom)<.001){updateZoomUi();return;}
+      const area=$("canvasArea");
+      const centerX=area.scrollWidth ? (area.scrollLeft+area.clientWidth/2)/area.scrollWidth : .5;
+      const centerY=area.scrollHeight ? (area.scrollTop+area.clientHeight/2)/area.scrollHeight : .5;
+      S.zoom=clamped;
+      updateZoomUi();
+      const detail=currentDetail();
+      if(detail) renderVisual(detail);
+      if(preserveCenter && detail){
+        requestAnimationFrame(()=>{
+          area.scrollLeft=Math.max(0,area.scrollWidth*centerX-area.clientWidth/2);
+          area.scrollTop=Math.max(0,area.scrollHeight*centerY-area.clientHeight/2);
+        });
+      }
+    }
+
+    function renderVisual(detail){
+      clearBlink();
+      $("stage").innerHTML="";
+      const oldC=detail.oldCanvas,newC=detail.newCanvas,diffC=detail.diffCanvas;
+      const ref=diffC || newC || oldC;
+      if(!ref){
+        $("stage").innerHTML=`<div class="canvas-empty">${esc(t("selectPage"))}</div>`;
+        return;
+      }
+      if(S.mode==="side"){
+        const max=Math.max(260,($("canvasArea").clientWidth-44)/2);
+        if(oldC){
+          const d=displayDims(oldC,max);
+          $("stage").appendChild(makePaper(oldC,t("before"),d));
+        }
+        if(newC){
+          const d=displayDims(newC,max);
+          $("stage").appendChild(makePaper(newC,t("after"),d));
+        }
+        return;
+      }
+      const dims=displayDims(ref,Math.max(280,$("canvasArea").clientWidth-26));
+      if(S.mode==="diff" || !oldC || !newC){
+        const label=S.mode==="diff" ? t("modeDiff") : (newC?t("after"):t("before"));
+        const paper=makePaper(diffC || newC || oldC,label,dims);
+        if(diffC) addRegionBoxes(paper,detail,dims);
+        $("stage").appendChild(paper);
+        return;
+      }
+
+      const stage=document.createElement("div");
+      stage.className="overlay-stage";
+      stage.style.width=dims.w+"px";
+      stage.style.height=dims.h+"px";
+
+      const oldView=cloneCanvas(oldC);
+      sizeCanvas(oldView,dims);
+      stage.appendChild(oldView);
+
+      if(S.mode==="overlay"){
+        const newView=cloneCanvas(newC);
+        sizeCanvas(newView,dims); newView.style.opacity=".5";
+        stage.appendChild(newView);
+      }else if(S.mode==="blink"){
+        const newView=cloneCanvas(newC);
+        sizeCanvas(newView,dims); newView.className="blink-new";
+        stage.appendChild(newView);
+        let visible=true;
+        S.blink=setInterval(()=>{
+          visible=!visible;
+          newView.classList.toggle("hidden",!visible);
+        },650);
+      }else if(S.mode==="slider"){
+        const clip=document.createElement("div");
+        clip.className="slider-clip";
+        clip.style.width="50%";
+        clip.style.height=dims.h+"px";
+        const newView=cloneCanvas(newC);
+        sizeCanvas(newView,dims);
+        clip.appendChild(newView);
+        stage.appendChild(clip);
+
+        const line=document.createElement("div");
+        line.className="slider-line"; line.style.left="50%";
+        stage.appendChild(line);
+
+        const range=document.createElement("input");
+        range.type="range"; range.min="0"; range.max="100"; range.value="50";
+        range.setAttribute("aria-label","Compare slider");
+        range.style.cssText="position:absolute;z-index:9;left:4%;bottom:10px;width:92%;accent-color:#16624f";
+        range.addEventListener("input",()=>{
+          clip.style.width=range.value+"%";
+          line.style.left=range.value+"%";
+        });
+        stage.appendChild(range);
+      }
+      $("stage").appendChild(stage);
+    }
+
+    function segmentText(text){
+      const clean=(text||"").normalize("NFKC").replace(/\s+/g," ").trim();
+      if(!clean) return [];
+      try{
+        return Array.from(new Intl.Segmenter(lang,{granularity:"word"}).segment(clean),x=>x.segment);
+      }catch{
+        return clean.split(/(\s+|(?=[.,;:!?、。！？]))/).filter(Boolean);
+      }
+    }
+
+    function tokenDiff(a,b,maxTokens=900){
+      if(a.length>maxTokens) a=a.slice(0,maxTokens);
+      if(b.length>maxTokens) b=b.slice(0,maxTokens);
+      const n=a.length,m=b.length;
+      const dp=Array.from({length:n+1},()=>new Uint16Array(m+1));
+      for(let i=n-1;i>=0;i--){
+        for(let j=m-1;j>=0;j--){
+          dp[i][j]=a[i]===b[j] ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j],dp[i][j+1]);
+        }
+      }
+      const ops=[]; let i=0,j=0;
+      while(i<n && j<m){
+        if(a[i]===b[j]){ops.push(["eq",a[i]]);i++;j++}
+        else if(dp[i+1][j]>=dp[i][j+1]){ops.push(["del",a[i]]);i++}
+        else{ops.push(["add",b[j]]);j++}
+      }
+      while(i<n) ops.push(["del",a[i++]]);
+      while(j<m) ops.push(["add",b[j++]]);
+      return ops;
+    }
+
+    function renderTextDiff(pair){
+      if(pair.status!=="matched"){
+        $("textDiff").textContent=t("noText");
+        return;
+      }
+      const oldText=S.oldPages[pair.oldIndex-1]?.text || "";
+      const newText=S.newPages[pair.newIndex-1]?.text || "";
+      if(!oldText.trim() && !newText.trim()){
+        $("textDiff").textContent=t("noText");
+        return;
+      }
+      if(norm(oldText)===norm(newText)){
+        $("textDiff").textContent=t("noTextChange");
+        return;
+      }
+      const ops=tokenDiff(segmentText(oldText),segmentText(newText));
+      $("textDiff").innerHTML=ops.map(([kind,token])=>{
+        const cls=kind==="add"?"diff-add":kind==="del"?"diff-del":"diff-eq";
+        return `<span class="${cls}">${esc(token)}</span>`;
+      }).join("");
+    }
+
+    async function selectPair(index,options={}){
+      if(!S.pairs.length) return;
+      index=Math.max(0,Math.min(S.pairs.length-1,index));
+      S.current=index;
+      clearBlink();
+      renderList();
+
+      const pair=S.pairs[index];
+      $("viewerTitle").textContent=label(pair);
+      $("viewerMeta").textContent=pstatus(pair)+(pair.status==="matched"?` · ${(pair.quickDiff*100).toFixed(1)}%`:"");
+      $("mobilePage").textContent=`${index+1} / ${S.pairs.length}`;
+      $("empty").hidden=true;
+      $("stage").hidden=false;
+      $("stage").innerHTML=`<div class="canvas-empty">${esc(t("comparing"))}</div>`;
+      $("metricVisual").textContent="-";
+      $("metricText").textContent=pair.status==="matched"?(pair.textSimilarity*100).toFixed(1)+"%":"-";
+      $("metricShift").textContent="-";
+      $("regions").innerHTML="";
+      $("textDiff").innerHTML="";
+
+      try{
+        const detail=await detailed(index);
+        if(index!==S.current) return;
+        $("metricVisual").textContent=(detail.diffPercent*100).toFixed(2)+"%";
+        $("metricText").textContent=pair.status==="matched"?(pair.textSimilarity*100).toFixed(1)+"%":"-";
+        $("metricShift").textContent=pair.status==="matched"
+          ? `${detail.shift.dx>0?"+":""}${detail.shift.dx}, ${detail.shift.dy>0?"+":""}${detail.shift.dy}px`
+          : "-";
+        $("shiftValue").textContent=pair.status==="matched"?`${detail.shift.dx},${detail.shift.dy}px`:"-";
+        renderRegions(detail);
+        renderVisual(detail);
+        renderTextDiff(pair);
+        if(!options.preserveScroll && innerWidth<=760){
+          $("canvasArea").scrollTo({left:0,top:0});
+        }
+      }catch(error){
+        console.error(error);
+        $("stage").innerHTML=`<div class="canvas-empty">${esc(t("openFailed"))}</div>`;
+      }
+    }
+
+    function navigate(delta){
+      const visible=visible();
+      if(!visible.length) return;
+      let pos=visible.indexOf(S.current);
+      if(pos<0) pos=0;
+      pos=Math.max(0,Math.min(visible.length-1,pos+delta));
+      selectPair(visible[pos]);
+    }
+
+    function downloadBlob(blob,name){
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }
+
+    async function saveDiffPng(){
+      const detail=await detailed(S.current);
+      if(!detail.diffCanvas){toast(t("noDiffPng"));return}
+      detail.diffCanvas.toBlob(blob=>{
+        if(!blob) return;
+        downloadBlob(blob,`pdf-compare-page-${S.current+1}.png`);
+        toast(t("saved"));
+      },"image/png");
+    }
+
+    function csvCell(value){
+      const s=String(value??"");
+      return `"${s.replaceAll('"','""')}"`;
+    }
+    function exportCsv(){
+      const rows=[["pair","before_page","after_page","status","changed","quick_visual_diff_percent","text_similarity_percent","detailed_visual_diff_percent","alignment_dx","alignment_dy"]];
+      S.pairs.forEach((p,i)=>{
+        let detail=null;
+        for(const [key,value] of S.detailed){
+          if(key.startsWith(i+":")){detail=value;break}
+        }
+        rows.push([
+          i+1,p.oldIndex??"",p.newIndex??"",p.status,p.changed,
+          (p.quickDiff*100).toFixed(3),(p.textSimilarity*100).toFixed(3),
+          detail?(detail.diffPercent*100).toFixed(3):"",
+          detail?.shift?.dx??"",detail?.shift?.dy??""
+        ]);
+      });
+      const csv="\uFEFF"+rows.map(r=>r.map(csvCell).join(",")).join("\r\n");
+      downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8"}),"pdf-compare-report.csv");
+      toast(t("csvSaved"));
+    }
+
+    async function resetAll(){
+      ++S.session;
+      clearBlink();
+      S.detailed.clear();
+      if(S.oldDoc){try{await S.oldDoc.destroy()}catch{}}
+      if(S.newDoc){try{await S.newDoc.destroy()}catch{}}
+      S.oldFile=null; S.newFile=null; S.oldDoc=null; S.newDoc=null;
+      S.oldPages=[]; S.newPages=[]; S.pairs=[]; S.current=0; S.zoom=1; updateZoomUi();
+      $("oldInput").value=""; $("newInput").value="";
+      $("results").classList.remove("show");
+      $("mobileNav").hidden=true;
+      $("reset").hidden=true;
+      $("pageList").innerHTML="";
+      $("stage").innerHTML="";
+      progress(null);
+      status(t("ready"));
+      updateFiles();
+      if($("resetDialog").open) $("resetDialog").close();
+    }
+
+    function acceptFile(side,file){
+      if(!file) return;
+      if(file.type!=="application/pdf" && !file.name.toLowerCase().endsWith(".pdf")){
+        status(t("invalidPdf"),true);
+        return;
+      }
+      S[side+"File"]=file;
+      S[side+"Doc"]=null;
+      updateFiles();
+      if(file.size>180*1024*1024) toast(t("tooLarge"));
+      if(S.oldFile && S.newFile) compare();
+      else status(t("ready"));
+    }
+
+    for(const side of ["old","new"]){
+      const input=$(side+"Input"),drop=$(side+"Drop");
+      input.addEventListener("change",()=>acceptFile(side,input.files[0]));
+      for(const ev of ["dragenter","dragover"]){
+        drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("drag")});
+      }
+      for(const ev of ["dragleave","drop"]){
+        drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("drag")});
+      }
+      drop.addEventListener("drop",e=>acceptFile(side,e.dataTransfer.files[0]));
+      drop.addEventListener("keydown",e=>{
+        if((e.key==="Enter"||e.key===" ") && e.target===drop){
+          e.preventDefault(); input.click();
+        }
+      });
+    }
+
+    $("swap").addEventListener("click",async()=>{
+      [S.oldFile,S.newFile]=[S.newFile,S.oldFile];
+      updateFiles();
+      if(S.oldFile && S.newFile) await compare();
+    });
+    $("reset").addEventListener("click",()=>$("resetDialog").showModal());
+    $("confirmReset").addEventListener("click",resetAll);
+    $("help").addEventListener("click",()=>$("helpDialog").showModal());
+    $("lang").addEventListener("click",()=>{lang=lang==="ja"?"en":"ja";applyLang()});
+
+    document.querySelectorAll("[data-close]").forEach(button=>{
+      button.addEventListener("click",()=>{
+        const dialog=$(button.dataset.close);
+        if(dialog?.open) dialog.close();
+      });
+    });
+
+    for(const id of ["helpDialog","resetDialog"]){
+      const dialog=$(id);
+      dialog.addEventListener("click",e=>{
+        if(e.target===dialog) dialog.close();
+      });
+    }
+
+    document.querySelectorAll(".mode").forEach(button=>{
+      button.addEventListener("click",()=>{
+        document.querySelectorAll(".mode").forEach(x=>x.classList.toggle("active",x===button));
+        S.mode=button.dataset.mode;
+        const detail=[...S.detailed.entries()].find(([key])=>key.startsWith(S.current+":"))?.[1];
+        if(detail) renderVisual(detail);
+        else selectPair(S.current);
+      });
+    });
+
+    $("prev").addEventListener("click",()=>navigate(-1));
+    $("next").addEventListener("click",()=>navigate(1));
+    $("mobilePrev").addEventListener("click",()=>navigate(-1));
+    $("mobileNext").addEventListener("click",()=>navigate(1));
+    $("changedOnly").addEventListener("change",()=>{
+      renderList();
+      const visible=visible();
+      if(visible.length && !visible.includes(S.current)) selectPair(visible[0]);
+    });
+
+    let rerenderTimer=null;
+    const recompare=()=>{
+      clearTimeout(rerenderTimer);
+      rerenderTimer=setTimeout(()=>{
+        S.detailed.clear();
+        if(S.pairs.length) selectPair(S.current,{preserveScroll:true});
+      },180);
+    };
+    $("threshold").addEventListener("input",()=>{
+      $("thresholdValue").textContent=$("threshold").value;
+      recompare();
+    });
+    $("minRegion").addEventListener("input",()=>{
+      $("regionValue").textContent=(Number($("minRegion").value)/100).toFixed(2)+"%";
+      recompare();
+    });
+    $("quality").addEventListener("change",()=>{
+      S.detailed.clear();
+      if(S.pairs.length) selectPair(S.current,{preserveScroll:true});
+    });
+
+    $("zoomOut").addEventListener("click",()=>setZoom(S.zoom-.25));
+    $("zoomIn").addEventListener("click",()=>setZoom(S.zoom+.25));
+    $("zoomReset").addEventListener("click",()=>setZoom(1));
+    $("zoomFit").addEventListener("click",()=>setZoom(1));
+    $("canvasArea").addEventListener("wheel",event=>{
+      if(!(event.ctrlKey||event.metaKey)) return;
+      event.preventDefault();
+      setZoom(S.zoom+(event.deltaY<0 ? .25 : -.25));
+    },{passive:false});
+    let zoomResizeTimer=null;
+    window.addEventListener("resize",()=>{
+      clearTimeout(zoomResizeTimer);
+      zoomResizeTimer=setTimeout(()=>{
+        const detail=currentDetail();
+        if(detail) renderVisual(detail);
+      },120);
+    });
+
+    $("savePng").addEventListener("click",saveDiffPng);
+    $("saveCsv").addEventListener("click",exportCsv);
+
+    $("passwordForm").addEventListener("submit",e=>{
+      e.preventDefault();
+      const password=$("passwordInput").value;
+      if(S.password){
+        S.password.resolve(password);
+        S.password=null;
+      }
+      $("passwordDialog").close();
+    });
+    $("passwordCancel").addEventListener("click",()=>{
+      if(S.password){
+        S.password.reject(new Error("cancelled"));
+        S.password=null;
+      }
+      $("passwordDialog").close();
+    });
+    $("passwordDialog").addEventListener("cancel",e=>{
+      e.preventDefault();
+      $("passwordCancel").click();
+    });
+
+    document.addEventListener("keydown",e=>{
+      if(["INPUT","SELECT","TEXTAREA"].includes(document.activeElement?.tagName)) return;
+      if(e.key==="ArrowLeft") navigate(-1);
+      if(e.key==="ArrowRight") navigate(1);
+      if(e.key==="+" || e.key==="="){e.preventDefault();setZoom(S.zoom+.25)}
+      if(e.key==="-"){e.preventDefault();setZoom(S.zoom-.25)}
+      if(e.key==="0"){e.preventDefault();setZoom(1)}
+    });
+
+    $("buildInfo").textContent=`${app.name} v${app.version} / ${(manifest.dependencies||[]).map(d=>d.package+"@"+d.version).join(", ")||"embedded"} / ${manifest.generatedAtUtc?new Date(manifest.generatedAtUtc).toLocaleString():"-"}`;
+    applyLang();
+    updateFiles();
+    updateZoomUi();
+    status(t("ready"));
+  })();
+  </script>
+
+</body>
+</html>

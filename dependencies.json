@@ -1,0 +1,33 @@
+{
+  "$schema": "./schemas/dependencies.schema.json",
+  "dependencies": [
+    {
+      "id": "pdfjs",
+      "package": "pdfjs-dist",
+      "version": "6.2.108",
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/mozilla/pdf.js",
+      "assets": [
+        {
+          "key": "main",
+          "path": "build/pdf.min.mjs",
+          "mime": "text/javascript",
+          "stripSourceMapComment": true
+        },
+        {
+          "key": "worker",
+          "path": "build/pdf.worker.min.mjs",
+          "mime": "text/javascript",
+          "stripSourceMapComment": true
+        }
+      ],
+      "assetDirectories": [
+        "cmaps",
+        "standard_fonts",
+        "wasm",
+        "iccs",
+        "image_decoders"
+      ]
+    }
+  ]
+}

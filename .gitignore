@@ -1,0 +1,5 @@
+.cache/
+dist/*
+!dist/.gitkeep
+.DS_Store
+Thumbs.db

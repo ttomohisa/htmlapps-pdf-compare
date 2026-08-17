@@ -1,0 +1,22 @@
+{
+  "$schema": "./schemas/app-config.schema.json",
+  "name": "PDF Compare",
+  "nameJa": "PDF比較",
+  "slug": "pdf-compare",
+  "version": "1.0.0",
+  "description": "Privacy-friendly local PDF comparison with automatic page matching, visual diff modes, alignment correction, and text differences.",
+  "descriptionJa": "ページ自動対応付け、視覚差分、位置ずれ補正、テキスト差分をブラウザー内だけで行うPDF比較ツールです。",
+  "defaultLanguage": "auto",
+  "repository": {
+    "owner": "ttomohisa",
+    "name": "htmlapps-pdf-compare"
+  },
+  "build": {
+    "output": "dist/index.html",
+    "blockRuntimeNetwork": true,
+    "selfExtract": {
+      "enabled": true,
+      "output": "dist/index.self-extract.html"
+    }
+  }
+}
