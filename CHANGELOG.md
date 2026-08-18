@@ -4,6 +4,12 @@
 
 # Changelog
 
+## Unreleased
+
+- Reduced standalone HTML size by gzip-compressing the embedded PDF.js asset bundle before Base64 embedding.
+- Removed unused PDF.js `image_decoders` and QuickJS evaluator assets from the standalone bundle.
+- Added build verification for the compressed asset bundle format.
+
 ## 1.0.0 - Windows PowerShell build compatibility
 
 - Removed the dependency on the `Get-FileHash` cmdlet and calculate SHA-256 through .NET instead.

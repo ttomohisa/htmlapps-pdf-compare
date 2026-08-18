@@ -26,7 +26,8 @@ A user selects a before and after PDF, the app automatically pairs corresponding
 ## 4. Functional requirements
 
 - Local-only PDF parsing/rendering.
-- Embed PDF.js support assets required for Japanese/CID fonts (CMaps, standard fonts, WASM, ICC profiles, image decoders).
+- Embed PDF.js support assets required for Japanese/CID fonts (CMaps, standard fonts, required WASM, ICC profiles) in a gzip-compressed asset bundle.
+- Exclude PDF.js `image_decoders` and QuickJS evaluator assets because this app does not import or use them.
 - Bilingual Japanese/English UI.
 - Automatic inserted/deleted page-aware matching.
 - Visual and text similarity in matching.
@@ -65,5 +66,6 @@ Current stable Chromium, Firefox, and Safari on desktop/mobile. Built `dist/inde
 - Template placeholders are fully replaced at build time.
 - No external runtime script/style/module URL.
 - CSP contains `connect-src 'none'`.
+- Standard and self-extract builds use `DecompressionStream` for local gzip expansion; current evergreen browsers are the supported target.
 - Self-extract loader is ASCII-only and inherits the embedded favicon.
 - Same-page revisions, inserted pages, deleted pages, scanned/image pages, and text PDFs are visually comparable.

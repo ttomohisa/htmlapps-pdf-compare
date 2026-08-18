@@ -37,7 +37,7 @@ GitHub Pagesから最初のHTMLを読み込んだ後、PDFの読み込み、ペ�
 - 日本語 / English 切り替え
 - PC・スマートフォン向けレスポンシブUI
 - SVG faviconをHTML内に埋め込み
-- PDF.js、Worker、CMap、標準フォント、WASM、ICC、画像デコーダーを単一HTMLへ内包
+- PDF.js、Worker、CMap、標準フォント、必要なWASM、ICCをgzip圧縮して単一HTMLへ内包
 - 通常版 `dist/index.html` と自己解凍版 `dist/index.self-extract.html` を生成
 
 ## すぐに使う
@@ -175,8 +175,9 @@ Pagesがまだ有効化されていない場合、ワークフローはビルド
 ビルド処理は以下を自動で行います。
 
 - npm公式レジストリから固定バージョンの `pdfjs-dist` tarballを取得
-- PDF.js本体とWorkerをHTMLへBase64内包
-- `cmaps`、`standard_fonts`、`wasm`、`iccs`、`image_decoders` をHTMLへ内包
+- PDF.js本体、Worker、CMap、標準フォント、必要なWASM、ICCをアセットBundleへまとめる
+- アセットBundleをgzip圧縮してからBase64でHTMLへ1回だけ内包
+- PDF比較では使用しない `image_decoders` と QuickJS evaluator (`quickjs-eval.*`) はビルド対象から除外
 - 依存パッケージと内包ファイルのSHA-256を記録
 - 外部ランタイムスクリプト / CSS / module importが残っていないことを検証
 - `connect-src 'none'` を検証
@@ -192,7 +193,7 @@ Pagesがまだ有効化されていない場合、ワークフローはビルド
 - Content Security Policyに `connect-src 'none'` を設定
 - Main Threadからの外部 `fetch` を拒否
 - PDF.js Workerからの外部 `fetch` も拒否
-- CMap・フォント・WASMなどはHTML内の仮想アセットローダーから取得
+- CMap・フォント・WASMなどは、起動時に端末内でgzip展開したHTML内の仮想アセットローダーから取得
 - PDF.js本体とWorkerはHTML内に埋め込んだデータからBlobとして起動
 
 GitHub Pages版では最初のHTMLを配信する通信は発生しますが、ユーザーが選択したPDFの内容や比較結果をアプリが外部へ送信することはありません。
@@ -209,6 +210,7 @@ HTML内の `pdf-compare.invalid` は埋め込みPDF.jsアセットを識別す�
 - 特殊な画像形式やフォントを含むPDFでは、元のPDFビューアと描画結果が完全には一致しない場合があります。
 - ページ数が多いPDF、画像量が多いPDF、高精細表示では端末メモリを多く使用します。
 - テキスト差分はPDFから文字情報を抽出できる場合のみ利用できます。
+- 通常版HTMLも圧縮済みアセットの展開に `DecompressionStream` を使用するため、最新のChrome / Edge / Firefox / Safariを推奨します。
 
 ## 使用ライブラリ
 

@@ -144,6 +144,30 @@ function ConvertTo-SafeJson([object]$Value, [int]$Depth = 30) {
   return ($Value | ConvertTo-Json -Compress -Depth $Depth).Replace("<", "\u003c").Replace(">", "\u003e").Replace("&", "\u0026")
 }
 
+function ConvertTo-GzipBase64([string]$Value) {
+  $inputBytes = [System.Text.Encoding]::UTF8.GetBytes($Value)
+  $compressedBuffer = New-Object System.IO.MemoryStream
+  try {
+    $gzip = New-Object -TypeName System.IO.Compression.GZipStream -ArgumentList @(
+      $compressedBuffer,
+      [System.IO.Compression.CompressionMode]::Compress,
+      $true
+    )
+    try {
+      $gzip.Write($inputBytes, 0, $inputBytes.Length)
+    } finally {
+      $gzip.Dispose()
+    }
+    return [ordered]@{
+      Base64 = [Convert]::ToBase64String($compressedBuffer.ToArray())
+      SourceBytes = $inputBytes.Length
+      CompressedBytes = $compressedBuffer.Length
+    }
+  } finally {
+    $compressedBuffer.Dispose()
+  }
+}
+
 function Get-AssetPath([string]$PackageRoot, [string]$ConfiguredPath) {
   $rootFull = [System.IO.Path]::GetFullPath($PackageRoot).TrimEnd([char[]]@([char]92, [char]47))
   $assetFull = [System.IO.Path]::GetFullPath((Join-Path $PackageRoot $ConfiguredPath))
@@ -177,6 +201,15 @@ foreach ($dependency in $dependencies) {
   $ids[$id] = $true
 
   $package = Get-NpmPackage ([string]$dependency.package) ([string]$dependency.version)
+  $excludedAssets = @{}
+  if ($dependency.PSObject.Properties.Name -contains "excludeAssets") {
+    foreach ($configuredExclude in @($dependency.excludeAssets)) {
+      $excludePath = ([string]$configuredExclude).Replace([char]92, [char]47).TrimStart([char]47)
+      if ([string]::IsNullOrWhiteSpace($excludePath)) { continue }
+      $excludedAssets[$excludePath] = $true
+    }
+  }
+
   $dependencyAssets = [ordered]@{}
   $manifestAssets = @()
   $assetKeys = @{}
@@ -237,28 +270,30 @@ foreach ($dependency in $dependencies) {
             throw "Dependency asset path escapes the package root: $fileFull"
           }
           $relative = $fileFull.Substring($rootFull.Length).TrimStart([char[]]@([char]92, [char]47)).Replace([char]92, [char]47)
-          if ($dependencyAssets.Contains($relative)) {
-            throw "Duplicate embedded dependency asset path '$relative' in dependency '$id'."
-          }
-          $bytes = [System.IO.File]::ReadAllBytes($fileFull)
-          $mime = Get-MimeType $fileFull
-          $shaAlgorithm = [Security.Cryptography.SHA256]::Create()
-          try {
-            $hashBytes = $shaAlgorithm.ComputeHash($bytes)
-          } finally {
-            $shaAlgorithm.Dispose()
-          }
-          $sha = ($hashBytes | ForEach-Object { $_.ToString("x2") }) -join ""
-          $dependencyAssets[$relative] = [ordered]@{
-            mime = $mime
-            base64 = [Convert]::ToBase64String($bytes)
-          }
-          $manifestAssets += [ordered]@{
-            key = $relative
-            path = $relative
-            mime = $mime
-            bytes = $bytes.Length
-            sha256 = $sha
+          if (-not $excludedAssets.ContainsKey($relative)) {
+            if ($dependencyAssets.Contains($relative)) {
+              throw "Duplicate embedded dependency asset path '$relative' in dependency '$id'."
+            }
+            $bytes = [System.IO.File]::ReadAllBytes($fileFull)
+            $mime = Get-MimeType $fileFull
+            $shaAlgorithm = [Security.Cryptography.SHA256]::Create()
+            try {
+              $hashBytes = $shaAlgorithm.ComputeHash($bytes)
+            } finally {
+              $shaAlgorithm.Dispose()
+            }
+            $sha = ($hashBytes | ForEach-Object { $_.ToString("x2") }) -join ""
+            $dependencyAssets[$relative] = [ordered]@{
+              mime = $mime
+              base64 = [Convert]::ToBase64String($bytes)
+            }
+            $manifestAssets += [ordered]@{
+              key = $relative
+              path = $relative
+              mime = $mime
+              bytes = $bytes.Length
+              sha256 = $sha
+            }
           }
         }
     }
@@ -301,10 +336,17 @@ $manifest = [ordered]@{
 Write-Step "Generating standalone HTML"
 $template = [System.IO.File]::ReadAllText($TemplatePath, [System.Text.Encoding]::UTF8)
 $assetBundleJson = ConvertTo-SafeJson $assetBundle 50
+$compressedAssetBundle = ConvertTo-GzipBase64 $assetBundleJson
+$manifest["assetBundle"] = [ordered]@{
+  format = "gzip"
+  encoding = "base64"
+  sourceBytes = $compressedAssetBundle.SourceBytes
+  compressedBytes = $compressedAssetBundle.CompressedBytes
+}
 $replacements = [ordered]@{
   "__APP_CONFIG_JSON__" = ConvertTo-SafeJson $appConfig 20
   "__BUILD_MANIFEST_JSON__" = ConvertTo-SafeJson $manifest 40
-  "__EMBEDDED_ASSET_BUNDLE_BASE64__" = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($assetBundleJson))
+  "__EMBEDDED_ASSET_BUNDLE_GZIP_BASE64__" = $compressedAssetBundle.Base64
 }
 
 foreach ($entry in $replacements.GetEnumerator()) {

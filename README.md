@@ -37,7 +37,7 @@ GitHub Pages delivers the initial HTML. After it loads, PDF parsing, page analys
 - Japanese and English UI in the same HTML
 - Responsive desktop and mobile layout
 - Embedded SVG favicon
-- Embedded PDF.js, worker, CMaps, standard fonts, WASM, ICC data, and image decoders
+- Gzip-compressed embedded PDF.js, worker, CMaps, standard fonts, required WASM, and ICC data
 - Build both `dist/index.html` and `dist/index.self-extract.html`
 
 ## Quick start
@@ -175,8 +175,9 @@ To discard the package cache and download the dependency again:
 The build process automatically:
 
 - Downloads the pinned `pdfjs-dist` tarball from the official npm registry
-- Embeds the PDF.js module and worker into the HTML
-- Embeds `cmaps`, `standard_fonts`, `wasm`, `iccs`, and `image_decoders`
+- Packs the PDF.js module, worker, CMaps, standard fonts, required WASM, and ICC data into one asset bundle
+- Gzip-compresses the asset bundle and Base64-embeds it once in the HTML
+- Excludes unused `image_decoders` and the QuickJS evaluator (`quickjs-eval.*`) from the build
 - Records SHA-256 hashes for the dependency package and embedded assets
 - Rejects external runtime script, stylesheet, frame, CSS URL, or module references
 - Verifies `connect-src 'none'`
@@ -192,7 +193,7 @@ The generated HTML includes:
 - A Content Security Policy containing `connect-src 'none'`
 - External `fetch` blocking in the main thread
 - External `fetch` blocking inside the PDF.js worker
-- A virtual asset loader that serves CMaps, fonts, WASM, and related data only from content embedded in the HTML
+- A virtual asset loader that serves CMaps, fonts, WASM, and related data only after the embedded gzip bundle is unpacked locally
 - Blob-based loading for the embedded PDF.js module and worker
 
 The GitHub Pages version requires an initial HTML request, but the PDFs selected by the user and the comparison results are not transmitted by the app.
@@ -209,6 +210,7 @@ For use with the network completely disconnected, open the generated `dist/index
 - PDFs containing unusual image formats or font configurations may render differently from another PDF viewer.
 - Large, image-heavy documents and High-quality rendering can consume substantial device memory.
 - Text diff works only when PDF.js can extract text from the document.
+- The standard HTML also uses `DecompressionStream` to unpack the compressed embedded assets; current Chrome, Edge, Firefox, and Safari are recommended.
 
 ## Dependencies
 

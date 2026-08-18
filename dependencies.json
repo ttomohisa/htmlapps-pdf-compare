@@ -25,8 +25,11 @@
         "cmaps",
         "standard_fonts",
         "wasm",
-        "iccs",
-        "image_decoders"
+        "iccs"
+      ],
+      "excludeAssets": [
+        "wasm/quickjs-eval.js",
+        "wasm/quickjs-eval.wasm"
       ]
     }
   ]
