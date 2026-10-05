@@ -4,28 +4,39 @@ const assert=require('node:assert/strict');
 const test=require('node:test');
 const path=require('node:path');
 const sourcePath=process.env.PDF_COMPARE_HTML || path.join(__dirname,'../src/index.template.html');
-const source=fs.readFileSync(sourcePath,'utf8').match(/<script>\s*([\s\S]*?)<\/script>/)[1];
-const exposed=source.replace(/\}\)\(\);\s*$/,'globalThis.probe={S,loadPdf,compare,resetAll,acceptFile,detailed,selectPair,currentDetail,renderPage,analyze,navigate,saveDiffPng,exportCsv};})();');
+const html=fs.readFileSync(sourcePath,'utf8');
+const source=html.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
+const exposed=source.replace(/\}\)\(\);\s*$/,'globalThis.probe={S,loadPdf,compare,resetAll,acceptFile,detailed,selectPair,currentDetail,renderPage,analyze,navigate,saveDiffPng,exportCsv,visible,detailSettings};})();');
 function deferred(){let resolve,reject;let promise=new Promise((a,b)=>{resolve=a;reject=b});return {promise,resolve,reject};}
 async function flush(n=12){for(let i=0;i<n;i++)await new Promise(r=>setImmediate(r));}
 function harness(){
- const elements=new Map(),errors=[],canvases=[],timerCallbacks=[],downloads=[];
+ const docListeners={},elements=new Map(),errors=[],canvases=[],timerCallbacks=[],downloads=[];
  class Element {
   constructor(tag='div'){this.tagName=tag.toUpperCase();this.style={};this.dataset={};this.children=[];this.listeners={};this.value='';this.checked=false;this.hidden=false;this.open=false;this.textContent='';this.clientWidth=1000;this.classList={add(){},remove(){},toggle(){}};this._html='';}
   set innerHTML(s){this._html=s;this.children=[];}
   get innerHTML(){return this._html;}
   addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}
   fire(type,event={}){return Promise.all((this.listeners[type]||[]).map(fn=>fn(event)));}
-  setAttribute(){} appendChild(e){this.children.push(e);return e;} remove(){} click(){return this.fire("click");} focus(){} showModal(){this.open=true;}close(){this.open=false;}scrollTo(){}
+  setAttribute(name,value){this[name]=value;} appendChild(e){this.children.push(e);return e;} remove(){} click(){return this.fire("click");} focus(){} showModal(){this.open=true;}close(){this.open=false;}scrollTo(){}
   querySelectorAll(selector){const result=[];for(const c of this.children){if(selector==='canvas'&&c.tagName==='CANVAS')result.push(c);result.push(...c.querySelectorAll(selector));}return result;}
   querySelector(selector){return this.querySelectorAll(selector)[0]||null;}
   getContext(){const c=this;return {fillRect(){},drawImage(src){c.drawnFrom=src;},getImageData(x,y,w,h){if(w*h>1e6)throw Error('Harness bounded pixel allocation');return {data:new Uint8ClampedArray(w*h*4)};},putImageData(){}};}
  }
- function $(id){if(!elements.has(id))elements.set(id,new Element());return elements.get(id);}
+ function $(id){if(!elements.has(id)){
+  const markup=html.match(new RegExp('<([a-z]+)[^>]*\\bid="'+id+'"[^>]*>'));
+  const e=new Element(markup?.[1]);
+  for(const [,key,value] of markup?.[0].matchAll(/data-([a-z0-9-]+)="([^"]*)"/g)||[])e.dataset[key.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]=value;
+  elements.set(id,e);
+ }return elements.get(id);}
  $('app-config').textContent=JSON.stringify({name:'Test',version:'1'});$('build-manifest').textContent='{}';$('quality').value='standard';$('threshold').value='24';$('minRegion').value='8';
- const document={getElementById:$,documentElement:{},querySelectorAll(){return []},createElement(tag){const e=new Element(tag);if(tag==='canvas'){e.width=300;e.height=150;canvases.push(e);}return e;},addEventListener(){},body:new Element('body')};
+ const document={getElementById:$,documentElement:{},querySelectorAll(selector){
+  if(selector==='dialog[open]')return [...elements.values()].filter(e=>e.tagName==='DIALOG'&&e.open);
+  if(selector==='[data-i18n]')return [...elements.values()].filter(e=>e.dataset.i18n);
+  if(selector==='[data-i18n-title]')return [...elements.values()].filter(e=>e.dataset.i18nTitle);
+  return [];
+ },createElement(tag){const e=new Element(tag);if(tag==='canvas'){e.width=300;e.height=150;canvases.push(e);}return e;},addEventListener(type,fn){(docListeners[type]??=[]).push(fn)},body:new Element('body')};
  const context={document,navigator:{language:'en'},console:{error(e){errors.push(String(e));},warn(){}},window:{addEventListener(){}},innerWidth:1000,location:{protocol:'https:'},setTimeout(fn,ms){if(ms<=5)return setImmediate(fn);timerCallbacks.push(fn);return timerCallbacks.length;},clearTimeout(){},setInterval(){return 1;},clearInterval(){},requestAnimationFrame(fn){fn();},URL:{createObjectURL(blob){downloads.push(blob);return "blob:test"},revokeObjectURL(){}},Blob,Response,Uint8Array,Uint8ClampedArray,ImageData:class {constructor(w,h){this.data=new Uint8ClampedArray(w*h*4);}},Intl};
- vm.createContext(context);vm.runInContext(exposed,context,{filename:sourcePath});return {...context.probe,$,errors,canvases,context,timerCallbacks,downloads};
+ vm.createContext(context);vm.runInContext(exposed,context,{filename:sourcePath});return {...context.probe,$,errors,canvases,context,timerCallbacks,downloads,fireDocument:(type,event)=>Promise.all((docListeners[type]||[]).map(fn=>fn(event)))};
 }
 function file(name){return {name,type:'application/pdf',size:12,arrayBuffer:async()=>new ArrayBuffer(8)};}
 function page(gate=null){return {cleanupCalls:0,cancelCalls:0,getViewport({scale}){return {width:612*scale,height:180*scale};},getTextContent:async()=>({items:[{str:'synthetic'}]}),cleanup(){this.cleanupCalls++;},render(){return {promise:gate?gate.promise:Promise.resolve(),cancel:()=>this.cancelCalls++};}};}
@@ -113,4 +124,87 @@ test('a settings value changed before its input event cannot show a stale cancel
  const pending=h.selectPair(0);await flush();h.$('threshold').value='39';gate.resolve();await pending;
  assert.equal(h.errors.length,0);assert.doesNotMatch(h.$('stage').innerHTML,/Could not open/);
  await h.$('threshold').fire('input');h.timerCallbacks.at(-1)();await flush();assert.ok(h.S.detailed.has('0:standard:39:8'));
+});
+
+function defaults(h){h.$('threshold').value='28';h.$('minRegion').value='3';h.$('quality').value='standard';}
+function settingsAreDefault(h){assert.deepEqual(JSON.parse(JSON.stringify(h.detailSettings())),{threshold:28,minRegion:3,quality:'standard'});assert.equal(h.$('thresholdValue').textContent,'28');assert.equal(h.$('regionValue').textContent,'0.03%');}
+function assertEmptyView(h){
+ assert.deepEqual([...h.visible()],[]);assert.equal(h.S.current,-1);assert.equal(h.currentDetail(),null);assert.equal(h.S.detailed.size,0);assert.equal(h.$('stage').querySelectorAll('canvas').length,0);assert.equal(h.$('stage').hidden,true);assert.equal(h.$('empty').hidden,false);assert.match(h.$('empty').textContent,/No changed pages|変更のあるページはありません/);assert.equal(h.$('viewerMeta').textContent,'');assert.equal(h.$('mobilePage').textContent,'0 / 0');assert.equal(h.$('savePng').disabled,true);
+ for(const id of ['prev','next','mobilePrev','mobileNext'])assert.equal(h.$(id).disabled,true);
+ for(const id of ['metricVisual','metricText','metricShift','shiftValue'])assert.equal(h.$(id).textContent,'-');
+ assert.equal(h.$('regions').children.length,0);assert.equal(h.$('textDiff').innerHTML,'');
+}
+test('reset comparison settings restores all controls and keeps the comparison and view choices',async()=>{
+ const {h,tasks}=await readyAdded();h.S.pairs.push({...h.S.pairs[0],newIndex:2});h.S.current=1;h.S.mode='side';h.S.zoom=2;h.$('changedOnly').checked=true;h.$('quality').value='high';h.$('threshold').value='40';h.$('minRegion').value='20';
+ const before={scope:h.S.comparison,files:[h.S.oldFile,h.S.newFile],docs:[h.S.oldDoc,h.S.newDoc],pairs:h.S.pairs,version:h.S.detailVersion};let calls=0;h.S.newDoc.getPage=async()=>{calls++;return page()};
+ await h.$('resetSettings').fire('click');await flush();settingsAreDefault(h);assert.equal(h.S.detailVersion,before.version+1);assert.equal(calls,1);assert.equal(h.S.current,1);assert.equal(h.S.mode,'side');assert.equal(h.S.zoom,2);assert.equal(h.$('changedOnly').checked,true);assert.equal(h.S.comparison,before.scope);assert.equal(h.S.pairs,before.pairs);assert.deepEqual([h.S.oldFile,h.S.newFile],before.files);assert.deepEqual([h.S.oldDoc,h.S.newDoc],before.docs);assert.ok(tasks.every(t=>t.destroyCalls===0));assert.equal(h.$('stage').querySelector('canvas').width,1050);
+});
+for(const [field,value] of [['threshold','40'],['minRegion','20'],['quality','high']])test(`settings reset restores a single changed ${field}`,async()=>{
+ const h=harness();defaults(h);h.$(field).value=value;const version=h.S.detailVersion;await h.$('resetSettings').fire('click');settingsAreDefault(h);assert.equal(h.S.detailVersion,version+1);assert.equal(h.S.comparison,null);
+});
+test('settings reset is a no-op at defaults, including a current pending render',async()=>{
+ const {h}=await readyAdded();defaults(h);const gate=deferred(),slow=page(gate);h.S.newDoc.getPage=async()=>slow;const pending=h.selectPair(0);await flush();const version=h.S.detailVersion,request=h.S.viewRequest;
+ await h.$('resetSettings').fire('click');await h.$('resetSettings').fire('click');assert.equal(h.S.detailVersion,version);assert.equal(h.S.viewRequest,request);assert.equal(slow.cancelCalls,0);gate.resolve();await pending;assert.equal(h.S.detailed.size,1);
+});
+test('settings reset retires a pending render once and old range debounce cannot rerender',async()=>{
+ const {h}=await readyAdded();const gate=deferred(),slow=page(gate);let calls=0;h.S.newDoc.getPage=async()=>++calls===1?slow:page();
+ h.$('threshold').value='40';await h.$('threshold').fire('input');const oldTimer=h.timerCallbacks.at(-1);oldTimer();await flush();const version=h.S.detailVersion;
+ await h.$('resetSettings').fire('click');await flush();settingsAreDefault(h);assert.equal(slow.cancelCalls,1);assert.equal(h.S.detailVersion,version+1);oldTimer();gate.resolve();await flush();assert.equal(calls,2);assert.equal(h.S.detailed.size,1);assert.ok(h.S.detailed.has('0:standard:28:3'));assert.equal(h.errors.length,0);
+});
+test('settings reset during document loading keeps the loading scope alive',async()=>{
+ const h=harness(),a=deferred(),b=deferred();h.S.oldFile=file('a.pdf');h.S.newFile=file('b.pdf');const tasks=engine(h,[a,b]);const pending=h.compare();await flush();const scope=h.S.comparison;
+ await h.$('resetSettings').fire('click');settingsAreDefault(h);assert.equal(h.S.comparison,scope);assert.ok(tasks.every(t=>t.destroyCalls===0));a.resolve(doc('a'));b.resolve(doc('b'));await pending;assert.ok(h.S.detailed.has('0:standard:28:3'));
+});
+test('empty Changed-only clears the excluded page and recovers when switched off',async()=>{
+ const {h}=await setup([doc('before'),doc('after')]);h.S.blink=9;h.$('changedOnly').checked=true;await h.$('changedOnly').fire('change');await flush();assertEmptyView(h);assert.equal(h.S.blink,null);
+ await h.saveDiffPng();assert.equal(h.downloads.length,0);h.exportCsv();assert.match(await h.downloads[0].text(),/"false"/);
+ h.$('changedOnly').checked=false;await h.$('changedOnly').fire('change');await flush();assert.equal(h.S.current,0);assert.equal(h.$('stage').querySelectorAll('canvas').length,1);assert.equal(h.$('savePng').disabled,false);
+});
+test('Changed-only selected before load never selects an unchanged page',async()=>{
+ const h=harness();h.$('changedOnly').checked=true;h.S.oldFile=file('a.pdf');h.S.newFile=file('b.pdf');engine(h,[doc('a'),doc('b')]);await h.compare();assertEmptyView(h);
+});
+test('empty Changed-only stays empty through reset, settings, language, mode and zoom',async()=>{
+ const {h}=await setup([doc('before'),doc('after')]);h.$('changedOnly').checked=true;await h.$('changedOnly').fire('change');
+ for(const change of [async()=>h.$('resetSettings').fire('click'),async()=>{h.$('threshold').value='40';await h.$('threshold').fire('input');h.timerCallbacks.at(-1)()},async()=>{h.$('quality').value='high';await h.$('quality').fire('change')},async()=>h.$('lang').fire('click'),async()=>{h.S.mode='side';await h.selectPair(h.S.current)},async()=>h.$('zoomIn').fire('click')]){await change();await flush();assertEmptyView(h);}
+});
+test('filtering a pending detail to empty cancels it and rejects its late result',async()=>{
+ const {h}=await setup([doc('before'),doc('after')]);h.S.detailed.clear();const gate=deferred(),slow=page(gate);h.S.oldDoc.getPage=async()=>slow;const pending=h.selectPair(0);await flush();h.$('changedOnly').checked=true;await h.$('changedOnly').fire('change');assert.equal(slow.cancelCalls,1);gate.resolve();await pending;assertEmptyView(h);assert.equal(h.errors.length,0);
+});
+test('PNG callbacks from an excluded page cannot download after empty-filter recovery',async()=>{
+ const {h}=await setup([doc('before'),doc('after')]);let callback;h.currentDetail().diffCanvas.toBlob=cb=>callback=cb;await h.saveDiffPng();h.$('changedOnly').checked=true;await h.$('changedOnly').fire('change');callback(new Blob(['png']));assert.equal(h.downloads.length,0);h.$('changedOnly').checked=false;await h.$('changedOnly').fire('change');await flush();callback(new Blob(['png']));assert.equal(h.downloads.length,0);
+});
+test('filtered selection and navigation only use added, deleted or changed pairs',async()=>{
+ const {h}=await readyAdded();h.S.pairs.push({...h.S.pairs[0],status:'deleted',oldIndex:1,newIndex:null},{...h.S.pairs[0],status:'matched',oldIndex:1,textSimilarity:1,newIndex:1},{...h.S.pairs[0],changed:false,newIndex:4});h.$('changedOnly').checked=true;
+ await h.selectPair(3);assert.equal(h.S.current,0);h.navigate(99);await flush();assert.equal(h.S.current,2);h.navigate(99);await flush();assert.equal(h.S.current,2);h.navigate(-99);await flush();assert.equal(h.S.current,0);
+});
+for(const dialog of ['helpDialog','resetDialog','passwordDialog'])test(`${dialog} keeps comparison keyboard shortcuts inactive`,async()=>{
+ const h=harness();h.S.pairs=[{changed:true},{changed:true}];h.$(dialog).open=true;h.context.document.activeElement=h.$(dialog);let prevented=0;
+ for(const key of ['ArrowLeft','ArrowRight','+','=','-','0'])await h.fireDocument('keydown',{key,preventDefault(){prevented++}});
+ assert.equal(h.S.current,0);assert.equal(h.S.zoom,1);assert.equal(prevented,0);
+});
+test('editing, composition, modifiers and prevented keys retain native keyboard behavior',async()=>{
+ const h=harness();h.S.pairs=[{changed:true},{changed:true}];let prevented=0;
+ const guards=[{target:{tagName:'INPUT'}},{target:{tagName:'SELECT'}},{target:{tagName:'TEXTAREA'}},{target:{tagName:'SPAN',isContentEditable:true}},{isComposing:true},{keyCode:229},{ctrlKey:true},{altKey:true},{metaKey:true},{defaultPrevented:true}];
+ for(const guard of guards){h.context.document.activeElement=guard.target||{tagName:'BODY'};for(const key of ['ArrowRight','+'])await h.fireDocument('keydown',{key,preventDefault(){prevented++},...guard});}
+ assert.equal(h.S.current,0);assert.equal(h.S.zoom,1);assert.equal(prevented,0);
+});
+test('unmodified comparison shortcuts work after Help closes and prevent only handled defaults',async()=>{
+ const {h}=await readyAdded();h.S.pairs.push({...h.S.pairs[0],newIndex:2});h.$('helpDialog').open=false;h.context.document.activeElement={tagName:'BUTTON'};let prevented=0;
+ for(const key of ['ArrowRight','+']){await h.fireDocument('keydown',{key,preventDefault(){prevented++}});await flush();}assert.equal(h.S.current,1);assert.equal(h.S.zoom,1.25);assert.equal(prevented,2);
+ await h.fireDocument('keydown',{key:'a',preventDefault(){prevented++}});assert.equal(prevented,2);
+});
+
+test('settings reset label and tooltip switch languages and match the real markup defaults',async()=>{
+ const h=harness();assert.match(html,/id="threshold"[^>]*value="28"/);assert.match(html,/id="minRegion"[^>]*value="3"/);assert.equal(h.$('resetSettings').textContent,'Reset comparison settings');assert.match(h.$('resetSettings').title,/28.*0.03%.*Standard/);await h.$('lang').fire('click');assert.equal(h.$('resetSettings').textContent,'比較設定を初期値へ');assert.match(h.$('resetSettings').title,/28.*0.03%.*標準/);
+});
+test('reset at defaults retains cached detail and a valid pending default-settings debounce',async()=>{
+ const {h}=await readyAdded();defaults(h);await h.selectPair(0);const detail=h.currentDetail(),version=h.S.detailVersion,request=h.S.viewRequest;
+ await h.$('resetSettings').fire('click');assert.equal(h.currentDetail(),detail);assert.equal(h.S.detailVersion,version);assert.equal(h.S.viewRequest,request);
+ await h.$('threshold').fire('input');const timer=h.timerCallbacks.at(-1),pendingVersion=h.S.detailVersion;await h.$('resetSettings').fire('click');assert.equal(h.S.detailVersion,pendingVersion);timer();await flush();assert.ok(h.S.detailed.has('0:standard:28:3'));
+});
+test('PNG waiting for detail is cancelled when its current page becomes excluded',async()=>{
+ const {h}=await setup([doc('before'),doc('after')]);h.S.detailed.clear();const gate=deferred(),slow=page(gate);h.S.oldDoc.getPage=async()=>slow;const pending=h.saveDiffPng();await flush();h.$('changedOnly').checked=true;await h.$('changedOnly').fire('change');gate.resolve();await pending;assertEmptyView(h);assert.equal(h.downloads.length,0);assert.equal(h.errors.length,0);
+});
+test('empty filter selects a valid newly available pair and handles filtered keyboard navigation',async()=>{
+ const {h}=await setup([doc('before'),doc('after')]);h.$('changedOnly').checked=true;await h.$('changedOnly').fire('change');h.S.pairs.push({status:'added',newIndex:1,changed:true,quickDiff:1,textSimilarity:0});await h.$('changedOnly').fire('change');await flush();assert.equal(h.S.current,1);assert.deepEqual([...h.visible()],[1]);assert.equal(h.$('stage').hidden,false);assert.equal(h.$('empty').hidden,true);h.navigate(-1);await flush();assert.equal(h.S.current,1);
 });
