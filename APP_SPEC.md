@@ -35,8 +35,9 @@ A user selects a before and after PDF, the app automatically pairs corresponding
 - Difference regions, visual percentage, text diff.
 - 50–400% viewer zoom with Fit to view and touch-friendly controls.
 - Password-protected PDF prompt.
-- Changed-only filtering and keyboard/mobile navigation.
-- CSV report and current diff PNG export.
+- Changed-only filtering and keyboard/mobile navigation. An empty filter clears the viewer and current-page PNG action; returning to all pages selects a valid page. Dialogs, editable controls, composition, and reserved keyboard modifiers keep their native behavior.
+- Reset comparison settings to threshold 28, tiny-region suppression 0.03%, and Standard quality without clearing PDFs, page matching, selection, filter, view mode, or zoom. Reset at defaults is a no-op; a real change cancels stale detailed work and recomputes the visible selection once.
+- CSV report (all page pairs, regardless of filter) and current visible diff PNG export.
 - Light-only UI.
 - Responsive from 320px upward.
 - Runtime network blocked by CSP.

@@ -22,6 +22,7 @@ main{width:min(1280px,100%);margin:auto;padding:22px clamp(14px,2.8vw,30px) 92px
 .workspace{display:grid;grid-template-columns:240px minmax(0,1fr);gap:12px;align-items:start}.page-panel{position:sticky;top:calc(var(--header-height) + 62px);max-height:calc(100dvh - var(--header-height) - 84px);overflow:hidden}.page-head{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-bottom:1px solid var(--line);font-size:12px}.filter{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:10px}.filter input{accent-color:var(--accent)}.page-list{max-height:calc(100dvh - var(--header-height) - 132px);padding:7px;overflow:auto}.page-item{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:8px;width:100%;padding:8px;border:0;border-radius:10px;background:transparent;text-align:left}.page-item:hover{background:var(--surface-muted)}.page-item.active{background:var(--accent-soft)}.page-num{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--surface-muted);font-size:11px;font-weight:780}.page-title{display:block;min-width:0;font-size:11px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.page-sub{display:block;margin-top:2px;color:var(--muted);font-size:9px}.dot{width:8px;height:8px;border-radius:50%;background:var(--line-strong)}.dot.changed{background:#c3483c}.dot.added{background:#32735e}.dot.deleted{background:#a15f19}
 .viewer{overflow:hidden}.viewer-head{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}.viewer-title{font-size:13px;font-weight:780}.viewer-meta{margin-top:3px;color:var(--muted);font-size:10px}.viewer-actions{display:flex;gap:6px}.zoom-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:5px;padding:7px 10px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--surface) 94%,var(--surface-muted))}.zoom-button{display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--surface);font-size:18px;font-weight:650;line-height:1}.zoom-button:hover{border-color:var(--line-strong);background:var(--surface-hover)}.zoom-button:disabled{opacity:.38;cursor:not-allowed}.zoom-value{min-width:58px;height:34px;padding:0 8px;border:1px solid var(--line);border-radius:9px;background:var(--surface);font-size:11px;font-weight:780;font-variant-numeric:tabular-nums}.zoom-fit{min-height:34px;padding:5px 9px;border:1px solid var(--line);border-radius:9px;background:var(--surface);font-size:11px;font-weight:720}.zoom-fit:hover,.zoom-value:hover{border-color:var(--line-strong);background:var(--surface-hover)}.zoom-hint{margin-right:auto;color:var(--muted);font-size:10px}.canvas-area{position:relative;min-height:420px;padding:14px;background:#e9e9e5;overflow:auto;overscroll-behavior:contain}.stage{position:relative;width:max-content;min-width:100%;margin:auto;display:flex;justify-content:center;align-items:flex-start;gap:12px}.empty{display:grid;place-items:center;min-height:380px;color:var(--muted);font-size:12px;text-align:center}.paper,.overlay-stage{position:relative;flex:0 0 auto;background:white;box-shadow:0 4px 18px rgba(0,0,0,.13);overflow:hidden}.paper canvas,.overlay-stage canvas{display:block;max-width:none}.overlay-stage canvas{position:absolute;inset:0}.overlay-stage canvas:first-child{position:relative}.paper-label{position:absolute;z-index:8;left:8px;top:8px;padding:4px 7px;border-radius:7px;background:rgba(32,33,31,.76);color:white;font-size:9px;font-weight:750;pointer-events:none}.slider-clip{position:absolute;inset:0 auto 0 0;overflow:hidden;pointer-events:none}.slider-clip canvas{position:absolute;left:0;top:0}.slider-line{position:absolute;z-index:7;top:0;bottom:0;width:2px;background:white;box-shadow:0 0 0 1px rgba(0,0,0,.3);pointer-events:none}.region-box{position:absolute;z-index:6;border:2px solid rgba(195,72,60,.88);background:rgba(195,72,60,.06);border-radius:2px;pointer-events:none}.blink-new.hidden{opacity:0}
 .controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 14px;border-top:1px solid var(--line)}.control{padding:9px 10px;border-radius:10px;background:var(--surface-muted)}.control-head{display:flex;justify-content:space-between;gap:8px;margin-bottom:5px;font-size:10px;font-weight:750}.control-value{color:var(--muted);font-variant-numeric:tabular-nums}.control input[type=range]{width:100%;accent-color:var(--accent)}.control select{width:100%;min-height:30px;border:1px solid var(--line);border-radius:8px;background:white;font-size:11px}
+.settings-actions{display:flex;justify-content:flex-end;padding:0 14px 12px}.settings-actions .button{min-height:36px;white-space:normal;text-align:center}
 .details{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:12px;margin-top:12px}.detail{padding:14px}.detail h3{margin:0 0 9px;font-size:13px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.metric{padding:9px;border-radius:9px;background:var(--surface-muted)}.metric strong{display:block;font-size:14px}.metric span{color:var(--muted);font-size:9px}.regions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.region-button{padding:5px 8px;border:1px solid var(--line);border-radius:999px;background:white;font-size:10px}.region-button:hover{background:var(--surface-hover)}details.text{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}details.text summary{cursor:pointer;font-size:11px;font-weight:750}.text-diff{margin-top:10px;max-height:260px;padding:11px;border-radius:10px;background:#fbfbf9;overflow:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;line-height:1.75;white-space:pre-wrap;word-break:break-word}.add{background:#dcefe7}.del{background:#f8dedd;text-decoration:line-through;color:#7c332d}.eq{color:var(--muted)}.privacy{color:var(--muted);font-size:10px;line-height:1.65}.privacy strong{color:var(--text)}
 .mobile-nav{display:none}.toast{position:fixed;right:18px;bottom:18px;z-index:70;max-width:min(360px,calc(100vw - 36px));padding:11px 14px;border:1px solid var(--line);border-radius:11px;background:white;box-shadow:var(--shadow-md);opacity:0;transform:translateY(12px);pointer-events:none;transition:.18s}.toast.show{opacity:1;transform:none}
 dialog{width:min(640px,calc(100% - 28px));max-height:min(760px,calc(100dvh - 28px));padding:0;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:white;color:var(--text);box-shadow:var(--shadow-md)}dialog::backdrop{background:rgba(15,17,14,.52);backdrop-filter:blur(4px)}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}.dialog-head h2{margin:0;font-size:17px}.dialog-body{padding:18px 20px 24px;overflow:auto;max-height:calc(100dvh - 102px)}.dialog-body h3{margin:22px 0 7px;padding-top:17px;border-top:1px solid var(--line);font-size:13px}.dialog-body h3:first-child{margin-top:0;padding-top:0;border-top:0}.dialog-body p,.dialog-body li{color:var(--muted);font-size:12px;line-height:1.7}.dialog-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--line)}.password{width:100%;min-height:42px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}.password-error{min-height:18px;margin-top:5px;color:var(--danger);font-size:11px}.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[hidden]{display:none!important}
@@ -102,6 +103,7 @@ dialog{width:min(640px,calc(100% - 28px));max-height:min(760px,calc(100dvh - 28p
             <div class="control"><div class="control-head"><span data-i18n="regionSize">小さな差分を無視</span><span class="control-value" id="regionValue">0.03%</span></div><input id="minRegion" type="range" min="0" max="20" step="1" value="3"></div>
             <div class="control"><div class="control-head"><span data-i18n="quality">表示品質</span><span class="control-value" id="shiftValue">AUTO</span></div><select id="quality"><option value="standard" data-i18n="qualityStandard">標準</option><option value="high" data-i18n="qualityHigh">高精細</option></select></div>
           </div>
+          <div class="settings-actions"><button class="button compact" id="resetSettings" type="button" data-i18n="resetSettings" data-i18n-title="resetSettingsHint" title="差分感度28・小さな差分0.03%・表示品質を標準に戻します。">比較設定を初期値へ</button></div>
         </section>
         <div class="details">
           <section class="panel detail">
@@ -121,6 +123,8 @@ dialog{width:min(640px,calc(100% - 28px));max-height:min(760px,calc(100dvh - 28p
 
 <dialog id="helpDialog"><div class="dialog-head"><h2 data-i18n="helpTitle">使い方と注意事項</h2><button class="header-button" data-close="helpDialog" type="button" aria-label="Close">✕</button></div><div class="dialog-body">
 <h3 data-i18n="helpHowTitle">使い方</h3><ol><li data-i18n="help1">変更前と変更後のPDFを選びます。</li><li data-i18n="help2">ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。</li><li data-i18n="help3">差分・左右・重ねる・スライダー・点滅を切り替えて確認します。</li><li data-i18n="helpZoom">表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。</li><li data-i18n="help4">感度を上げたいときは「差分感度」の値を小さくします。</li></ol>
+<p data-i18n="helpSettings">「比較設定を初期値へ」は差分感度28・小さな差分0.03%・標準画質に戻します。PDF・選択ページ・変更のみ・表示方法・倍率は保持します。</p>
+<p data-i18n="helpFilter">「変更のみ」で該当ページがない場合は表示とPNG保存を空にします。CSVは常に全ページが対象です。ダイアログの表示中や文字入力中はページ移動・拡大縮小のショートカットを使いません。</p>
 <p data-i18n="helpLifecycle">PDFの選び直し・やり直しは進行中の処理を中止します。表示設定を変更すると詳細差分を再計算します。両方のPDFにパスワードがある場合は1つずつ入力します。</p>
 <h3 data-i18n="helpPrivacyTitle">プライバシー</h3><p data-i18n="helpPrivacy">PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。</p>
 <h3 data-i18n="helpDiffTitle">差分の見方</h3><p data-i18n="helpDiff">数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。</p>
@@ -144,10 +148,10 @@ $("version").textContent="v"+app.version;
 
 const I={
 ja:{
-brandMeta:"PDFの変更点を端末内だけで比較",helpAria:"使い方と注意事項",introTitle:"2つのPDFの「どこが変わった？」を見つける。",introText:"ページ追加・削除にも追従して対応付け。見た目の差分とテキスト差分を、アップロードせずに確認できます。",localOnly:"完全ローカル処理",uploadHeading:"比較するPDF",before:"変更前",after:"変更後",choosePdf:"PDFを選択",dropHint:"タップ / ドロップ",swapAria:"変更前と変更後を入れ替え",ready:"2つのPDFを選択してください。",reset:"やり直す",summaryPairs:"対応ページ",summaryChanged:"変更あり",summaryAdded:"追加ページ",summaryDeleted:"削除ページ",summaryVisual:"見た目の変更量",modeDiff:"差分",modeSide:"左右",modeOverlay:"重ねる",modeSlider:"スライダー",modeBlink:"点滅",saveDiffPng:"差分PNG",exportCsv:"レポートCSV",pages:"ページ",changedOnly:"変更のみ",prev:"前へ",next:"次へ",selectPage:"ページを選択してください。",sensitivity:"差分感度",regionSize:"小さな差分を無視",quality:"表示品質",qualityStandard:"標準",qualityHigh:"高精細",pageAnalysis:"このページの分析",metricVisual:"視覚差分",metricText:"テキスト類似度",metricShift:"位置ずれ補正",textDiff:"テキスト差分を見る",privacyTitle:"端末の外に出しません",privacyText:"<strong>PDFはアップロードされません。</strong><br>PDF.jsもHTML内に埋め込み、解析・描画・差分計算はこのブラウザ内で実行します。",matchingNote:"ページ番号だけでなく、見た目と抽出テキストを使って変更前後のページを自動対応付けします。",helpTitle:"使い方と注意事項",helpHowTitle:"使い方",help1:"変更前と変更後のPDFを選びます。",help2:"ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。",help3:"差分・左右・重ねる・スライダー・点滅を切り替えて確認します。",help4:"感度を上げたいときは「差分感度」の値を小さくします。",helpLifecycle:"PDFの選び直し・やり直しは進行中の処理を中止します。表示設定を変更すると詳細差分を再計算します。両方のPDFにパスワードがある場合は1つずつ入力します。",helpPrivacyTitle:"プライバシー",helpPrivacy:"PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。",helpDiffTitle:"差分の見方",helpDiff:"数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。",helpLimitsTitle:"制限事項",limit1:"OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。",limit2:"巨大なPDFや高精細表示は端末のメモリを多く使用します。",limit3:"署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。",limit4:"圧縮済みPDF.jsアセットの展開に対応した最新のブラウザを使用してください。",helpBuildTitle:"ビルド情報",resetTitle:"比較をやり直しますか？",resetText:"選択したPDFと解析結果をこの画面から消去します。元のPDFファイルは変更されません。",cancel:"キャンセル",passwordTitle:"PDFのパスワード",passwordPlaceholder:"パスワード",openPdf:"開く",passwordText:"このPDFはパスワードで保護されています。",wrongPassword:"パスワードが正しくありません。",loadingEngine:"PDFエンジンを準備しています…",reading:"PDFを読み込んでいます…",analyzing:"ページを解析しています…",matching:"ページの対応を探しています…",done:"比較の準備ができました。ページを選ぶと詳細差分を計算します。",invalidPdf:"PDFファイルを選択してください。",tooLarge:"ファイルが大きいため、端末によっては処理できない場合があります。",openFailed:"PDFを開けませんでした。",cancelled:"処理をキャンセルしました。",page:"ページ",added:"追加",deleted:"削除",changed:"変更あり",unchanged:"ほぼ同じ",comparing:"詳細差分を計算中…",noText:"抽出できるテキストがありません。",noTextChange:"抽出テキストに大きな差はありません。",region:"差分",regionCount:"{n}か所の変更領域",saved:"保存しました。",csvSaved:"CSVレポートを保存しました。",noDiffPng:"差分表示を準備してから保存してください。",zoomHint:"拡大して細部を確認できます",zoomIn:"拡大",zoomOut:"縮小",zoomReset:"100%に戻す",zoomFit:"画面に合わせる",helpZoom:"表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。",engineFailed:"埋め込みPDFエンジンの初期化に失敗しました。ビルド済みHTMLを使用してください。"
+brandMeta:"PDFの変更点を端末内だけで比較",helpAria:"使い方と注意事項",introTitle:"2つのPDFの「どこが変わった？」を見つける。",introText:"ページ追加・削除にも追従して対応付け。見た目の差分とテキスト差分を、アップロードせずに確認できます。",localOnly:"完全ローカル処理",uploadHeading:"比較するPDF",before:"変更前",after:"変更後",choosePdf:"PDFを選択",dropHint:"タップ / ドロップ",swapAria:"変更前と変更後を入れ替え",ready:"2つのPDFを選択してください。",reset:"やり直す",summaryPairs:"対応ページ",summaryChanged:"変更あり",summaryAdded:"追加ページ",summaryDeleted:"削除ページ",summaryVisual:"見た目の変更量",modeDiff:"差分",modeSide:"左右",modeOverlay:"重ねる",modeSlider:"スライダー",modeBlink:"点滅",saveDiffPng:"差分PNG",exportCsv:"レポートCSV",pages:"ページ",changedOnly:"変更のみ",prev:"前へ",next:"次へ",selectPage:"ページを選択してください。",sensitivity:"差分感度",regionSize:"小さな差分を無視",quality:"表示品質",resetSettings:"比較設定を初期値へ",resetSettingsHint:"差分感度28・小さな差分0.03%・表示品質を標準に戻します。",noChangedPages:"変更のあるページはありません。",helpSettings:"「比較設定を初期値へ」は差分感度28・小さな差分0.03%・標準画質に戻します。PDF・選択ページ・変更のみ・表示方法・倍率は保持します。",helpFilter:"「変更のみ」で該当ページがない場合は表示とPNG保存を空にします。CSVは常に全ページが対象です。ダイアログの表示中や文字入力中はページ移動・拡大縮小のショートカットを使いません。",qualityStandard:"標準",qualityHigh:"高精細",pageAnalysis:"このページの分析",metricVisual:"視覚差分",metricText:"テキスト類似度",metricShift:"位置ずれ補正",textDiff:"テキスト差分を見る",privacyTitle:"端末の外に出しません",privacyText:"<strong>PDFはアップロードされません。</strong><br>PDF.jsもHTML内に埋め込み、解析・描画・差分計算はこのブラウザ内で実行します。",matchingNote:"ページ番号だけでなく、見た目と抽出テキストを使って変更前後のページを自動対応付けします。",helpTitle:"使い方と注意事項",helpHowTitle:"使い方",help1:"変更前と変更後のPDFを選びます。",help2:"ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。",help3:"差分・左右・重ねる・スライダー・点滅を切り替えて確認します。",help4:"感度を上げたいときは「差分感度」の値を小さくします。",helpLifecycle:"PDFの選び直し・やり直しは進行中の処理を中止します。表示設定を変更すると詳細差分を再計算します。両方のPDFにパスワードがある場合は1つずつ入力します。",helpPrivacyTitle:"プライバシー",helpPrivacy:"PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。",helpDiffTitle:"差分の見方",helpDiff:"数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。",helpLimitsTitle:"制限事項",limit1:"OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。",limit2:"巨大なPDFや高精細表示は端末のメモリを多く使用します。",limit3:"署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。",limit4:"圧縮済みPDF.jsアセットの展開に対応した最新のブラウザを使用してください。",helpBuildTitle:"ビルド情報",resetTitle:"比較をやり直しますか？",resetText:"選択したPDFと解析結果をこの画面から消去します。元のPDFファイルは変更されません。",cancel:"キャンセル",passwordTitle:"PDFのパスワード",passwordPlaceholder:"パスワード",openPdf:"開く",passwordText:"このPDFはパスワードで保護されています。",wrongPassword:"パスワードが正しくありません。",loadingEngine:"PDFエンジンを準備しています…",reading:"PDFを読み込んでいます…",analyzing:"ページを解析しています…",matching:"ページの対応を探しています…",done:"比較の準備ができました。ページを選ぶと詳細差分を計算します。",invalidPdf:"PDFファイルを選択してください。",tooLarge:"ファイルが大きいため、端末によっては処理できない場合があります。",openFailed:"PDFを開けませんでした。",cancelled:"処理をキャンセルしました。",page:"ページ",added:"追加",deleted:"削除",changed:"変更あり",unchanged:"ほぼ同じ",comparing:"詳細差分を計算中…",noText:"抽出できるテキストがありません。",noTextChange:"抽出テキストに大きな差はありません。",region:"差分",regionCount:"{n}か所の変更領域",saved:"保存しました。",csvSaved:"CSVレポートを保存しました。",noDiffPng:"差分表示を準備してから保存してください。",zoomHint:"拡大して細部を確認できます",zoomIn:"拡大",zoomOut:"縮小",zoomReset:"100%に戻す",zoomFit:"画面に合わせる",helpZoom:"表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。",engineFailed:"埋め込みPDFエンジンの初期化に失敗しました。ビルド済みHTMLを使用してください。"
 },
 en:{
-brandMeta:"Compare PDF changes entirely on your device",helpAria:"How to use and notes",introTitle:"Find exactly what changed between two PDFs.",introText:"Pages are matched even when pages are inserted or removed. Review visual and text differences without uploading either file.",localOnly:"100% local",uploadHeading:"PDFs to compare",before:"Before",after:"After",choosePdf:"Choose PDF",dropHint:"Tap / drop",swapAria:"Swap before and after",ready:"Choose two PDF files.",reset:"Reset",summaryPairs:"Matched pages",summaryChanged:"Changed",summaryAdded:"Added pages",summaryDeleted:"Removed pages",summaryVisual:"Visual change",modeDiff:"Diff",modeSide:"Side by side",modeOverlay:"Overlay",modeSlider:"Slider",modeBlink:"Blink",saveDiffPng:"Diff PNG",exportCsv:"CSV report",pages:"Pages",changedOnly:"Changed only",prev:"Previous",next:"Next",selectPage:"Select a page.",sensitivity:"Difference threshold",regionSize:"Ignore tiny regions",quality:"Render quality",qualityStandard:"Standard",qualityHigh:"High",pageAnalysis:"Page analysis",metricVisual:"Visual difference",metricText:"Text similarity",metricShift:"Auto alignment",textDiff:"Show text differences",privacyTitle:"Your PDFs stay on this device",privacyText:"<strong>Your PDFs are never uploaded.</strong><br>PDF.js is embedded in the HTML; parsing, rendering, and comparison all run in this browser.",matchingNote:"Pages are matched using both appearance and extracted text instead of assuming page numbers are unchanged.",helpTitle:"How to use & notes",helpHowTitle:"How to use",help1:"Choose the before and after PDF files.",help2:"Pages are automatically aligned using appearance and extracted text, including inserted and deleted pages.",help3:"Switch among Diff, Side by side, Overlay, Slider, and Blink views.",help4:"Lower the difference threshold to detect subtler changes.",helpLifecycle:"Replacing a PDF or resetting cancels work in progress. Changing comparison settings recalculates detailed differences. If both PDFs require passwords, enter them one at a time.",helpPrivacyTitle:"Privacy",helpPrivacy:"PDFs and comparison results are never sent to a server. Runtime networking is disabled by CSP.",helpDiffTitle:"Understanding the diff",helpDiff:"A few pixels of translation are automatically corrected before pixel differences are calculated. Text diff is available only when the PDF contains extractable text.",helpLimitsTitle:"Limitations",limit1:"OCR is not included. Scanned PDFs can still be visually compared, but image-only text is excluded from text diff.",limit2:"Very large PDFs and high-quality rendering use significant device memory.",limit3:"This is not a forensic checker for signatures, forms, annotations, or other internal PDF objects.",limit4:"Use a current browser that can unpack the compressed embedded PDF.js assets.",helpBuildTitle:"Build info",resetTitle:"Reset this comparison?",resetText:"This clears selected PDFs and analysis from the page. Original files are not modified.",cancel:"Cancel",passwordTitle:"PDF password",passwordPlaceholder:"Password",openPdf:"Open",passwordText:"This PDF is password protected.",wrongPassword:"The password is incorrect.",loadingEngine:"Preparing the PDF engine…",reading:"Reading PDFs…",analyzing:"Analyzing pages…",matching:"Matching pages…",done:"Comparison is ready. Detailed differences are calculated when you open a page.",invalidPdf:"Choose a PDF file.",tooLarge:"This file is large and may exceed the memory available on this device.",openFailed:"Could not open the PDF.",cancelled:"Operation cancelled.",page:"Page",added:"Added",deleted:"Removed",changed:"Changed",unchanged:"Nearly identical",comparing:"Calculating detailed differences…",noText:"No extractable text is available.",noTextChange:"No substantial extracted-text change was found.",region:"Change",regionCount:"{n} change regions",saved:"Saved.",csvSaved:"CSV report saved.",noDiffPng:"Open Diff view before saving the PNG.",zoomHint:"Zoom in to inspect fine details",zoomIn:"Zoom in",zoomOut:"Zoom out",zoomReset:"Reset to 100%",zoomFit:"Fit to view",helpZoom:"Use − / + to zoom from 50% to 400%. Choose Fit to view to return to the default fitted size.",engineFailed:"The embedded PDF engine could not be initialized. Use a built standalone HTML file."
+brandMeta:"Compare PDF changes entirely on your device",helpAria:"How to use and notes",introTitle:"Find exactly what changed between two PDFs.",introText:"Pages are matched even when pages are inserted or removed. Review visual and text differences without uploading either file.",localOnly:"100% local",uploadHeading:"PDFs to compare",before:"Before",after:"After",choosePdf:"Choose PDF",dropHint:"Tap / drop",swapAria:"Swap before and after",ready:"Choose two PDF files.",reset:"Reset",summaryPairs:"Matched pages",summaryChanged:"Changed",summaryAdded:"Added pages",summaryDeleted:"Removed pages",summaryVisual:"Visual change",modeDiff:"Diff",modeSide:"Side by side",modeOverlay:"Overlay",modeSlider:"Slider",modeBlink:"Blink",saveDiffPng:"Diff PNG",exportCsv:"CSV report",pages:"Pages",changedOnly:"Changed only",prev:"Previous",next:"Next",selectPage:"Select a page.",sensitivity:"Difference threshold",regionSize:"Ignore tiny regions",quality:"Render quality",resetSettings:"Reset comparison settings",resetSettingsHint:"Restore threshold 28, tiny regions 0.03%, and Standard quality.",noChangedPages:"No changed pages.",helpSettings:"Reset comparison settings restores threshold 28, tiny regions 0.03%, and Standard quality. It keeps the PDFs, selected page, Changed only filter, view mode, and zoom.",helpFilter:"When Changed only has no matching pages, the viewer is empty and PNG saving is disabled. CSV always includes all pages. Page and zoom shortcuts stay inactive in dialogs and while editing text.",qualityStandard:"Standard",qualityHigh:"High",pageAnalysis:"Page analysis",metricVisual:"Visual difference",metricText:"Text similarity",metricShift:"Auto alignment",textDiff:"Show text differences",privacyTitle:"Your PDFs stay on this device",privacyText:"<strong>Your PDFs are never uploaded.</strong><br>PDF.js is embedded in the HTML; parsing, rendering, and comparison all run in this browser.",matchingNote:"Pages are matched using both appearance and extracted text instead of assuming page numbers are unchanged.",helpTitle:"How to use & notes",helpHowTitle:"How to use",help1:"Choose the before and after PDF files.",help2:"Pages are automatically aligned using appearance and extracted text, including inserted and deleted pages.",help3:"Switch among Diff, Side by side, Overlay, Slider, and Blink views.",help4:"Lower the difference threshold to detect subtler changes.",helpLifecycle:"Replacing a PDF or resetting cancels work in progress. Changing comparison settings recalculates detailed differences. If both PDFs require passwords, enter them one at a time.",helpPrivacyTitle:"Privacy",helpPrivacy:"PDFs and comparison results are never sent to a server. Runtime networking is disabled by CSP.",helpDiffTitle:"Understanding the diff",helpDiff:"A few pixels of translation are automatically corrected before pixel differences are calculated. Text diff is available only when the PDF contains extractable text.",helpLimitsTitle:"Limitations",limit1:"OCR is not included. Scanned PDFs can still be visually compared, but image-only text is excluded from text diff.",limit2:"Very large PDFs and high-quality rendering use significant device memory.",limit3:"This is not a forensic checker for signatures, forms, annotations, or other internal PDF objects.",limit4:"Use a current browser that can unpack the compressed embedded PDF.js assets.",helpBuildTitle:"Build info",resetTitle:"Reset this comparison?",resetText:"This clears selected PDFs and analysis from the page. Original files are not modified.",cancel:"Cancel",passwordTitle:"PDF password",passwordPlaceholder:"Password",openPdf:"Open",passwordText:"This PDF is password protected.",wrongPassword:"The password is incorrect.",loadingEngine:"Preparing the PDF engine…",reading:"Reading PDFs…",analyzing:"Analyzing pages…",matching:"Matching pages…",done:"Comparison is ready. Detailed differences are calculated when you open a page.",invalidPdf:"Choose a PDF file.",tooLarge:"This file is large and may exceed the memory available on this device.",openFailed:"Could not open the PDF.",cancelled:"Operation cancelled.",page:"Page",added:"Added",deleted:"Removed",changed:"Changed",unchanged:"Nearly identical",comparing:"Calculating detailed differences…",noText:"No extractable text is available.",noTextChange:"No substantial extracted-text change was found.",region:"Change",regionCount:"{n} change regions",saved:"Saved.",csvSaved:"CSV report saved.",noDiffPng:"Open Diff view before saving the PNG.",zoomHint:"Zoom in to inspect fine details",zoomIn:"Zoom in",zoomOut:"Zoom out",zoomReset:"Reset to 100%",zoomFit:"Fit to view",helpZoom:"Use − / + to zoom from 50% to 400%. Choose Fit to view to return to the default fitted size.",engineFailed:"The embedded PDF engine could not be initialized. Use a built standalone HTML file."
 }};
 let lang=(navigator.language||"").toLowerCase().startsWith("ja")?"ja":"en";
 const S={pdfjs:null,pdfWorker:null,workerUrl:null,workerPort:null,assetBase:null,enginePromise:null,oldFile:null,newFile:null,oldDoc:null,newDoc:null,oldPages:[],newPages:[],pairs:[],current:0,mode:"diff",zoom:1,detailed:new Map(),session:0,comparison:null,detailVersion:0,viewRequest:0,detailJobs:new Map(),password:null,blink:null};
@@ -159,7 +163,8 @@ document.querySelectorAll("[data-i18n]").forEach(e=>{const k=e.dataset.i18n;if(I
 document.querySelectorAll("[data-i18n-html]").forEach(e=>{const k=e.dataset.i18nHtml;if(I[lang][k]!=null)e.innerHTML=I[lang][k]});
 document.querySelectorAll("[data-i18n-aria]").forEach(e=>{const k=e.dataset.i18nAria;if(I[lang][k]!=null)e.setAttribute("aria-label",I[lang][k])});
 document.querySelectorAll("[data-i18n-placeholder]").forEach(e=>{const k=e.dataset.i18nPlaceholder;if(I[lang][k]!=null)e.placeholder=I[lang][k]});
-updateFiles();if(S.pairs.length){renderList();selectPair(S.current,true)}}
+document.querySelectorAll("[data-i18n-title]").forEach(e=>{e.title=t(e.dataset.i18nTitle)});
+updateFiles();if(S.pairs.length){renderList();selectPair(S.current,{preserveScroll:true})}}
 function status(s,error=false){$("status").textContent=s;$("status").classList.toggle("error",error)}
 function progress(n){if(n==null){$("progress").classList.remove("show");$("progressBar").style.width="0";return}$("progress").classList.add("show");$("progressBar").style.width=Math.max(0,Math.min(100,n))+"%"}
 function toast(s){$("toast").textContent=s;$("toast").classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("toast").classList.remove("show"),1800)}
@@ -202,7 +207,7 @@ function invalidateDetails(){
   for(const job of S.detailJobs.values())cancelDetailJob(job);
   S.detailJobs.clear();
   for(const detail of S.detailed.values())releaseDetail(detail);
-  S.detailed.clear(); clearBlink(); clearStage();
+  S.detailed.clear(); clearBlink(); clearStage();$("savePng").disabled=true;
 }
 function disposeComparison(scope){
   if(!scope || !scope.active)return;
@@ -308,8 +313,23 @@ function updateFiles(){for(const side of["old","new"]){const f=S[side+"File"],do
 function summary(){const matched=S.pairs.filter(p=>p.status==="matched"),changed=matched.filter(p=>p.changed).length,added=S.pairs.filter(p=>p.status==="added").length,deleted=S.pairs.filter(p=>p.status==="deleted").length,overall=matched.length?matched.reduce((x,p)=>x+p.quickDiff,0)/matched.length:0;$("pairs").textContent=matched.length;$("changed").textContent=changed;$("added").textContent=added;$("deleted").textContent=deleted;$("overall").textContent=(overall*100).toFixed(1)+"%"}
 function label(p){return p.status==="added"?`${t("added")} · ${t("page")} ${p.newIndex}`:p.status==="deleted"?`${t("deleted")} · ${t("page")} ${p.oldIndex}`:`${t("page")} ${p.oldIndex} → ${p.newIndex}`}
 function pstatus(p){return p.status==="added"?t("added"):p.status==="deleted"?t("deleted"):p.changed?t("changed"):t("unchanged")}
+function pairVisible(index){return !!S.pairs[index] && (!$("changedOnly").checked || S.pairs[index].changed)}
 function visible(){const a=[];S.pairs.forEach((p,i)=>{if(!$("changedOnly").checked||p.changed)a.push(i)});return a}
 function renderList(){$("pageList").innerHTML="";S.pairs.forEach((p,i)=>{if($("changedOnly").checked&&!p.changed)return;const b=document.createElement("button"),num=p.newIndex??p.oldIndex??i+1,dot=p.status==="added"?"added":p.status==="deleted"?"deleted":p.changed?"changed":"",qd=p.status==="matched"?(p.quickDiff*100).toFixed(1)+"%":"";b.className="page-item"+(i===S.current?" active":"");b.type="button";b.innerHTML=`<span class="page-num">${num}</span><span><span class="page-title">${esc(label(p))}</span><span class="page-sub">${esc(pstatus(p))}${qd?" · "+qd:""}</span></span><span class="dot ${dot}"></span>`;b.onclick=()=>selectPair(i);$("pageList").appendChild(b)})}
+function updatePageActions(){
+  const indexes=visible(),position=indexes.indexOf(S.current);
+  for(const id of ["prev","mobilePrev"])$(id).disabled=position<=0;
+  for(const id of ["next","mobileNext"])$(id).disabled=position<0||position>=indexes.length-1;
+}
+function showEmptySelection(){
+  if(S.current!==-1 || S.detailJobs.size || S.detailed.size)invalidateDetails();
+  S.current=-1;clearBlink();clearStage();renderList();updatePageActions();
+  $("viewerTitle").textContent=t("noChangedPages");$("viewerMeta").textContent="";
+  $("mobilePage").textContent="0 / 0";
+  $("empty").textContent=t("noChangedPages");$("empty").hidden=false;$("stage").hidden=true;
+  for(const id of ["metricVisual","metricText","metricShift","shiftValue"])$(id).textContent="-";
+  $("regions").innerHTML="";$("textDiff").innerHTML="";$("savePng").disabled=true;
+}
 function clearBlink(){if(S.blink){clearInterval(S.blink);S.blink=null}}
 function estimateShift(a,b,maxShift=12){const scale=Math.min(1,260/Math.max(a.width,a.height,b.width,b.height)),ac=document.createElement("canvas"),bc=document.createElement("canvas");ac.width=Math.max(20,Math.round(a.width*scale));ac.height=Math.max(20,Math.round(a.height*scale));bc.width=Math.max(20,Math.round(b.width*scale));bc.height=Math.max(20,Math.round(b.height*scale));ac.getContext("2d").drawImage(a,0,0,ac.width,ac.height);bc.getContext("2d").drawImage(b,0,0,bc.width,bc.height);const ad=ac.getContext("2d",{willReadFrequently:true}).getImageData(0,0,ac.width,ac.height).data,bd=bc.getContext("2d",{willReadFrequently:true}).getImageData(0,0,bc.width,bc.height).data,lim=Math.max(1,Math.round(maxShift*scale));let best={dx:0,dy:0,score:Infinity};for(let dy=-lim;dy<=lim;dy++)for(let dx=-lim;dx<=lim;dx++){let total=0,count=0,x0=Math.max(0,-dx),x1=Math.min(ac.width,bc.width-dx),y0=Math.max(0,-dy),y1=Math.min(ac.height,bc.height-dy);for(let y=y0;y<y1;y+=2)for(let x=x0;x<x1;x+=2){const ai=(y*ac.width+x)*4,bi=((y+dy)*bc.width+x+dx)*4,ag=ad[ai]*.299+ad[ai+1]*.587+ad[ai+2]*.114,bg=bd[bi]*.299+bd[bi+1]*.587+bd[bi+2]*.114;if(ag>248&&bg>248)continue;total+=Math.abs(ag-bg);count++}const score=count?total/count:999;if(score<best.score)best={dx,dy,score}}return{dx:Math.round(best.dx/scale),dy:Math.round(best.dy/scale),score:best.score}}
 function normalizePair(a,b,shift){const left=Math.min(0,shift.dx),top=Math.min(0,shift.dy),right=Math.max(a.width,b.width+shift.dx),bottom=Math.max(a.height,b.height+shift.dy),w=Math.max(1,right-left),h=Math.max(1,bottom-top),mk=()=>{const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d",{alpha:false});x.fillStyle="#fff";x.fillRect(0,0,w,h);return c},ao=mk(),bo=mk();ao.getContext("2d").drawImage(a,-left,-top);bo.getContext("2d").drawImage(b,shift.dx-left,shift.dy-top);return{oldCanvas:ao,newCanvas:bo}}
@@ -317,10 +337,10 @@ function findRegions(mask,w,h,minRegion){const cell=Math.max(12,Math.round(Math.
 function makeDiff(a,b,threshold,minRegion){const w=a.width,h=a.height,ad=a.getContext("2d",{willReadFrequently:true}).getImageData(0,0,w,h),bd=b.getContext("2d",{willReadFrequently:true}).getImageData(0,0,w,h),out=new ImageData(w,h),mask=new Uint8Array(w*h);let changed=0;for(let p=0,i=0;p<mask.length;p++,i+=4){const delta=(Math.abs(ad.data[i]-bd.data[i])+Math.abs(ad.data[i+1]-bd.data[i+1])+Math.abs(ad.data[i+2]-bd.data[i+2]))/3,base=(bd.data[i]+bd.data[i+1]+bd.data[i+2])/3;if(delta>=threshold){mask[p]=1;changed++;out.data[i]=205;out.data[i+1]=64;out.data[i+2]=54;out.data[i+3]=225}else{const g=Math.round(base*.18+225*.82);out.data[i]=g;out.data[i+1]=g;out.data[i+2]=g;out.data[i+3]=255}}const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").putImageData(out,0,0);return{canvas:c,regions:findRegions(mask,w,h,minRegion),percent:changed/(w*h)}}
 function detailSettings(){return{quality:$("quality").value,threshold:+$("threshold").value,minRegion:+$("minRegion").value}}
 function detailKey(index,settings=detailSettings()){return `${index}:${settings.quality}:${settings.threshold}:${settings.minRegion}`}
-function isDetailCurrent(job){return job.active && isCurrent(job.scope) && job.version===S.detailVersion && S.pairs[job.index]===job.pair && detailKey(job.index)===job.key}
+function isDetailCurrent(job){return job.active && isCurrent(job.scope) && job.version===S.detailVersion && pairVisible(job.index) && S.pairs[job.index]===job.pair && detailKey(job.index)===job.key}
 async function detailed(index){
   const scope=S.comparison;checkCurrent(scope);
-  const pair=S.pairs[index];if(!pair)throw Error("cancelled");
+  const pair=S.pairs[index];if(!pairVisible(index))throw Error("cancelled");
   const settings=detailSettings(),key=detailKey(index,settings);
   if(S.detailed.has(key))return S.detailed.get(key);
   if(S.detailJobs.has(key))return S.detailJobs.get(key).promise;
@@ -436,7 +456,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     }
 
     function currentDetail(){
-      return S.detailed.get(detailKey(S.current)) || null;
+      return pairVisible(S.current) ? S.detailed.get(detailKey(S.current)) || null : null;
     }
 
     function setZoom(next,{preserveCenter=true}={}){
@@ -591,13 +611,15 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
 
     async function selectPair(index,options={}){
       if(!S.pairs.length) return;
-      index=Math.max(0,Math.min(S.pairs.length-1,index));
+      const indexes=visible();
+      if(!indexes.length){showEmptySelection();return;}
+      if(!indexes.includes(index))index=indexes[0];
       S.current=index;
       const scope=S.comparison,version=S.detailVersion,key=detailKey(index),request=++S.viewRequest;
       for(const [key,job] of S.detailJobs){if(job.index!==index){cancelDetailJob(job);S.detailJobs.delete(key)}}
-      const current=()=>isCurrent(scope)&&version===S.detailVersion&&request===S.viewRequest&&S.pairs[index]===pair&&detailKey(index)===key;
+      const current=()=>isCurrent(scope)&&version===S.detailVersion&&request===S.viewRequest&&pairVisible(index)&&S.pairs[index]===pair&&detailKey(index)===key;
       clearBlink();clearStage();
-      renderList();
+      renderList();updatePageActions();$("savePng").disabled=true;
 
       const pair=S.pairs[index];
       $("viewerTitle").textContent=label(pair);
@@ -624,6 +646,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
         renderRegions(detail);
         renderVisual(detail);
         renderTextDiff(pair);
+        $("savePng").disabled=!detail.diffCanvas;
         if(!options.preserveScroll && innerWidth<=760){
           $("canvasArea").scrollTo({left:0,top:0});
         }
@@ -652,7 +675,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
 
     async function saveDiffPng(){
       const scope=S.comparison,version=S.detailVersion,index=S.current,pair=S.pairs[index],key=detailKey(index);
-      const current=()=>isCurrent(scope)&&version===S.detailVersion&&S.current===index&&S.pairs[index]===pair&&detailKey(index)===key;
+      const current=()=>isCurrent(scope)&&version===S.detailVersion&&S.current===index&&pairVisible(index)&&S.pairs[index]===pair&&detailKey(index)===key;
       if(!pair || !current())return;
       try{
         const detail=await detailed(index);if(!current())return;
@@ -771,19 +794,30 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     $("changedOnly").addEventListener("change",()=>{
       renderList();
       const indexes=visible();
-      if(indexes.length && !indexes.includes(S.current)) selectPair(indexes[0]);
+      if(!indexes.length)showEmptySelection();
+      else if(!indexes.includes(S.current))selectPair(indexes[0]);
+      else updatePageActions();
     });
 
     let rerenderTimer=null;
-    const recompare=()=>{
+    const recompare=(immediate=false)=>{
       clearTimeout(rerenderTimer);
       invalidateDetails();
       const scope=S.comparison,version=S.detailVersion;
-      rerenderTimer=setTimeout(()=>{
+      const render=()=>{
         if(!isCurrent(scope)||version!==S.detailVersion)return;
-        if(S.pairs.length) selectPair(S.current,{preserveScroll:true});
-      },180);
+        if(S.pairs.length) return selectPair(S.current,{preserveScroll:true});
+      };
+      if(immediate)return render();
+      rerenderTimer=setTimeout(render,180);
     };
+    $("resetSettings").addEventListener("click",()=>{
+      const settings=detailSettings();
+      $("threshold").value="28";$("minRegion").value="3";$("quality").value="standard";
+      $("thresholdValue").textContent="28";$("regionValue").textContent="0.03%";
+      if(settings.threshold===28 && settings.minRegion===3 && settings.quality==="standard")return;
+      return recompare(true);
+    });
     $("threshold").addEventListener("input",()=>{
       $("thresholdValue").textContent=$("threshold").value;
       recompare();
@@ -792,10 +826,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
       $("regionValue").textContent=(Number($("minRegion").value)/100).toFixed(2)+"%";
       recompare();
     });
-    $("quality").addEventListener("change",()=>{
-      clearTimeout(rerenderTimer);invalidateDetails();
-      if(S.pairs.length) selectPair(S.current,{preserveScroll:true});
-    });
+    $("quality").addEventListener("change",()=>recompare(true));
 
     $("zoomOut").addEventListener("click",()=>setZoom(S.zoom-.25));
     $("zoomIn").addEventListener("click",()=>setZoom(S.zoom+.25));
@@ -840,9 +871,12 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     });
 
     document.addEventListener("keydown",e=>{
-      if(["INPUT","SELECT","TEXTAREA"].includes(document.activeElement?.tagName)) return;
-      if(e.key==="ArrowLeft") navigate(-1);
-      if(e.key==="ArrowRight") navigate(1);
+      if(e.defaultPrevented || e.isComposing || e.keyCode===229 || e.ctrlKey || e.metaKey || e.altKey) return;
+      if(document.querySelectorAll("dialog[open]").length) return;
+      const editing=element=>["INPUT","SELECT","TEXTAREA"].includes(element?.tagName)||element?.isContentEditable;
+      if(editing(e.target)||editing(document.activeElement)) return;
+      if(e.key==="ArrowLeft" && visible().length){e.preventDefault();navigate(-1)}
+      if(e.key==="ArrowRight" && visible().length){e.preventDefault();navigate(1)}
       if(e.key==="+" || e.key==="="){e.preventDefault();setZoom(S.zoom+.25)}
       if(e.key==="-"){e.preventDefault();setZoom(S.zoom-.25)}
       if(e.key==="0"){e.preventDefault();setZoom(1)}

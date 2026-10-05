@@ -6,6 +6,11 @@
 
 ## Unreleased
 
+- Add bilingual Reset comparison settings, keeping loaded PDFs and view choices while restoring threshold 28, tiny-region suppression 0.03%, and Standard quality.
+- Clear empty Changed-only selections and disable current PNG export; cancel stale detailed rendering and late PNG callbacks.
+- Keep global page/zoom shortcuts inactive during dialogs, text editing, composition, and reserved modifier combinations.
+- Extend source/standalone regression coverage for settings reset, empty-filter recovery, and keyboard ownership.
+
 - Own and cancel each comparison's document loads and renders on replacement, reset, or failure while retaining the shared PDF engine worker.
 - Prevent older page renders, errors, and PNG callbacks from overwriting or exporting newer comparison settings.
 - Queue password prompts for two encrypted PDFs and dismiss pending prompts when cancelled.
