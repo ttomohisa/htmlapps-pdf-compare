@@ -58,4 +58,22 @@ if ($ForceDownload) { $buildArguments.ForceDownload = $true }
 
 & (Join-Path $Root "build-standalone.ps1") @buildArguments
 
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+  throw "Node.js 22 or later is required to run the lifecycle regression checks."
+}
+$previousHtml = $env:PDF_COMPARE_HTML
+try {
+  $env:PDF_COMPARE_HTML = $null
+  $testFiles = @(Get-ChildItem -LiteralPath (Join-Path $Root "tests") -Filter "*.test.cjs" | ForEach-Object { $_.FullName })
+  & node --test @testFiles
+  if ($LASTEXITCODE -ne 0) { throw "Regression or artifact parity checks failed. Refresh pdf-compare.html from dist/index.html after intentional source changes." }
+  foreach ($relative in @("pdf-compare.html", "dist/index.html")) {
+    $env:PDF_COMPARE_HTML = Join-Path $Root $relative
+    & node --test (Join-Path $Root "tests/lifecycle.test.cjs")
+    if ($LASTEXITCODE -ne 0) { throw "Lifecycle checks failed for $relative" }
+  }
+} finally {
+  $env:PDF_COMPARE_HTML = $previousHtml
+}
+
 Write-Host "[OK] Repository check passed." -ForegroundColor Green
