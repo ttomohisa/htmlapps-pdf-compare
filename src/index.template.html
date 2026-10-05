@@ -593,9 +593,9 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
       if(!S.pairs.length) return;
       index=Math.max(0,Math.min(S.pairs.length-1,index));
       S.current=index;
-      const scope=S.comparison,version=S.detailVersion,request=++S.viewRequest;
+      const scope=S.comparison,version=S.detailVersion,key=detailKey(index),request=++S.viewRequest;
       for(const [key,job] of S.detailJobs){if(job.index!==index){cancelDetailJob(job);S.detailJobs.delete(key)}}
-      const current=()=>isCurrent(scope)&&version===S.detailVersion&&request===S.viewRequest&&S.pairs[index]===pair;
+      const current=()=>isCurrent(scope)&&version===S.detailVersion&&request===S.viewRequest&&S.pairs[index]===pair&&detailKey(index)===key;
       clearBlink();clearStage();
       renderList();
 

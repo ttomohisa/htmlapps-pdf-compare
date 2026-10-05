@@ -108,3 +108,9 @@ test('password cancel destroys both loads and preserves cancellation status',asy
 test('latest debounce request recalculates using current settings',async()=>{
  const {h}=await readyAdded();h.$('threshold').value='35';await h.$('threshold').fire('input');h.$('minRegion').value='12';await h.$('minRegion').fire('input');const timer=h.timerCallbacks.at(-1);timer();await flush();assert.equal(h.S.detailed.size,1);assert.ok(h.S.detailed.has('0:standard:35:12'));assert.equal(h.$('stage').querySelector('canvas').width,1050);
 });
+test('a settings value changed before its input event cannot show a stale cancellation error',async()=>{
+ const {h}=await readyAdded(),gate=deferred();let count=0;h.S.newDoc.getPage=async()=>++count===1?page(gate):page();
+ const pending=h.selectPair(0);await flush();h.$('threshold').value='39';gate.resolve();await pending;
+ assert.equal(h.errors.length,0);assert.doesNotMatch(h.$('stage').innerHTML,/Could not open/);
+ await h.$('threshold').fire('input');h.timerCallbacks.at(-1)();await flush();assert.ok(h.S.detailed.has('0:standard:39:8'));
+});
