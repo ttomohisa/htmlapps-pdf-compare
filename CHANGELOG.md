@@ -6,6 +6,12 @@
 
 ## Unreleased
 
+- Own and cancel each comparison's document loads and renders on replacement, reset, or failure while retaining the shared PDF engine worker.
+- Prevent older page renders, errors, and PNG callbacks from overwriting or exporting newer comparison settings.
+- Queue password prompts for two encrypted PDFs and dismiss pending prompts when cancelled.
+- Fix Previous/Next, arrow-key, and Changed-only navigation.
+- Add lifecycle regressions and tracked/generated standalone parity checks.
+
 - Reduced standalone HTML size by gzip-compressing the embedded PDF.js asset bundle before Base64 embedding.
 - Removed unused PDF.js `image_decoders` and QuickJS evaluator assets from the standalone bundle.
 - Added build verification for the compressed asset bundle format.

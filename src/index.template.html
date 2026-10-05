@@ -121,6 +121,7 @@ dialog{width:min(640px,calc(100% - 28px));max-height:min(760px,calc(100dvh - 28p
 
 <dialog id="helpDialog"><div class="dialog-head"><h2 data-i18n="helpTitle">使い方と注意事項</h2><button class="header-button" data-close="helpDialog" type="button" aria-label="Close">✕</button></div><div class="dialog-body">
 <h3 data-i18n="helpHowTitle">使い方</h3><ol><li data-i18n="help1">変更前と変更後のPDFを選びます。</li><li data-i18n="help2">ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。</li><li data-i18n="help3">差分・左右・重ねる・スライダー・点滅を切り替えて確認します。</li><li data-i18n="helpZoom">表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。</li><li data-i18n="help4">感度を上げたいときは「差分感度」の値を小さくします。</li></ol>
+<p data-i18n="helpLifecycle">PDFの選び直し・やり直しは進行中の処理を中止します。表示設定を変更すると詳細差分を再計算します。両方のPDFにパスワードがある場合は1つずつ入力します。</p>
 <h3 data-i18n="helpPrivacyTitle">プライバシー</h3><p data-i18n="helpPrivacy">PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。</p>
 <h3 data-i18n="helpDiffTitle">差分の見方</h3><p data-i18n="helpDiff">数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。</p>
 <h3 data-i18n="helpLimitsTitle">制限事項</h3><ul><li data-i18n="limit1">OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。</li><li data-i18n="limit2">巨大なPDFや高精細表示は端末のメモリを多く使用します。</li><li data-i18n="limit3">署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。</li><li data-i18n="limit4">圧縮済みPDF.jsアセットの展開に対応した最新のブラウザを使用してください。</li></ul>
@@ -143,13 +144,13 @@ $("version").textContent="v"+app.version;
 
 const I={
 ja:{
-brandMeta:"PDFの変更点を端末内だけで比較",helpAria:"使い方と注意事項",introTitle:"2つのPDFの「どこが変わった？」を見つける。",introText:"ページ追加・削除にも追従して対応付け。見た目の差分とテキスト差分を、アップロードせずに確認できます。",localOnly:"完全ローカル処理",uploadHeading:"比較するPDF",before:"変更前",after:"変更後",choosePdf:"PDFを選択",dropHint:"タップ / ドロップ",swapAria:"変更前と変更後を入れ替え",ready:"2つのPDFを選択してください。",reset:"やり直す",summaryPairs:"対応ページ",summaryChanged:"変更あり",summaryAdded:"追加ページ",summaryDeleted:"削除ページ",summaryVisual:"見た目の変更量",modeDiff:"差分",modeSide:"左右",modeOverlay:"重ねる",modeSlider:"スライダー",modeBlink:"点滅",saveDiffPng:"差分PNG",exportCsv:"レポートCSV",pages:"ページ",changedOnly:"変更のみ",prev:"前へ",next:"次へ",selectPage:"ページを選択してください。",sensitivity:"差分感度",regionSize:"小さな差分を無視",quality:"表示品質",qualityStandard:"標準",qualityHigh:"高精細",pageAnalysis:"このページの分析",metricVisual:"視覚差分",metricText:"テキスト類似度",metricShift:"位置ずれ補正",textDiff:"テキスト差分を見る",privacyTitle:"端末の外に出しません",privacyText:"<strong>PDFはアップロードされません。</strong><br>PDF.jsもHTML内に埋め込み、解析・描画・差分計算はこのブラウザ内で実行します。",matchingNote:"ページ番号だけでなく、見た目と抽出テキストを使って変更前後のページを自動対応付けします。",helpTitle:"使い方と注意事項",helpHowTitle:"使い方",help1:"変更前と変更後のPDFを選びます。",help2:"ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。",help3:"差分・左右・重ねる・スライダー・点滅を切り替えて確認します。",help4:"感度を上げたいときは「差分感度」の値を小さくします。",helpPrivacyTitle:"プライバシー",helpPrivacy:"PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。",helpDiffTitle:"差分の見方",helpDiff:"数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。",helpLimitsTitle:"制限事項",limit1:"OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。",limit2:"巨大なPDFや高精細表示は端末のメモリを多く使用します。",limit3:"署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。",limit4:"圧縮済みPDF.jsアセットの展開に対応した最新のブラウザを使用してください。",helpBuildTitle:"ビルド情報",resetTitle:"比較をやり直しますか？",resetText:"選択したPDFと解析結果をこの画面から消去します。元のPDFファイルは変更されません。",cancel:"キャンセル",passwordTitle:"PDFのパスワード",passwordPlaceholder:"パスワード",openPdf:"開く",passwordText:"このPDFはパスワードで保護されています。",wrongPassword:"パスワードが正しくありません。",loadingEngine:"PDFエンジンを準備しています…",reading:"PDFを読み込んでいます…",analyzing:"ページを解析しています…",matching:"ページの対応を探しています…",done:"比較の準備ができました。ページを選ぶと詳細差分を計算します。",invalidPdf:"PDFファイルを選択してください。",tooLarge:"ファイルが大きいため、端末によっては処理できない場合があります。",openFailed:"PDFを開けませんでした。",cancelled:"処理をキャンセルしました。",page:"ページ",added:"追加",deleted:"削除",changed:"変更あり",unchanged:"ほぼ同じ",comparing:"詳細差分を計算中…",noText:"抽出できるテキストがありません。",noTextChange:"抽出テキストに大きな差はありません。",region:"差分",regionCount:"{n}か所の変更領域",saved:"保存しました。",csvSaved:"CSVレポートを保存しました。",noDiffPng:"差分表示を準備してから保存してください。",zoomHint:"拡大して細部を確認できます",zoomIn:"拡大",zoomOut:"縮小",zoomReset:"100%に戻す",zoomFit:"画面に合わせる",helpZoom:"表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。",engineFailed:"埋め込みPDFエンジンの初期化に失敗しました。ビルド済みHTMLを使用してください。"
+brandMeta:"PDFの変更点を端末内だけで比較",helpAria:"使い方と注意事項",introTitle:"2つのPDFの「どこが変わった？」を見つける。",introText:"ページ追加・削除にも追従して対応付け。見た目の差分とテキスト差分を、アップロードせずに確認できます。",localOnly:"完全ローカル処理",uploadHeading:"比較するPDF",before:"変更前",after:"変更後",choosePdf:"PDFを選択",dropHint:"タップ / ドロップ",swapAria:"変更前と変更後を入れ替え",ready:"2つのPDFを選択してください。",reset:"やり直す",summaryPairs:"対応ページ",summaryChanged:"変更あり",summaryAdded:"追加ページ",summaryDeleted:"削除ページ",summaryVisual:"見た目の変更量",modeDiff:"差分",modeSide:"左右",modeOverlay:"重ねる",modeSlider:"スライダー",modeBlink:"点滅",saveDiffPng:"差分PNG",exportCsv:"レポートCSV",pages:"ページ",changedOnly:"変更のみ",prev:"前へ",next:"次へ",selectPage:"ページを選択してください。",sensitivity:"差分感度",regionSize:"小さな差分を無視",quality:"表示品質",qualityStandard:"標準",qualityHigh:"高精細",pageAnalysis:"このページの分析",metricVisual:"視覚差分",metricText:"テキスト類似度",metricShift:"位置ずれ補正",textDiff:"テキスト差分を見る",privacyTitle:"端末の外に出しません",privacyText:"<strong>PDFはアップロードされません。</strong><br>PDF.jsもHTML内に埋め込み、解析・描画・差分計算はこのブラウザ内で実行します。",matchingNote:"ページ番号だけでなく、見た目と抽出テキストを使って変更前後のページを自動対応付けします。",helpTitle:"使い方と注意事項",helpHowTitle:"使い方",help1:"変更前と変更後のPDFを選びます。",help2:"ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。",help3:"差分・左右・重ねる・スライダー・点滅を切り替えて確認します。",help4:"感度を上げたいときは「差分感度」の値を小さくします。",helpLifecycle:"PDFの選び直し・やり直しは進行中の処理を中止します。表示設定を変更すると詳細差分を再計算します。両方のPDFにパスワードがある場合は1つずつ入力します。",helpPrivacyTitle:"プライバシー",helpPrivacy:"PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。",helpDiffTitle:"差分の見方",helpDiff:"数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。",helpLimitsTitle:"制限事項",limit1:"OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。",limit2:"巨大なPDFや高精細表示は端末のメモリを多く使用します。",limit3:"署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。",limit4:"圧縮済みPDF.jsアセットの展開に対応した最新のブラウザを使用してください。",helpBuildTitle:"ビルド情報",resetTitle:"比較をやり直しますか？",resetText:"選択したPDFと解析結果をこの画面から消去します。元のPDFファイルは変更されません。",cancel:"キャンセル",passwordTitle:"PDFのパスワード",passwordPlaceholder:"パスワード",openPdf:"開く",passwordText:"このPDFはパスワードで保護されています。",wrongPassword:"パスワードが正しくありません。",loadingEngine:"PDFエンジンを準備しています…",reading:"PDFを読み込んでいます…",analyzing:"ページを解析しています…",matching:"ページの対応を探しています…",done:"比較の準備ができました。ページを選ぶと詳細差分を計算します。",invalidPdf:"PDFファイルを選択してください。",tooLarge:"ファイルが大きいため、端末によっては処理できない場合があります。",openFailed:"PDFを開けませんでした。",cancelled:"処理をキャンセルしました。",page:"ページ",added:"追加",deleted:"削除",changed:"変更あり",unchanged:"ほぼ同じ",comparing:"詳細差分を計算中…",noText:"抽出できるテキストがありません。",noTextChange:"抽出テキストに大きな差はありません。",region:"差分",regionCount:"{n}か所の変更領域",saved:"保存しました。",csvSaved:"CSVレポートを保存しました。",noDiffPng:"差分表示を準備してから保存してください。",zoomHint:"拡大して細部を確認できます",zoomIn:"拡大",zoomOut:"縮小",zoomReset:"100%に戻す",zoomFit:"画面に合わせる",helpZoom:"表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。",engineFailed:"埋め込みPDFエンジンの初期化に失敗しました。ビルド済みHTMLを使用してください。"
 },
 en:{
-brandMeta:"Compare PDF changes entirely on your device",helpAria:"How to use and notes",introTitle:"Find exactly what changed between two PDFs.",introText:"Pages are matched even when pages are inserted or removed. Review visual and text differences without uploading either file.",localOnly:"100% local",uploadHeading:"PDFs to compare",before:"Before",after:"After",choosePdf:"Choose PDF",dropHint:"Tap / drop",swapAria:"Swap before and after",ready:"Choose two PDF files.",reset:"Reset",summaryPairs:"Matched pages",summaryChanged:"Changed",summaryAdded:"Added pages",summaryDeleted:"Removed pages",summaryVisual:"Visual change",modeDiff:"Diff",modeSide:"Side by side",modeOverlay:"Overlay",modeSlider:"Slider",modeBlink:"Blink",saveDiffPng:"Diff PNG",exportCsv:"CSV report",pages:"Pages",changedOnly:"Changed only",prev:"Previous",next:"Next",selectPage:"Select a page.",sensitivity:"Difference threshold",regionSize:"Ignore tiny regions",quality:"Render quality",qualityStandard:"Standard",qualityHigh:"High",pageAnalysis:"Page analysis",metricVisual:"Visual difference",metricText:"Text similarity",metricShift:"Auto alignment",textDiff:"Show text differences",privacyTitle:"Your PDFs stay on this device",privacyText:"<strong>Your PDFs are never uploaded.</strong><br>PDF.js is embedded in the HTML; parsing, rendering, and comparison all run in this browser.",matchingNote:"Pages are matched using both appearance and extracted text instead of assuming page numbers are unchanged.",helpTitle:"How to use & notes",helpHowTitle:"How to use",help1:"Choose the before and after PDF files.",help2:"Pages are automatically aligned using appearance and extracted text, including inserted and deleted pages.",help3:"Switch among Diff, Side by side, Overlay, Slider, and Blink views.",help4:"Lower the difference threshold to detect subtler changes.",helpPrivacyTitle:"Privacy",helpPrivacy:"PDFs and comparison results are never sent to a server. Runtime networking is disabled by CSP.",helpDiffTitle:"Understanding the diff",helpDiff:"A few pixels of translation are automatically corrected before pixel differences are calculated. Text diff is available only when the PDF contains extractable text.",helpLimitsTitle:"Limitations",limit1:"OCR is not included. Scanned PDFs can still be visually compared, but image-only text is excluded from text diff.",limit2:"Very large PDFs and high-quality rendering use significant device memory.",limit3:"This is not a forensic checker for signatures, forms, annotations, or other internal PDF objects.",limit4:"Use a current browser that can unpack the compressed embedded PDF.js assets.",helpBuildTitle:"Build info",resetTitle:"Reset this comparison?",resetText:"This clears selected PDFs and analysis from the page. Original files are not modified.",cancel:"Cancel",passwordTitle:"PDF password",passwordPlaceholder:"Password",openPdf:"Open",passwordText:"This PDF is password protected.",wrongPassword:"The password is incorrect.",loadingEngine:"Preparing the PDF engine…",reading:"Reading PDFs…",analyzing:"Analyzing pages…",matching:"Matching pages…",done:"Comparison is ready. Detailed differences are calculated when you open a page.",invalidPdf:"Choose a PDF file.",tooLarge:"This file is large and may exceed the memory available on this device.",openFailed:"Could not open the PDF.",cancelled:"Operation cancelled.",page:"Page",added:"Added",deleted:"Removed",changed:"Changed",unchanged:"Nearly identical",comparing:"Calculating detailed differences…",noText:"No extractable text is available.",noTextChange:"No substantial extracted-text change was found.",region:"Change",regionCount:"{n} change regions",saved:"Saved.",csvSaved:"CSV report saved.",noDiffPng:"Open Diff view before saving the PNG.",zoomHint:"Zoom in to inspect fine details",zoomIn:"Zoom in",zoomOut:"Zoom out",zoomReset:"Reset to 100%",zoomFit:"Fit to view",helpZoom:"Use − / + to zoom from 50% to 400%. Choose Fit to view to return to the default fitted size.",engineFailed:"The embedded PDF engine could not be initialized. Use a built standalone HTML file."
+brandMeta:"Compare PDF changes entirely on your device",helpAria:"How to use and notes",introTitle:"Find exactly what changed between two PDFs.",introText:"Pages are matched even when pages are inserted or removed. Review visual and text differences without uploading either file.",localOnly:"100% local",uploadHeading:"PDFs to compare",before:"Before",after:"After",choosePdf:"Choose PDF",dropHint:"Tap / drop",swapAria:"Swap before and after",ready:"Choose two PDF files.",reset:"Reset",summaryPairs:"Matched pages",summaryChanged:"Changed",summaryAdded:"Added pages",summaryDeleted:"Removed pages",summaryVisual:"Visual change",modeDiff:"Diff",modeSide:"Side by side",modeOverlay:"Overlay",modeSlider:"Slider",modeBlink:"Blink",saveDiffPng:"Diff PNG",exportCsv:"CSV report",pages:"Pages",changedOnly:"Changed only",prev:"Previous",next:"Next",selectPage:"Select a page.",sensitivity:"Difference threshold",regionSize:"Ignore tiny regions",quality:"Render quality",qualityStandard:"Standard",qualityHigh:"High",pageAnalysis:"Page analysis",metricVisual:"Visual difference",metricText:"Text similarity",metricShift:"Auto alignment",textDiff:"Show text differences",privacyTitle:"Your PDFs stay on this device",privacyText:"<strong>Your PDFs are never uploaded.</strong><br>PDF.js is embedded in the HTML; parsing, rendering, and comparison all run in this browser.",matchingNote:"Pages are matched using both appearance and extracted text instead of assuming page numbers are unchanged.",helpTitle:"How to use & notes",helpHowTitle:"How to use",help1:"Choose the before and after PDF files.",help2:"Pages are automatically aligned using appearance and extracted text, including inserted and deleted pages.",help3:"Switch among Diff, Side by side, Overlay, Slider, and Blink views.",help4:"Lower the difference threshold to detect subtler changes.",helpLifecycle:"Replacing a PDF or resetting cancels work in progress. Changing comparison settings recalculates detailed differences. If both PDFs require passwords, enter them one at a time.",helpPrivacyTitle:"Privacy",helpPrivacy:"PDFs and comparison results are never sent to a server. Runtime networking is disabled by CSP.",helpDiffTitle:"Understanding the diff",helpDiff:"A few pixels of translation are automatically corrected before pixel differences are calculated. Text diff is available only when the PDF contains extractable text.",helpLimitsTitle:"Limitations",limit1:"OCR is not included. Scanned PDFs can still be visually compared, but image-only text is excluded from text diff.",limit2:"Very large PDFs and high-quality rendering use significant device memory.",limit3:"This is not a forensic checker for signatures, forms, annotations, or other internal PDF objects.",limit4:"Use a current browser that can unpack the compressed embedded PDF.js assets.",helpBuildTitle:"Build info",resetTitle:"Reset this comparison?",resetText:"This clears selected PDFs and analysis from the page. Original files are not modified.",cancel:"Cancel",passwordTitle:"PDF password",passwordPlaceholder:"Password",openPdf:"Open",passwordText:"This PDF is password protected.",wrongPassword:"The password is incorrect.",loadingEngine:"Preparing the PDF engine…",reading:"Reading PDFs…",analyzing:"Analyzing pages…",matching:"Matching pages…",done:"Comparison is ready. Detailed differences are calculated when you open a page.",invalidPdf:"Choose a PDF file.",tooLarge:"This file is large and may exceed the memory available on this device.",openFailed:"Could not open the PDF.",cancelled:"Operation cancelled.",page:"Page",added:"Added",deleted:"Removed",changed:"Changed",unchanged:"Nearly identical",comparing:"Calculating detailed differences…",noText:"No extractable text is available.",noTextChange:"No substantial extracted-text change was found.",region:"Change",regionCount:"{n} change regions",saved:"Saved.",csvSaved:"CSV report saved.",noDiffPng:"Open Diff view before saving the PNG.",zoomHint:"Zoom in to inspect fine details",zoomIn:"Zoom in",zoomOut:"Zoom out",zoomReset:"Reset to 100%",zoomFit:"Fit to view",helpZoom:"Use − / + to zoom from 50% to 400%. Choose Fit to view to return to the default fitted size.",engineFailed:"The embedded PDF engine could not be initialized. Use a built standalone HTML file."
 }};
 let lang=(navigator.language||"").toLowerCase().startsWith("ja")?"ja":"en";
-const S={pdfjs:null,workerUrl:null,workerPort:null,assetBase:null,enginePromise:null,oldFile:null,newFile:null,oldDoc:null,newDoc:null,oldPages:[],newPages:[],pairs:[],current:0,mode:"diff",zoom:1,detailed:new Map(),session:0,password:null,blink:null};
+const S={pdfjs:null,pdfWorker:null,workerUrl:null,workerPort:null,assetBase:null,enginePromise:null,oldFile:null,newFile:null,oldDoc:null,newDoc:null,oldPages:[],newPages:[],pairs:[],current:0,mode:"diff",zoom:1,detailed:new Map(),session:0,comparison:null,detailVersion:0,viewRequest:0,detailJobs:new Map(),password:null,blink:null};
 const t=(k,v={})=>{let s=(I[lang]&&I[lang][k])||I.ja[k]||k;for(const [a,b] of Object.entries(v))s=s.replaceAll("{"+a+"}",b);return s};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function applyLang(){
@@ -169,7 +170,7 @@ async function assetBytes(asset){return new Uint8Array(await b64Blob(asset.base6
 async function initEngine(){
 if(S.pdfjs)return S.pdfjs;if(S.enginePromise)return S.enginePromise;
 S.enginePromise=(async()=>{try{
-status(t("loadingEngine"));progress(4);
+
 const embedded=$("embedded-assets");if(embedded.dataset.compression!=="gzip")throw Error("embedded asset bundle compression mismatch");const bundle=JSON.parse(await gunzipText(embedded.textContent)),dep=bundle.dependencies.pdfjs;if(!dep)throw Error("pdfjs missing");
 const main=dep.assets.main,worker=dep.assets.worker;if(!main||!worker)throw Error("pdfjs main/worker missing");
 const PDFJS_BASE="https://pdf-compare.invalid/";
@@ -182,25 +183,127 @@ const mainUrl=URL.createObjectURL(new Blob([await assetBytes(main)],{type:main.m
 const pdfjs=await import(mainUrl);URL.revokeObjectURL(mainUrl);
 const useFakeWorker=async()=>{const workerModule=await import(S.workerUrl);globalThis.pdfjsWorker=workerModule;pdfjs.GlobalWorkerOptions.workerSrc=S.workerUrl};
 if(location.protocol==="file:"){await useFakeWorker()}else{try{S.workerPort=new Worker(S.workerUrl,{type:"module",name:"pdfjs-worker"});pdfjs.GlobalWorkerOptions.workerPort=S.workerPort}catch(workerError){console.warn("PDF.js module worker unavailable; using an embedded fake worker.",workerError);await useFakeWorker()}}
+// Pass an externally owned PDFWorker to every document so destroying a loading
+// task cannot mark the shared worker as pending destruction.
+S.pdfWorker=pdfjs.PDFWorker.create({port:S.workerPort||undefined});await S.pdfWorker.promise;
 S.pdfjs=pdfjs;S.assetBase=PDFJS_BASE;return pdfjs
-}catch(e){console.error(e);status(t("engineFailed"),true);throw e}})();return S.enginePromise}
-function passwordDialog(name,wrong=false){return new Promise((resolve,reject)=>{S.password={resolve,reject};$("passwordMessage").textContent=name+" — "+t("passwordText");$("passwordError").textContent=wrong?t("wrongPassword"):"";$("passwordInput").value="";$("passwordDialog").showModal();setTimeout(()=>$("passwordInput").focus(),20)})}
-async function loadPdf(file,session){
-const pdfjs=await initEngine(),data=new Uint8Array(await file.arrayBuffer()),task=pdfjs.getDocument({data,cMapUrl:S.assetBase+"cmaps/",cMapPacked:true,standardFontDataUrl:S.assetBase+"standard_fonts/",wasmUrl:S.assetBase+"wasm/",iccUrl:S.assetBase+"iccs/",useWorkerFetch:true,useWasm:true,useSystemFonts:true,isEvalSupported:false,enableXfa:false,verbosity:0});
-task.onPassword=async(update,reason)=>{try{update(await passwordDialog(file.name,reason===pdfjs.PasswordResponses.INCORRECT_PASSWORD))}catch{try{await task.destroy()}catch{}}};
-const doc=await task.promise;if(session!==S.session){try{await doc.destroy()}catch{};throw Error("cancelled")}return doc}
+}catch(e){console.error(e);S.enginePromise=null;throw e}})();return S.enginePromise}
+// A comparison owns PDF loading tasks for their entire document lifetime. The
+// engine's shared worker is deliberately outside this scope.
+function isCurrent(scope){return !!scope && scope.active && S.comparison===scope}
+function checkCurrent(scope){if(!isCurrent(scope))throw Error("cancelled")}
+function releaseCanvas(canvas){if(canvas){canvas.width=0;canvas.height=0}}
+function releaseDetail(detail){for(const key of ["oldCanvas","newCanvas","diffCanvas"])releaseCanvas(detail[key])}
+function clearStage(){for(const canvas of $("stage").querySelectorAll("canvas"))releaseCanvas(canvas);$("stage").innerHTML=""}
+function cancelRender(record){if(!record.cancelled){record.cancelled=true;try{record.task.cancel()}catch{}}}
+function cancelDetailJob(job){job.active=false;for(const record of job.renders)cancelRender(record)}
+function invalidateDetails(){
+  ++S.detailVersion; ++S.viewRequest;
+  for(const job of S.detailJobs.values())cancelDetailJob(job);
+  S.detailJobs.clear();
+  for(const detail of S.detailed.values())releaseDetail(detail);
+  S.detailed.clear(); clearBlink(); clearStage();
+}
+function disposeComparison(scope){
+  if(!scope || !scope.active)return;
+  scope.active=false;
+  if(S.password?.scope===scope){S.password.reject(Error("cancelled"));S.password=null;$("passwordDialog").close()}
+  for(const record of scope.renders)cancelRender(record);
+  for(const task of scope.loads){try{Promise.resolve(task.destroy()).catch(()=>{})}catch{}}
+  scope.loads.clear();
+}
+function invalidateComparison(){
+  ++S.session;
+  const previous=S.comparison;S.comparison=null;
+  disposeComparison(previous);invalidateDetails();
+  S.oldDoc=null;S.newDoc=null;S.oldPages=[];S.newPages=[];S.pairs=[];
+  $("results").classList.remove("show");$("mobileNav").hidden=true;$("pageList").innerHTML="";
+}
+function passwordDialog(scope,name,wrong=false){
+  checkCurrent(scope);
+  return new Promise((resolve,reject)=>{
+    S.password={scope,resolve,reject};$("passwordMessage").textContent=name+" — "+t("passwordText");
+    $("passwordError").textContent=wrong?t("wrongPassword"):"";$("passwordInput").value="";$("passwordDialog").showModal();
+    setTimeout(()=>{if(S.password?.scope===scope)$("passwordInput").focus()},20);
+  });
+}
+async function loadPdf(file,scope){
+  const pdfjs=await initEngine();checkCurrent(scope);
+  const data=new Uint8Array(await file.arrayBuffer());checkCurrent(scope);
+  const task=pdfjs.getDocument({data,worker:S.pdfWorker,cMapUrl:S.assetBase+"cmaps/",cMapPacked:true,standardFontDataUrl:S.assetBase+"standard_fonts/",wasmUrl:S.assetBase+"wasm/",iccUrl:S.assetBase+"iccs/",useWorkerFetch:true,useWasm:true,useSystemFonts:true,isEvalSupported:false,enableXfa:false,verbosity:0});
+  scope.loads.add(task);
+  task.onPassword=(update,reason)=>{
+    // Two encrypted inputs may ask at once. Present one prompt at a time.
+    scope.passwordQueue=scope.passwordQueue.then(async()=>{
+      checkCurrent(scope);
+      const password=await passwordDialog(scope,file.name,reason===pdfjs.PasswordResponses.INCORRECT_PASSWORD);
+      checkCurrent(scope);update(password);
+    }).catch(()=>{if(isCurrent(scope)){scope.cancelled=true;disposeComparison(scope)}});
+  };
+  const doc=await task.promise;checkCurrent(scope);return doc;
+}
 function norm(s){return(s||"").normalize("NFKC").replace(/\s+/g," ").trim().toLowerCase()}
 function shingles(text){const s=norm(text).replace(/\s/g,"");if(!s)return new Set();if(s.length<3)return new Set([s]);const out=new Set(),step=Math.max(1,Math.floor(s.length/1800));for(let i=0;i<=s.length-3;i+=step)out.add(s.slice(i,i+3));return out}
 function jaccard(a,b){if(!a.size&&!b.size)return 1;if(!a.size||!b.size)return 0;let x=0,sm=a.size<b.size?a:b,lg=a.size<b.size?b:a;for(const v of sm)if(lg.has(v))x++;return x/(a.size+b.size-x)}
-async function renderPage(page,target,maxPixels=1800000){const base=page.getViewport({scale:1});let scale=Math.min(target/base.width,Math.sqrt(maxPixels/(base.width*base.height)));scale=Math.max(.18,scale);const vp=page.getViewport({scale}),c=document.createElement("canvas");c.width=Math.max(1,Math.round(vp.width));c.height=Math.max(1,Math.round(vp.height));const ctx=c.getContext("2d",{alpha:false,willReadFrequently:true});ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);await page.render({canvasContext:ctx,viewport:vp,background:"white"}).promise;return c}
+async function renderPage(page,target,maxPixels=1800000,scope=S.comparison,job=null){
+  checkCurrent(scope);if(job&&!isDetailCurrent(job))throw Error("cancelled");
+  const base=page.getViewport({scale:1});let scale=Math.min(target/base.width,Math.sqrt(maxPixels/(base.width*base.height)));scale=Math.max(.18,scale);
+  const vp=page.getViewport({scale}),canvas=document.createElement("canvas");
+  canvas.width=Math.max(1,Math.round(vp.width));canvas.height=Math.max(1,Math.round(vp.height));
+  let record;
+  try{
+    const ctx=canvas.getContext("2d",{alpha:false,willReadFrequently:true});ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);
+    record={task:page.render({canvasContext:ctx,viewport:vp,background:"white"}),cancelled:false};
+    scope.renders.add(record);job?.renders.add(record);
+    await record.task.promise;checkCurrent(scope);if(job&&!isDetailCurrent(job))throw Error("cancelled");
+    return canvas;
+  }catch(error){releaseCanvas(canvas);throw error}
+  finally{if(record){scope.renders.delete(record);job?.renders.delete(record)}}
+}
 function signature(c,size=28){const x=document.createElement("canvas");x.width=size;x.height=size;const k=x.getContext("2d",{alpha:false,willReadFrequently:true});k.drawImage(c,0,0,size,size);const d=k.getImageData(0,0,size,size).data,a=new Uint8Array(size*size);for(let i=0,j=0;i<d.length;i+=4,j++)a[j]=Math.round(d[i]*.299+d[i+1]*.587+d[i+2]*.114);return a}
 function visual(a,b){let n=Math.min(a.length,b.length),sum=0;for(let i=0;i<n;i++)sum+=Math.abs(a[i]-b[i]);return Math.max(0,1-sum/(n*255))}
 
-async function analyze(doc,label,session,start,span){const out=[];for(let i=1;i<=doc.numPages;i++){if(session!==S.session)throw Error("cancelled");const p=await doc.getPage(i);let text="";try{const tc=await p.getTextContent({disableNormalization:false});text=tc.items.map(x=>x.str||"").join(" ")}catch{}const th=await renderPage(p,96,260000);out.push({index:i,text,shingles:shingles(text),signature:signature(th),aspect:th.width/th.height});p.cleanup();progress(start+span*i/doc.numPages);status(`${t("analyzing")} ${label} ${i}/${doc.numPages}`);await new Promise(r=>setTimeout(r,0))}return out}
+async function analyze(doc,label,scope,start,span){
+  const out=[];
+  for(let i=1;i<=doc.numPages;i++){
+    checkCurrent(scope);const page=await doc.getPage(i);let thumb;
+    try{
+      checkCurrent(scope);let text="";
+      try{const tc=await page.getTextContent({disableNormalization:false});text=tc.items.map(x=>x.str||"").join(" ")}catch{}
+      checkCurrent(scope);thumb=await renderPage(page,96,260000,scope);checkCurrent(scope);
+      out.push({index:i,text,shingles:shingles(text),signature:signature(thumb),aspect:thumb.width/thumb.height});
+      progress(start+span*i/doc.numPages);status(`${t("analyzing")} ${label} ${i}/${doc.numPages}`);
+    }finally{releaseCanvas(thumb);page.cleanup()}
+    await new Promise(r=>setTimeout(r,0));
+  }
+  checkCurrent(scope);return out;
+}
 function sim(a,b){const vis=visual(a.signature,b.signature),has=a.text.trim().length>8||b.text.trim().length>8,txt=has?jaccard(a.shingles,b.shingles):vis,asp=Math.max(0,1-Math.abs(a.aspect-b.aspect)/Math.max(a.aspect,b.aspect,.01));return{score:(has?.54:.78)*vis+(has?.38:.14)*txt+.08*asp,visual:vis,text:txt}}
 function match(oldP,newP){const n=oldP.length,m=newP.length,g=-.34,dp=Array.from({length:n+1},()=>new Float64Array(m+1)),bt=Array.from({length:n+1},()=>new Int8Array(m+1)),sims=Array.from({length:n},()=>Array(m));for(let i=1;i<=n;i++){dp[i][0]=i*g;bt[i][0]=1}for(let j=1;j<=m;j++){dp[0][j]=j*g;bt[0][j]=2}for(let i=1;i<=n;i++)for(let j=1;j<=m;j++){const s=sim(oldP[i-1],newP[j-1]);sims[i-1][j-1]=s;const bias=.06*(1-Math.min(1,Math.abs(i/(n||1)-j/(m||1))*2)),ma=dp[i-1][j-1]+1.8*s.score-.9+bias,de=dp[i-1][j]+g,ad=dp[i][j-1]+g;if(ma>=de&&ma>=ad){dp[i][j]=ma;bt[i][j]=0}else if(de>=ad){dp[i][j]=de;bt[i][j]=1}else{dp[i][j]=ad;bt[i][j]=2}}
 const pairs=[];let i=n,j=m;while(i>0||j>0){const d=bt[i][j];if(i>0&&j>0&&d===0){const s=sims[i-1][j-1];pairs.push({oldIndex:i,newIndex:j,status:"matched",similarity:s.score,textSimilarity:s.text,quickDiff:Math.max(0,1-s.visual)});i--;j--}else if(i>0&&(j===0||d===1)){pairs.push({oldIndex:i,newIndex:null,status:"deleted",textSimilarity:0,quickDiff:1});i--}else{pairs.push({oldIndex:null,newIndex:j,status:"added",textSimilarity:0,quickDiff:1});j--}}pairs.reverse();pairs.forEach(p=>p.changed=p.status!=="matched"||p.quickDiff>.014||p.textSimilarity<.985);return pairs}
-async function compare(){if(!S.oldFile||!S.newFile)return;const session=++S.session;S.detailed.clear();S.pairs=[];clearBlink();$("reset").hidden=false;try{status(t("reading"));progress(2);if(S.oldDoc)try{await S.oldDoc.destroy()}catch{};if(S.newDoc)try{await S.newDoc.destroy()}catch{};[S.oldDoc,S.newDoc]=await Promise.all([loadPdf(S.oldFile,session),loadPdf(S.newFile,session)]);updateFiles();S.oldPages=await analyze(S.oldDoc,t("before"),session,10,34);S.newPages=await analyze(S.newDoc,t("after"),session,45,34);status(t("matching"));progress(84);await new Promise(r=>setTimeout(r,5));S.pairs=match(S.oldPages,S.newPages);S.current=0;summary();renderList();$("results").classList.add("show");$("mobileNav").hidden=false;progress(100);status(t("done"));setTimeout(()=>progress(null),450);const c=S.pairs.findIndex(p=>p.changed);await selectPair(c>=0?c:0)}catch(e){if(e.message==="cancelled"){status(t("cancelled"));return}console.error(e);progress(null);status(t("openFailed")+" "+(e.message||""),true)}}
+async function compare(){
+  if(!S.oldFile||!S.newFile)return;
+  invalidateComparison();
+  const scope={active:true,id:S.session,oldFile:S.oldFile,newFile:S.newFile,loads:new Set(),renders:new Set(),passwordQueue:Promise.resolve(),cancelled:false};
+  S.comparison=scope;$("reset").hidden=false;
+  try{
+    status(t("reading"));progress(2);
+    const [oldDoc,newDoc]=await Promise.all([loadPdf(scope.oldFile,scope),loadPdf(scope.newFile,scope)]);checkCurrent(scope);
+    S.oldDoc=oldDoc;S.newDoc=newDoc;updateFiles();
+    const oldPages=await analyze(oldDoc,t("before"),scope,10,34);
+    const newPages=await analyze(newDoc,t("after"),scope,45,34);checkCurrent(scope);
+    status(t("matching"));progress(84);await new Promise(r=>setTimeout(r,5));checkCurrent(scope);
+    S.oldPages=oldPages;S.newPages=newPages;S.pairs=match(oldPages,newPages);S.current=0;
+    summary();renderList();$("results").classList.add("show");$("mobileNav").hidden=false;
+    progress(100);status(t("done"));setTimeout(()=>{if(isCurrent(scope))progress(null)},450);
+    const changed=S.pairs.findIndex(p=>p.changed);await selectPair(changed>=0?changed:0);
+  }catch(error){
+    if(S.comparison!==scope)return;
+    disposeComparison(scope);invalidateDetails();S.oldDoc=null;S.newDoc=null;updateFiles();progress(null);
+    if(scope.cancelled || error.message==="cancelled"){status(t("cancelled"));return}
+    console.error(error);status(t("openFailed")+" "+(error.message||""),true);
+  }
+}
 function updateFiles(){for(const side of["old","new"]){const f=S[side+"File"],doc=S[side+"Doc"],drop=$(side+"Drop"),title=$(side+"Title"),sub=$(side+"Sub");drop.classList.toggle("loaded",!!f);title.textContent=f?f.name:t("choosePdf");sub.textContent=f?bytes(f.size)+(doc?` · ${doc.numPages} ${t("pages")}`:""):t("dropHint")}}
 function summary(){const matched=S.pairs.filter(p=>p.status==="matched"),changed=matched.filter(p=>p.changed).length,added=S.pairs.filter(p=>p.status==="added").length,deleted=S.pairs.filter(p=>p.status==="deleted").length,overall=matched.length?matched.reduce((x,p)=>x+p.quickDiff,0)/matched.length:0;$("pairs").textContent=matched.length;$("changed").textContent=changed;$("added").textContent=added;$("deleted").textContent=deleted;$("overall").textContent=(overall*100).toFixed(1)+"%"}
 function label(p){return p.status==="added"?`${t("added")} · ${t("page")} ${p.newIndex}`:p.status==="deleted"?`${t("deleted")} · ${t("page")} ${p.oldIndex}`:`${t("page")} ${p.oldIndex} → ${p.newIndex}`}
@@ -212,7 +315,47 @@ function estimateShift(a,b,maxShift=12){const scale=Math.min(1,260/Math.max(a.wi
 function normalizePair(a,b,shift){const left=Math.min(0,shift.dx),top=Math.min(0,shift.dy),right=Math.max(a.width,b.width+shift.dx),bottom=Math.max(a.height,b.height+shift.dy),w=Math.max(1,right-left),h=Math.max(1,bottom-top),mk=()=>{const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d",{alpha:false});x.fillStyle="#fff";x.fillRect(0,0,w,h);return c},ao=mk(),bo=mk();ao.getContext("2d").drawImage(a,-left,-top);bo.getContext("2d").drawImage(b,shift.dx-left,shift.dy-top);return{oldCanvas:ao,newCanvas:bo}}
 function findRegions(mask,w,h,minRegion){const cell=Math.max(12,Math.round(Math.max(w,h)/55)),cols=Math.ceil(w/cell),rows=Math.ceil(h/cell),grid=new Uint8Array(cols*rows),seen=new Uint8Array(cols*rows),regions=[];for(let gy=0;gy<rows;gy++)for(let gx=0;gx<cols;gx++){let count=0,total=0,x2=Math.min(w,(gx+1)*cell),y2=Math.min(h,(gy+1)*cell);for(let y=gy*cell;y<y2;y+=2)for(let x=gx*cell;x<x2;x+=2){total++;count+=mask[y*w+x]}if(total&&count/total>.055)grid[gy*cols+gx]=1}for(let gy=0;gy<rows;gy++)for(let gx=0;gx<cols;gx++){const idx=gy*cols+gx;if(!grid[idx]||seen[idx])continue;let minx=gx,maxx=gx,miny=gy,maxy=gy;const q=[[gx,gy]];seen[idx]=1;while(q.length){const[x,y]=q.pop();minx=Math.min(minx,x);maxx=Math.max(maxx,x);miny=Math.min(miny,y);maxy=Math.max(maxy,y);for(const[nx,ny]of[[x-1,y],[x+1,y],[x,y-1],[x,y+1]])if(nx>=0&&ny>=0&&nx<cols&&ny<rows){const ni=ny*cols+nx;if(grid[ni]&&!seen[ni]){seen[ni]=1;q.push([nx,ny])}}}const x=minx*cell,y=miny*cell,rw=Math.min(w,(maxx+1)*cell)-x,rh=Math.min(h,(maxy+1)*cell)-y,area=rw*rh/(w*h)*100;if(area>=minRegion/100)regions.push({x,y,w:rw,h:rh,area})}return regions.sort((a,b)=>b.area-a.area).slice(0,30)}
 function makeDiff(a,b,threshold,minRegion){const w=a.width,h=a.height,ad=a.getContext("2d",{willReadFrequently:true}).getImageData(0,0,w,h),bd=b.getContext("2d",{willReadFrequently:true}).getImageData(0,0,w,h),out=new ImageData(w,h),mask=new Uint8Array(w*h);let changed=0;for(let p=0,i=0;p<mask.length;p++,i+=4){const delta=(Math.abs(ad.data[i]-bd.data[i])+Math.abs(ad.data[i+1]-bd.data[i+1])+Math.abs(ad.data[i+2]-bd.data[i+2]))/3,base=(bd.data[i]+bd.data[i+1]+bd.data[i+2])/3;if(delta>=threshold){mask[p]=1;changed++;out.data[i]=205;out.data[i+1]=64;out.data[i+2]=54;out.data[i+3]=225}else{const g=Math.round(base*.18+225*.82);out.data[i]=g;out.data[i+1]=g;out.data[i+2]=g;out.data[i+3]=255}}const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").putImageData(out,0,0);return{canvas:c,regions:findRegions(mask,w,h,minRegion),percent:changed/(w*h)}}
-async function detailed(index){const p=S.pairs[index],key=`${index}:${$("quality").value}:${$("threshold").value}:${$("minRegion").value}`;if(S.detailed.has(key))return S.detailed.get(key);const target=$("quality").value==="high"?1500:1050,max=$("quality").value==="high"?5000000:2700000,item={pair:p,oldCanvas:null,newCanvas:null,diffCanvas:null,regions:[],diffPercent:1,shift:{dx:0,dy:0}};if(p.status!=="matched"){if(p.oldIndex)item.oldCanvas=await renderPage(await S.oldDoc.getPage(p.oldIndex),target,max);if(p.newIndex)item.newCanvas=await renderPage(await S.newDoc.getPage(p.newIndex),target,max);S.detailed.set(key,item);return item}const[op,np]=await Promise.all([S.oldDoc.getPage(p.oldIndex),S.newDoc.getPage(p.newIndex)]),[oc,nc]=await Promise.all([renderPage(op,target,max),renderPage(np,target,max)]),shift=estimateShift(oc,nc),normed=normalizePair(oc,nc,shift),diff=makeDiff(normed.oldCanvas,normed.newCanvas,+$("threshold").value,+$("minRegion").value);Object.assign(item,{oldCanvas:normed.oldCanvas,newCanvas:normed.newCanvas,diffCanvas:diff.canvas,regions:diff.regions,diffPercent:diff.percent,shift});S.detailed.set(key,item);return item}
+function detailSettings(){return{quality:$("quality").value,threshold:+$("threshold").value,minRegion:+$("minRegion").value}}
+function detailKey(index,settings=detailSettings()){return `${index}:${settings.quality}:${settings.threshold}:${settings.minRegion}`}
+function isDetailCurrent(job){return job.active && isCurrent(job.scope) && job.version===S.detailVersion && S.pairs[job.index]===job.pair && detailKey(job.index)===job.key}
+async function detailed(index){
+  const scope=S.comparison;checkCurrent(scope);
+  const pair=S.pairs[index];if(!pair)throw Error("cancelled");
+  const settings=detailSettings(),key=detailKey(index,settings);
+  if(S.detailed.has(key))return S.detailed.get(key);
+  if(S.detailJobs.has(key))return S.detailJobs.get(key).promise;
+  const job={scope,index,pair,key,version:S.detailVersion,active:true,renders:new Set(),promise:null};
+  const item={pair,oldCanvas:null,newCanvas:null,diffCanvas:null,regions:[],diffPercent:1,shift:{dx:0,dy:0}};
+  const target=settings.quality==="high"?1500:1050,max=settings.quality==="high"?5000000:2700000;
+  const render=async(doc,pageIndex)=>{
+    const page=await doc.getPage(pageIndex);
+    try{if(!isDetailCurrent(job))throw Error("cancelled");return await renderPage(page,target,max,scope,job)}
+    finally{page.cleanup()}
+  };
+  job.promise=(async()=>{
+    let oldCanvas,newCanvas;
+    try{
+      // Each result is owned immediately, including when its sibling fails.
+      // Serial renders also avoid simultaneous work on the same PDF page.
+      if(pair.oldIndex)oldCanvas=await render(S.oldDoc,pair.oldIndex);
+      if(!isDetailCurrent(job))throw Error("cancelled");
+      if(pair.newIndex)newCanvas=await render(S.newDoc,pair.newIndex);
+      if(!isDetailCurrent(job))throw Error("cancelled");
+      if(pair.status==="matched"){
+        const shift=estimateShift(oldCanvas,newCanvas),normed=normalizePair(oldCanvas,newCanvas,shift);
+        Object.assign(item,normed,{shift});
+        const diff=makeDiff(item.oldCanvas,item.newCanvas,settings.threshold,settings.minRegion);
+        Object.assign(item,{diffCanvas:diff.canvas,regions:diff.regions,diffPercent:diff.percent});
+      }else{item.oldCanvas=oldCanvas;item.newCanvas=newCanvas;oldCanvas=null;newCanvas=null}
+      S.detailed.set(key,item);return item;
+    }catch(error){releaseDetail(item);throw error}
+    finally{
+      releaseCanvas(oldCanvas);releaseCanvas(newCanvas);
+      if(S.detailJobs.get(key)===job)S.detailJobs.delete(key);
+    }
+  })();
+  S.detailJobs.set(key,job);return job.promise;
+}
 function cloneCanvas(c){if(!c)return null;const x=document.createElement("canvas");x.width=c.width;x.height=c.height;x.getContext("2d").drawImage(c,0,0);return x}
 function dims(c,max){const available=Math.max(280,Math.min(max,$("canvasArea").clientWidth-30)),scale=Math.min(1,available/c.width);return{w:Math.round(c.width*scale),h:Math.round(c.height*scale),scale}}
 function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
@@ -293,7 +436,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     }
 
     function currentDetail(){
-      return [...S.detailed.entries()].find(([key])=>key.startsWith(S.current+":"))?.[1] || null;
+      return S.detailed.get(detailKey(S.current)) || null;
     }
 
     function setZoom(next,{preserveCenter=true}={}){
@@ -316,7 +459,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
 
     function renderVisual(detail){
       clearBlink();
-      $("stage").innerHTML="";
+      clearStage();
       const oldC=detail.oldCanvas,newC=detail.newCanvas,diffC=detail.diffCanvas;
       const ref=diffC || newC || oldC;
       if(!ref){
@@ -450,7 +593,10 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
       if(!S.pairs.length) return;
       index=Math.max(0,Math.min(S.pairs.length-1,index));
       S.current=index;
-      clearBlink();
+      const scope=S.comparison,version=S.detailVersion,key=detailKey(index),request=++S.viewRequest;
+      for(const [key,job] of S.detailJobs){if(job.index!==index){cancelDetailJob(job);S.detailJobs.delete(key)}}
+      const current=()=>isCurrent(scope)&&version===S.detailVersion&&request===S.viewRequest&&S.pairs[index]===pair&&detailKey(index)===key;
+      clearBlink();clearStage();
       renderList();
 
       const pair=S.pairs[index];
@@ -468,7 +614,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
 
       try{
         const detail=await detailed(index);
-        if(index!==S.current) return;
+        if(!current()) return;
         $("metricVisual").textContent=(detail.diffPercent*100).toFixed(2)+"%";
         $("metricText").textContent=pair.status==="matched"?(pair.textSimilarity*100).toFixed(1)+"%":"-";
         $("metricShift").textContent=pair.status==="matched"
@@ -482,18 +628,19 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
           $("canvasArea").scrollTo({left:0,top:0});
         }
       }catch(error){
+        if(!current()) return;
         console.error(error);
         $("stage").innerHTML=`<div class="canvas-empty">${esc(t("openFailed"))}</div>`;
       }
     }
 
     function navigate(delta){
-      const visible=visible();
-      if(!visible.length) return;
-      let pos=visible.indexOf(S.current);
+      const indexes=visible();
+      if(!indexes.length) return;
+      let pos=indexes.indexOf(S.current);
       if(pos<0) pos=0;
-      pos=Math.max(0,Math.min(visible.length-1,pos+delta));
-      selectPair(visible[pos]);
+      pos=Math.max(0,Math.min(indexes.length-1,pos+delta));
+      selectPair(indexes[pos]);
     }
 
     function downloadBlob(blob,name){
@@ -504,13 +651,17 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     }
 
     async function saveDiffPng(){
-      const detail=await detailed(S.current);
-      if(!detail.diffCanvas){toast(t("noDiffPng"));return}
-      detail.diffCanvas.toBlob(blob=>{
-        if(!blob) return;
-        downloadBlob(blob,`pdf-compare-page-${S.current+1}.png`);
-        toast(t("saved"));
-      },"image/png");
+      const scope=S.comparison,version=S.detailVersion,index=S.current,pair=S.pairs[index],key=detailKey(index);
+      const current=()=>isCurrent(scope)&&version===S.detailVersion&&S.current===index&&S.pairs[index]===pair&&detailKey(index)===key;
+      if(!pair || !current())return;
+      try{
+        const detail=await detailed(index);if(!current())return;
+        if(!detail.diffCanvas){toast(t("noDiffPng"));return}
+        detail.diffCanvas.toBlob(blob=>{
+          if(!blob || !current())return;
+          downloadBlob(blob,`pdf-compare-page-${index+1}.png`);toast(t("saved"));
+        },"image/png");
+      }catch(error){if(current()){console.error(error);toast(t("openFailed"))}}
     }
 
     function csvCell(value){
@@ -520,10 +671,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     function exportCsv(){
       const rows=[["pair","before_page","after_page","status","changed","quick_visual_diff_percent","text_similarity_percent","detailed_visual_diff_percent","alignment_dx","alignment_dy"]];
       S.pairs.forEach((p,i)=>{
-        let detail=null;
-        for(const [key,value] of S.detailed){
-          if(key.startsWith(i+":")){detail=value;break}
-        }
+        const detail=S.detailed.get(detailKey(i));
         rows.push([
           i+1,p.oldIndex??"",p.newIndex??"",p.status,p.changed,
           (p.quickDiff*100).toFixed(3),(p.textSimilarity*100).toFixed(3),
@@ -537,11 +685,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     }
 
     async function resetAll(){
-      ++S.session;
-      clearBlink();
-      S.detailed.clear();
-      if(S.oldDoc){try{await S.oldDoc.destroy()}catch{}}
-      if(S.newDoc){try{await S.newDoc.destroy()}catch{}}
+      invalidateComparison();
       S.oldFile=null; S.newFile=null; S.oldDoc=null; S.newDoc=null;
       S.oldPages=[]; S.newPages=[]; S.pairs=[]; S.current=0; S.zoom=1; updateZoomUi();
       $("oldInput").value=""; $("newInput").value="";
@@ -563,7 +707,6 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
         return;
       }
       S[side+"File"]=file;
-      S[side+"Doc"]=null;
       updateFiles();
       if(file.size>180*1024*1024) toast(t("tooLarge"));
       if(S.oldFile && S.newFile) compare();
@@ -615,7 +758,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
       button.addEventListener("click",()=>{
         document.querySelectorAll(".mode").forEach(x=>x.classList.toggle("active",x===button));
         S.mode=button.dataset.mode;
-        const detail=[...S.detailed.entries()].find(([key])=>key.startsWith(S.current+":"))?.[1];
+        const detail=currentDetail();
         if(detail) renderVisual(detail);
         else selectPair(S.current);
       });
@@ -627,15 +770,17 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     $("mobileNext").addEventListener("click",()=>navigate(1));
     $("changedOnly").addEventListener("change",()=>{
       renderList();
-      const visible=visible();
-      if(visible.length && !visible.includes(S.current)) selectPair(visible[0]);
+      const indexes=visible();
+      if(indexes.length && !indexes.includes(S.current)) selectPair(indexes[0]);
     });
 
     let rerenderTimer=null;
     const recompare=()=>{
       clearTimeout(rerenderTimer);
+      invalidateDetails();
+      const scope=S.comparison,version=S.detailVersion;
       rerenderTimer=setTimeout(()=>{
-        S.detailed.clear();
+        if(!isCurrent(scope)||version!==S.detailVersion)return;
         if(S.pairs.length) selectPair(S.current,{preserveScroll:true});
       },180);
     };
@@ -648,7 +793,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
       recompare();
     });
     $("quality").addEventListener("change",()=>{
-      S.detailed.clear();
+      clearTimeout(rerenderTimer);invalidateDetails();
       if(S.pairs.length) selectPair(S.current,{preserveScroll:true});
     });
 
