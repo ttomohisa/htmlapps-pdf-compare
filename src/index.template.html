@@ -38,7 +38,7 @@ dialog{width:min(640px,calc(100% - 28px));max-height:min(760px,calc(100dvh - 28p
   <div class="header-inner">
     <div class="brand">
       <div class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#16624f"/><rect x="11" y="9" width="26" height="31" rx="3" fill="none" stroke="#fff" stroke-width="3"/><rect x="27" y="14" width="26" height="31" rx="3" fill="#16624f" stroke="#fff" stroke-width="3"/><text x="31" y="32" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="700">PDF</text><path d="M14 54h36M14 54l6-5M14 54l6 5M50 54l-6-5M50 54l-6 5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div><h1 class="brand-name">PDF Compare <span class="badge" id="version">v1.0.0</span></h1><p class="brand-meta" data-i18n="brandMeta">PDFの変更点を端末内だけで比較</p></div>
+      <div><h1 class="brand-name">PDF Compare <span class="badge" id="version">v1.0.1</span></h1><p class="brand-meta" data-i18n="brandMeta">PDFの変更点を端末内だけで比較</p></div>
     </div>
     <div class="header-actions">
       <button class="header-button" id="lang" type="button" aria-label="Switch language">EN</button>
@@ -125,7 +125,7 @@ dialog{width:min(640px,calc(100% - 28px));max-height:min(760px,calc(100dvh - 28p
 <h3 data-i18n="helpHowTitle">使い方</h3><ol><li data-i18n="help1">変更前と変更後のPDFを選びます。</li><li data-i18n="help2">ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。</li><li data-i18n="help3">差分・左右・重ねる・スライダー・点滅を切り替えて確認します。</li><li data-i18n="helpZoom">表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。</li><li data-i18n="help4">感度を上げたいときは「差分感度」の値を小さくします。</li></ol>
 <p data-i18n="helpSettings">「比較設定を初期値へ」は差分感度28・小さな差分0.03%・標準画質に戻します。PDF・選択ページ・変更のみ・表示方法・倍率は保持します。</p>
 <p data-i18n="helpFilter">「変更のみ」で該当ページがない場合は表示とPNG保存を空にします。CSVは常に全ページが対象です。ダイアログの表示中や文字入力中はページ移動・拡大縮小のショートカットを使いません。</p>
-<p data-i18n="helpLifecycle">PDFの選び直し・やり直しは進行中の処理を中止します。表示設定を変更すると詳細差分を再計算します。両方のPDFにパスワードがある場合は1つずつ入力します。</p>
+<p data-i18n="helpLifecycle">PDFの選び直し・やり直しは進行中の処理を中止します。表示設定を変更すると詳細差分を再計算します。両方のPDFにパスワードがある場合は1つずつ入力します。言語を切り替えても比較結果を保持し、現在の処理状況も切り替えます。</p>
 <h3 data-i18n="helpPrivacyTitle">プライバシー</h3><p data-i18n="helpPrivacy">PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。</p>
 <h3 data-i18n="helpDiffTitle">差分の見方</h3><p data-i18n="helpDiff">数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。</p>
 <h3 data-i18n="helpLimitsTitle">制限事項</h3><ul><li data-i18n="limit1">OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。</li><li data-i18n="limit2">巨大なPDFや高精細表示は端末のメモリを多く使用します。</li><li data-i18n="limit3">署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。</li><li data-i18n="limit4">圧縮済みPDF.jsアセットの展開に対応した最新のブラウザを使用してください。</li></ul>
@@ -148,13 +148,13 @@ $("version").textContent="v"+app.version;
 
 const I={
 ja:{
-brandMeta:"PDFの変更点を端末内だけで比較",helpAria:"使い方と注意事項",introTitle:"2つのPDFの「どこが変わった？」を見つける。",introText:"ページ追加・削除にも追従して対応付け。見た目の差分とテキスト差分を、アップロードせずに確認できます。",localOnly:"完全ローカル処理",uploadHeading:"比較するPDF",before:"変更前",after:"変更後",choosePdf:"PDFを選択",dropHint:"タップ / ドロップ",swapAria:"変更前と変更後を入れ替え",ready:"2つのPDFを選択してください。",reset:"やり直す",summaryPairs:"対応ページ",summaryChanged:"変更あり",summaryAdded:"追加ページ",summaryDeleted:"削除ページ",summaryVisual:"見た目の変更量",modeDiff:"差分",modeSide:"左右",modeOverlay:"重ねる",modeSlider:"スライダー",modeBlink:"点滅",saveDiffPng:"差分PNG",exportCsv:"レポートCSV",pages:"ページ",changedOnly:"変更のみ",prev:"前へ",next:"次へ",selectPage:"ページを選択してください。",sensitivity:"差分感度",regionSize:"小さな差分を無視",quality:"表示品質",resetSettings:"比較設定を初期値へ",resetSettingsHint:"差分感度28・小さな差分0.03%・表示品質を標準に戻します。",noChangedPages:"変更のあるページはありません。",helpSettings:"「比較設定を初期値へ」は差分感度28・小さな差分0.03%・標準画質に戻します。PDF・選択ページ・変更のみ・表示方法・倍率は保持します。",helpFilter:"「変更のみ」で該当ページがない場合は表示とPNG保存を空にします。CSVは常に全ページが対象です。ダイアログの表示中や文字入力中はページ移動・拡大縮小のショートカットを使いません。",qualityStandard:"標準",qualityHigh:"高精細",pageAnalysis:"このページの分析",metricVisual:"視覚差分",metricText:"テキスト類似度",metricShift:"位置ずれ補正",textDiff:"テキスト差分を見る",privacyTitle:"端末の外に出しません",privacyText:"<strong>PDFはアップロードされません。</strong><br>PDF.jsもHTML内に埋め込み、解析・描画・差分計算はこのブラウザ内で実行します。",matchingNote:"ページ番号だけでなく、見た目と抽出テキストを使って変更前後のページを自動対応付けします。",helpTitle:"使い方と注意事項",helpHowTitle:"使い方",help1:"変更前と変更後のPDFを選びます。",help2:"ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。",help3:"差分・左右・重ねる・スライダー・点滅を切り替えて確認します。",help4:"感度を上げたいときは「差分感度」の値を小さくします。",helpLifecycle:"PDFの選び直し・やり直しは進行中の処理を中止します。表示設定を変更すると詳細差分を再計算します。両方のPDFにパスワードがある場合は1つずつ入力します。",helpPrivacyTitle:"プライバシー",helpPrivacy:"PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。",helpDiffTitle:"差分の見方",helpDiff:"数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。",helpLimitsTitle:"制限事項",limit1:"OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。",limit2:"巨大なPDFや高精細表示は端末のメモリを多く使用します。",limit3:"署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。",limit4:"圧縮済みPDF.jsアセットの展開に対応した最新のブラウザを使用してください。",helpBuildTitle:"ビルド情報",resetTitle:"比較をやり直しますか？",resetText:"選択したPDFと解析結果をこの画面から消去します。元のPDFファイルは変更されません。",cancel:"キャンセル",passwordTitle:"PDFのパスワード",passwordPlaceholder:"パスワード",openPdf:"開く",passwordText:"このPDFはパスワードで保護されています。",wrongPassword:"パスワードが正しくありません。",loadingEngine:"PDFエンジンを準備しています…",reading:"PDFを読み込んでいます…",analyzing:"ページを解析しています…",matching:"ページの対応を探しています…",done:"比較の準備ができました。ページを選ぶと詳細差分を計算します。",invalidPdf:"PDFファイルを選択してください。",tooLarge:"ファイルが大きいため、端末によっては処理できない場合があります。",openFailed:"PDFを開けませんでした。",cancelled:"処理をキャンセルしました。",page:"ページ",added:"追加",deleted:"削除",changed:"変更あり",unchanged:"ほぼ同じ",comparing:"詳細差分を計算中…",noText:"抽出できるテキストがありません。",noTextChange:"抽出テキストに大きな差はありません。",region:"差分",regionCount:"{n}か所の変更領域",saved:"保存しました。",csvSaved:"CSVレポートを保存しました。",noDiffPng:"差分表示を準備してから保存してください。",zoomHint:"拡大して細部を確認できます",zoomIn:"拡大",zoomOut:"縮小",zoomReset:"100%に戻す",zoomFit:"画面に合わせる",helpZoom:"表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。",engineFailed:"埋め込みPDFエンジンの初期化に失敗しました。ビルド済みHTMLを使用してください。"
+brandMeta:"PDFの変更点を端末内だけで比較",helpAria:"使い方と注意事項",introTitle:"2つのPDFの「どこが変わった？」を見つける。",introText:"ページ追加・削除にも追従して対応付け。見た目の差分とテキスト差分を、アップロードせずに確認できます。",localOnly:"完全ローカル処理",uploadHeading:"比較するPDF",before:"変更前",after:"変更後",choosePdf:"PDFを選択",dropHint:"タップ / ドロップ",swapAria:"変更前と変更後を入れ替え",ready:"2つのPDFを選択してください。",reset:"やり直す",summaryPairs:"対応ページ",summaryChanged:"変更あり",summaryAdded:"追加ページ",summaryDeleted:"削除ページ",summaryVisual:"見た目の変更量",modeDiff:"差分",modeSide:"左右",modeOverlay:"重ねる",modeSlider:"スライダー",modeBlink:"点滅",saveDiffPng:"差分PNG",exportCsv:"レポートCSV",pages:"ページ",changedOnly:"変更のみ",prev:"前へ",next:"次へ",selectPage:"ページを選択してください。",sensitivity:"差分感度",regionSize:"小さな差分を無視",quality:"表示品質",resetSettings:"比較設定を初期値へ",resetSettingsHint:"差分感度28・小さな差分0.03%・表示品質を標準に戻します。",noChangedPages:"変更のあるページはありません。",helpSettings:"「比較設定を初期値へ」は差分感度28・小さな差分0.03%・標準画質に戻します。PDF・選択ページ・変更のみ・表示方法・倍率は保持します。",helpFilter:"「変更のみ」で該当ページがない場合は表示とPNG保存を空にします。CSVは常に全ページが対象です。ダイアログの表示中や文字入力中はページ移動・拡大縮小のショートカットを使いません。",qualityStandard:"標準",qualityHigh:"高精細",pageAnalysis:"このページの分析",metricVisual:"視覚差分",metricText:"テキスト類似度",metricShift:"位置ずれ補正",textDiff:"テキスト差分を見る",privacyTitle:"端末の外に出しません",privacyText:"<strong>PDFはアップロードされません。</strong><br>PDF.jsもHTML内に埋め込み、解析・描画・差分計算はこのブラウザ内で実行します。",matchingNote:"ページ番号だけでなく、見た目と抽出テキストを使って変更前後のページを自動対応付けします。",helpTitle:"使い方と注意事項",helpHowTitle:"使い方",help1:"変更前と変更後のPDFを選びます。",help2:"ページの見た目と抽出テキストから、追加・削除を考慮してページを自動対応付けします。",help3:"差分・左右・重ねる・スライダー・点滅を切り替えて確認します。",help4:"感度を上げたいときは「差分感度」の値を小さくします。",helpLifecycle:"PDFの選び直し・やり直しは進行中の処理を中止します。表示設定を変更すると詳細差分を再計算します。両方のPDFにパスワードがある場合は1つずつ入力します。言語を切り替えても比較結果を保持し、現在の処理状況も切り替えます。",helpPrivacyTitle:"プライバシー",helpPrivacy:"PDFや比較結果はサーバーへ送信しません。ランタイム通信はCSPで無効化されています。",helpDiffTitle:"差分の見方",helpDiff:"数pxの位置ずれを自動補正してからピクセル差分を計算します。テキスト差分はPDF内に文字情報がある場合のみ利用できます。",helpLimitsTitle:"制限事項",limit1:"OCRは行いません。スキャンPDFも見た目は比較できますが、画像化された文字はテキスト差分の対象外です。",limit2:"巨大なPDFや高精細表示は端末のメモリを多く使用します。",limit3:"署名・フォーム・注釈などPDF内部構造そのものの監査用途ではありません。",limit4:"圧縮済みPDF.jsアセットの展開に対応した最新のブラウザを使用してください。",helpBuildTitle:"ビルド情報",resetTitle:"比較をやり直しますか？",resetText:"選択したPDFと解析結果をこの画面から消去します。元のPDFファイルは変更されません。",cancel:"キャンセル",passwordTitle:"PDFのパスワード",passwordPlaceholder:"パスワード",openPdf:"開く",passwordText:"このPDFはパスワードで保護されています。",wrongPassword:"パスワードが正しくありません。",loadingEngine:"PDFエンジンを準備しています…",reading:"PDFを読み込んでいます…",analyzing:"ページを解析しています…",matching:"ページの対応を探しています…",done:"比較の準備ができました。ページを選ぶと詳細差分を計算します。",invalidPdf:"PDFファイルを選択してください。",tooLarge:"ファイルが大きいため、端末によっては処理できない場合があります。",openFailed:"PDFを開けませんでした。",cancelled:"処理をキャンセルしました。",page:"ページ",added:"追加",deleted:"削除",changed:"変更あり",unchanged:"ほぼ同じ",comparing:"詳細差分を計算中…",noText:"抽出できるテキストがありません。",noTextChange:"抽出テキストに大きな差はありません。",region:"差分",regionCount:"{n}か所の変更領域",saved:"保存しました。",csvSaved:"CSVレポートを保存しました。",noDiffPng:"差分表示を準備してから保存してください。",zoomHint:"拡大して細部を確認できます",zoomIn:"拡大",zoomOut:"縮小",zoomReset:"100%に戻す",zoomFit:"画面に合わせる",helpZoom:"表示の − / ＋ で50〜400%まで拡大・縮小できます。「画面に合わせる」で元の表示倍率へ戻せます。",engineFailed:"埋め込みPDFエンジンの初期化に失敗しました。ビルド済みHTMLを使用してください。"
 },
 en:{
-brandMeta:"Compare PDF changes entirely on your device",helpAria:"How to use and notes",introTitle:"Find exactly what changed between two PDFs.",introText:"Pages are matched even when pages are inserted or removed. Review visual and text differences without uploading either file.",localOnly:"100% local",uploadHeading:"PDFs to compare",before:"Before",after:"After",choosePdf:"Choose PDF",dropHint:"Tap / drop",swapAria:"Swap before and after",ready:"Choose two PDF files.",reset:"Reset",summaryPairs:"Matched pages",summaryChanged:"Changed",summaryAdded:"Added pages",summaryDeleted:"Removed pages",summaryVisual:"Visual change",modeDiff:"Diff",modeSide:"Side by side",modeOverlay:"Overlay",modeSlider:"Slider",modeBlink:"Blink",saveDiffPng:"Diff PNG",exportCsv:"CSV report",pages:"Pages",changedOnly:"Changed only",prev:"Previous",next:"Next",selectPage:"Select a page.",sensitivity:"Difference threshold",regionSize:"Ignore tiny regions",quality:"Render quality",resetSettings:"Reset comparison settings",resetSettingsHint:"Restore threshold 28, tiny regions 0.03%, and Standard quality.",noChangedPages:"No changed pages.",helpSettings:"Reset comparison settings restores threshold 28, tiny regions 0.03%, and Standard quality. It keeps the PDFs, selected page, Changed only filter, view mode, and zoom.",helpFilter:"When Changed only has no matching pages, the viewer is empty and PNG saving is disabled. CSV always includes all pages. Page and zoom shortcuts stay inactive in dialogs and while editing text.",qualityStandard:"Standard",qualityHigh:"High",pageAnalysis:"Page analysis",metricVisual:"Visual difference",metricText:"Text similarity",metricShift:"Auto alignment",textDiff:"Show text differences",privacyTitle:"Your PDFs stay on this device",privacyText:"<strong>Your PDFs are never uploaded.</strong><br>PDF.js is embedded in the HTML; parsing, rendering, and comparison all run in this browser.",matchingNote:"Pages are matched using both appearance and extracted text instead of assuming page numbers are unchanged.",helpTitle:"How to use & notes",helpHowTitle:"How to use",help1:"Choose the before and after PDF files.",help2:"Pages are automatically aligned using appearance and extracted text, including inserted and deleted pages.",help3:"Switch among Diff, Side by side, Overlay, Slider, and Blink views.",help4:"Lower the difference threshold to detect subtler changes.",helpLifecycle:"Replacing a PDF or resetting cancels work in progress. Changing comparison settings recalculates detailed differences. If both PDFs require passwords, enter them one at a time.",helpPrivacyTitle:"Privacy",helpPrivacy:"PDFs and comparison results are never sent to a server. Runtime networking is disabled by CSP.",helpDiffTitle:"Understanding the diff",helpDiff:"A few pixels of translation are automatically corrected before pixel differences are calculated. Text diff is available only when the PDF contains extractable text.",helpLimitsTitle:"Limitations",limit1:"OCR is not included. Scanned PDFs can still be visually compared, but image-only text is excluded from text diff.",limit2:"Very large PDFs and high-quality rendering use significant device memory.",limit3:"This is not a forensic checker for signatures, forms, annotations, or other internal PDF objects.",limit4:"Use a current browser that can unpack the compressed embedded PDF.js assets.",helpBuildTitle:"Build info",resetTitle:"Reset this comparison?",resetText:"This clears selected PDFs and analysis from the page. Original files are not modified.",cancel:"Cancel",passwordTitle:"PDF password",passwordPlaceholder:"Password",openPdf:"Open",passwordText:"This PDF is password protected.",wrongPassword:"The password is incorrect.",loadingEngine:"Preparing the PDF engine…",reading:"Reading PDFs…",analyzing:"Analyzing pages…",matching:"Matching pages…",done:"Comparison is ready. Detailed differences are calculated when you open a page.",invalidPdf:"Choose a PDF file.",tooLarge:"This file is large and may exceed the memory available on this device.",openFailed:"Could not open the PDF.",cancelled:"Operation cancelled.",page:"Page",added:"Added",deleted:"Removed",changed:"Changed",unchanged:"Nearly identical",comparing:"Calculating detailed differences…",noText:"No extractable text is available.",noTextChange:"No substantial extracted-text change was found.",region:"Change",regionCount:"{n} change regions",saved:"Saved.",csvSaved:"CSV report saved.",noDiffPng:"Open Diff view before saving the PNG.",zoomHint:"Zoom in to inspect fine details",zoomIn:"Zoom in",zoomOut:"Zoom out",zoomReset:"Reset to 100%",zoomFit:"Fit to view",helpZoom:"Use − / + to zoom from 50% to 400%. Choose Fit to view to return to the default fitted size.",engineFailed:"The embedded PDF engine could not be initialized. Use a built standalone HTML file."
+brandMeta:"Compare PDF changes entirely on your device",helpAria:"How to use and notes",introTitle:"Find exactly what changed between two PDFs.",introText:"Pages are matched even when pages are inserted or removed. Review visual and text differences without uploading either file.",localOnly:"100% local",uploadHeading:"PDFs to compare",before:"Before",after:"After",choosePdf:"Choose PDF",dropHint:"Tap / drop",swapAria:"Swap before and after",ready:"Choose two PDF files.",reset:"Reset",summaryPairs:"Matched pages",summaryChanged:"Changed",summaryAdded:"Added pages",summaryDeleted:"Removed pages",summaryVisual:"Visual change",modeDiff:"Diff",modeSide:"Side by side",modeOverlay:"Overlay",modeSlider:"Slider",modeBlink:"Blink",saveDiffPng:"Diff PNG",exportCsv:"CSV report",pages:"Pages",changedOnly:"Changed only",prev:"Previous",next:"Next",selectPage:"Select a page.",sensitivity:"Difference threshold",regionSize:"Ignore tiny regions",quality:"Render quality",resetSettings:"Reset comparison settings",resetSettingsHint:"Restore threshold 28, tiny regions 0.03%, and Standard quality.",noChangedPages:"No changed pages.",helpSettings:"Reset comparison settings restores threshold 28, tiny regions 0.03%, and Standard quality. It keeps the PDFs, selected page, Changed only filter, view mode, and zoom.",helpFilter:"When Changed only has no matching pages, the viewer is empty and PNG saving is disabled. CSV always includes all pages. Page and zoom shortcuts stay inactive in dialogs and while editing text.",qualityStandard:"Standard",qualityHigh:"High",pageAnalysis:"Page analysis",metricVisual:"Visual difference",metricText:"Text similarity",metricShift:"Auto alignment",textDiff:"Show text differences",privacyTitle:"Your PDFs stay on this device",privacyText:"<strong>Your PDFs are never uploaded.</strong><br>PDF.js is embedded in the HTML; parsing, rendering, and comparison all run in this browser.",matchingNote:"Pages are matched using both appearance and extracted text instead of assuming page numbers are unchanged.",helpTitle:"How to use & notes",helpHowTitle:"How to use",help1:"Choose the before and after PDF files.",help2:"Pages are automatically aligned using appearance and extracted text, including inserted and deleted pages.",help3:"Switch among Diff, Side by side, Overlay, Slider, and Blink views.",help4:"Lower the difference threshold to detect subtler changes.",helpLifecycle:"Replacing a PDF or resetting cancels work in progress. Changing comparison settings recalculates detailed differences. If both PDFs require passwords, enter them one at a time. Switching language keeps the comparison results and updates the current status message.",helpPrivacyTitle:"Privacy",helpPrivacy:"PDFs and comparison results are never sent to a server. Runtime networking is disabled by CSP.",helpDiffTitle:"Understanding the diff",helpDiff:"A few pixels of translation are automatically corrected before pixel differences are calculated. Text diff is available only when the PDF contains extractable text.",helpLimitsTitle:"Limitations",limit1:"OCR is not included. Scanned PDFs can still be visually compared, but image-only text is excluded from text diff.",limit2:"Very large PDFs and high-quality rendering use significant device memory.",limit3:"This is not a forensic checker for signatures, forms, annotations, or other internal PDF objects.",limit4:"Use a current browser that can unpack the compressed embedded PDF.js assets.",helpBuildTitle:"Build info",resetTitle:"Reset this comparison?",resetText:"This clears selected PDFs and analysis from the page. Original files are not modified.",cancel:"Cancel",passwordTitle:"PDF password",passwordPlaceholder:"Password",openPdf:"Open",passwordText:"This PDF is password protected.",wrongPassword:"The password is incorrect.",loadingEngine:"Preparing the PDF engine…",reading:"Reading PDFs…",analyzing:"Analyzing pages…",matching:"Matching pages…",done:"Comparison is ready. Detailed differences are calculated when you open a page.",invalidPdf:"Choose a PDF file.",tooLarge:"This file is large and may exceed the memory available on this device.",openFailed:"Could not open the PDF.",cancelled:"Operation cancelled.",page:"Page",added:"Added",deleted:"Removed",changed:"Changed",unchanged:"Nearly identical",comparing:"Calculating detailed differences…",noText:"No extractable text is available.",noTextChange:"No substantial extracted-text change was found.",region:"Change",regionCount:"{n} change regions",saved:"Saved.",csvSaved:"CSV report saved.",noDiffPng:"Open Diff view before saving the PNG.",zoomHint:"Zoom in to inspect fine details",zoomIn:"Zoom in",zoomOut:"Zoom out",zoomReset:"Reset to 100%",zoomFit:"Fit to view",helpZoom:"Use − / + to zoom from 50% to 400%. Choose Fit to view to return to the default fitted size.",engineFailed:"The embedded PDF engine could not be initialized. Use a built standalone HTML file."
 }};
 let lang=(navigator.language||"").toLowerCase().startsWith("ja")?"ja":"en";
-const S={pdfjs:null,pdfWorker:null,workerUrl:null,workerPort:null,assetBase:null,enginePromise:null,oldFile:null,newFile:null,oldDoc:null,newDoc:null,oldPages:[],newPages:[],pairs:[],current:0,mode:"diff",zoom:1,detailed:new Map(),session:0,comparison:null,detailVersion:0,viewRequest:0,detailJobs:new Map(),password:null,blink:null};
+const S={pdfjs:null,pdfWorker:null,workerUrl:null,workerPort:null,assetBase:null,enginePromise:null,oldFile:null,newFile:null,oldDoc:null,newDoc:null,oldPages:[],newPages:[],pairs:[],current:0,mode:"diff",zoom:1,detailed:new Map(),session:0,comparison:null,detailVersion:0,viewRequest:0,detailJobs:new Map(),password:null,blink:null,status:{key:"ready",error:false}};
 const t=(k,v={})=>{let s=(I[lang]&&I[lang][k])||I.ja[k]||k;for(const [a,b] of Object.entries(v))s=s.replaceAll("{"+a+"}",b);return s};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function applyLang(){
@@ -164,8 +164,17 @@ document.querySelectorAll("[data-i18n-html]").forEach(e=>{const k=e.dataset.i18n
 document.querySelectorAll("[data-i18n-aria]").forEach(e=>{const k=e.dataset.i18nAria;if(I[lang][k]!=null)e.setAttribute("aria-label",I[lang][k])});
 document.querySelectorAll("[data-i18n-placeholder]").forEach(e=>{const k=e.dataset.i18nPlaceholder;if(I[lang][k]!=null)e.placeholder=I[lang][k]});
 document.querySelectorAll("[data-i18n-title]").forEach(e=>{e.title=t(e.dataset.i18nTitle)});
-updateFiles();if(S.pairs.length){renderList();selectPair(S.current,{preserveScroll:true})}}
-function status(s,error=false){$("status").textContent=s;$("status").classList.toggle("error",error)}
+renderStatus();updateFiles();if(S.pairs.length){renderList();selectPair(S.current,{preserveScroll:true})}}
+// Keep the active message semantic so changing language never guesses from
+// comparison results or replaces a newer progress/error message with "done".
+function renderStatus(){
+  const {key,error,labelKey,page,total,detail}=S.status;
+  let message=t(key);
+  if(labelKey)message+=` ${t(labelKey)} ${page}/${total}`;
+  if(detail)message+=" "+detail;
+  $("status").textContent=message;$("status").classList.toggle("error",error);
+}
+function status(key,error=false,details={}){S.status={key,error,...details};renderStatus()}
 function progress(n){if(n==null){$("progress").classList.remove("show");$("progressBar").style.width="0";return}$("progress").classList.add("show");$("progressBar").style.width=Math.max(0,Math.min(100,n))+"%"}
 function toast(s){$("toast").textContent=s;$("toast").classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("toast").classList.remove("show"),1800)}
 function bytes(n){const u=["B","KB","MB","GB"];let i=0;while(n>=1024&&i<u.length-1){n/=1024;i++}return n.toFixed(i?1:0)+" "+u[i]}
@@ -268,7 +277,7 @@ async function renderPage(page,target,maxPixels=1800000,scope=S.comparison,job=n
 function signature(c,size=28){const x=document.createElement("canvas");x.width=size;x.height=size;const k=x.getContext("2d",{alpha:false,willReadFrequently:true});k.drawImage(c,0,0,size,size);const d=k.getImageData(0,0,size,size).data,a=new Uint8Array(size*size);for(let i=0,j=0;i<d.length;i+=4,j++)a[j]=Math.round(d[i]*.299+d[i+1]*.587+d[i+2]*.114);return a}
 function visual(a,b){let n=Math.min(a.length,b.length),sum=0;for(let i=0;i<n;i++)sum+=Math.abs(a[i]-b[i]);return Math.max(0,1-sum/(n*255))}
 
-async function analyze(doc,label,scope,start,span){
+async function analyze(doc,labelKey,scope,start,span){
   const out=[];
   for(let i=1;i<=doc.numPages;i++){
     checkCurrent(scope);const page=await doc.getPage(i);let thumb;
@@ -277,7 +286,7 @@ async function analyze(doc,label,scope,start,span){
       try{const tc=await page.getTextContent({disableNormalization:false});text=tc.items.map(x=>x.str||"").join(" ")}catch{}
       checkCurrent(scope);thumb=await renderPage(page,96,260000,scope);checkCurrent(scope);
       out.push({index:i,text,shingles:shingles(text),signature:signature(thumb),aspect:thumb.width/thumb.height});
-      progress(start+span*i/doc.numPages);status(`${t("analyzing")} ${label} ${i}/${doc.numPages}`);
+      progress(start+span*i/doc.numPages);status("analyzing",false,{labelKey,page:i,total:doc.numPages});
     }finally{releaseCanvas(thumb);page.cleanup()}
     await new Promise(r=>setTimeout(r,0));
   }
@@ -292,21 +301,21 @@ async function compare(){
   const scope={active:true,id:S.session,oldFile:S.oldFile,newFile:S.newFile,loads:new Set(),renders:new Set(),passwordQueue:Promise.resolve(),cancelled:false};
   S.comparison=scope;$("reset").hidden=false;
   try{
-    status(t("reading"));progress(2);
+    status("reading");progress(2);
     const [oldDoc,newDoc]=await Promise.all([loadPdf(scope.oldFile,scope),loadPdf(scope.newFile,scope)]);checkCurrent(scope);
     S.oldDoc=oldDoc;S.newDoc=newDoc;updateFiles();
-    const oldPages=await analyze(oldDoc,t("before"),scope,10,34);
-    const newPages=await analyze(newDoc,t("after"),scope,45,34);checkCurrent(scope);
-    status(t("matching"));progress(84);await new Promise(r=>setTimeout(r,5));checkCurrent(scope);
+    const oldPages=await analyze(oldDoc,"before",scope,10,34);
+    const newPages=await analyze(newDoc,"after",scope,45,34);checkCurrent(scope);
+    status("matching");progress(84);await new Promise(r=>setTimeout(r,5));checkCurrent(scope);
     S.oldPages=oldPages;S.newPages=newPages;S.pairs=match(oldPages,newPages);S.current=0;
     summary();renderList();$("results").classList.add("show");$("mobileNav").hidden=false;
-    progress(100);status(t("done"));setTimeout(()=>{if(isCurrent(scope))progress(null)},450);
+    progress(100);status("done");setTimeout(()=>{if(isCurrent(scope))progress(null)},450);
     const changed=S.pairs.findIndex(p=>p.changed);await selectPair(changed>=0?changed:0);
   }catch(error){
     if(S.comparison!==scope)return;
     disposeComparison(scope);invalidateDetails();S.oldDoc=null;S.newDoc=null;updateFiles();progress(null);
-    if(scope.cancelled || error.message==="cancelled"){status(t("cancelled"));return}
-    console.error(error);status(t("openFailed")+" "+(error.message||""),true);
+    if(scope.cancelled || error.message==="cancelled"){status("cancelled");return}
+    console.error(error);status("openFailed",true,{detail:error.message||""});
   }
 }
 function updateFiles(){for(const side of["old","new"]){const f=S[side+"File"],doc=S[side+"Doc"],drop=$(side+"Drop"),title=$(side+"Title"),sub=$(side+"Sub");drop.classList.toggle("loaded",!!f);title.textContent=f?f.name:t("choosePdf");sub.textContent=f?bytes(f.size)+(doc?` · ${doc.numPages} ${t("pages")}`:""):t("dropHint")}}
@@ -718,7 +727,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
       $("pageList").innerHTML="";
       $("stage").innerHTML="";
       progress(null);
-      status(t("ready"));
+      status("ready");
       updateFiles();
       if($("resetDialog").open) $("resetDialog").close();
     }
@@ -726,14 +735,14 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     function acceptFile(side,file){
       if(!file) return;
       if(file.type!=="application/pdf" && !file.name.toLowerCase().endsWith(".pdf")){
-        status(t("invalidPdf"),true);
+        status("invalidPdf",true);
         return;
       }
       S[side+"File"]=file;
       updateFiles();
       if(file.size>180*1024*1024) toast(t("tooLarge"));
       if(S.oldFile && S.newFile) compare();
-      else status(t("ready"));
+      else status("ready");
     }
 
     for(const side of ["old","new"]){
@@ -886,7 +895,7 @@ function cssCanvas(c,d){c.style.width=d.w+"px";c.style.height=d.h+"px"}
     applyLang();
     updateFiles();
     updateZoomUi();
-    status(t("ready"));
+    status("ready");
   })();
   </script>
 
