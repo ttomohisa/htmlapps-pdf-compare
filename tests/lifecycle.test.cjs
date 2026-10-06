@@ -9,10 +9,10 @@ const source=html.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
 const exposed=source.replace(/\}\)\(\);\s*$/,'globalThis.probe={S,loadPdf,compare,resetAll,acceptFile,detailed,selectPair,currentDetail,renderPage,analyze,navigate,saveDiffPng,exportCsv,visible,detailSettings};})();');
 function deferred(){let resolve,reject;let promise=new Promise((a,b)=>{resolve=a;reject=b});return {promise,resolve,reject};}
 async function flush(n=12){for(let i=0;i<n;i++)await new Promise(r=>setImmediate(r));}
-function harness(){
+function harness(language='en'){
  const docListeners={},elements=new Map(),errors=[],canvases=[],timerCallbacks=[],downloads=[];
  class Element {
-  constructor(tag='div'){this.tagName=tag.toUpperCase();this.style={};this.dataset={};this.children=[];this.listeners={};this.value='';this.checked=false;this.hidden=false;this.open=false;this.textContent='';this.clientWidth=1000;this.classList={add(){},remove(){},toggle(){}};this._html='';}
+  constructor(tag='div'){this.tagName=tag.toUpperCase();this.style={};this.dataset={};this.children=[];this.listeners={};this.value='';this.checked=false;this.hidden=false;this.open=false;this.textContent='';this.clientWidth=1000;const classes=new Set();this.classList={add(...names){names.forEach(name=>classes.add(name))},remove(...names){names.forEach(name=>classes.delete(name))},contains(name){return classes.has(name)},toggle(name,force){const on=force??!classes.has(name);if(on)classes.add(name);else classes.delete(name);return on}};this._html='';}
   set innerHTML(s){this._html=s;this.children=[];}
   get innerHTML(){return this._html;}
   addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}
@@ -35,7 +35,7 @@ function harness(){
   if(selector==='[data-i18n-title]')return [...elements.values()].filter(e=>e.dataset.i18nTitle);
   return [];
  },createElement(tag){const e=new Element(tag);if(tag==='canvas'){e.width=300;e.height=150;canvases.push(e);}return e;},addEventListener(type,fn){(docListeners[type]??=[]).push(fn)},body:new Element('body')};
- const context={document,navigator:{language:'en'},console:{error(e){errors.push(String(e));},warn(){}},window:{addEventListener(){}},innerWidth:1000,location:{protocol:'https:'},setTimeout(fn,ms){if(ms<=5)return setImmediate(fn);timerCallbacks.push(fn);return timerCallbacks.length;},clearTimeout(){},setInterval(){return 1;},clearInterval(){},requestAnimationFrame(fn){fn();},URL:{createObjectURL(blob){downloads.push(blob);return "blob:test"},revokeObjectURL(){}},Blob,Response,Uint8Array,Uint8ClampedArray,ImageData:class {constructor(w,h){this.data=new Uint8ClampedArray(w*h*4);}},Intl};
+ const context={document,navigator:{language},console:{error(e){errors.push(String(e));},warn(){}},window:{addEventListener(){}},innerWidth:1000,location:{protocol:'https:'},setTimeout(fn,ms){if(ms<=5)return setImmediate(fn);timerCallbacks.push(fn);return timerCallbacks.length;},clearTimeout(){},setInterval(){return 1;},clearInterval(){},requestAnimationFrame(fn){fn();},URL:{createObjectURL(blob){downloads.push(blob);return "blob:test"},revokeObjectURL(){}},Blob,Response,Uint8Array,Uint8ClampedArray,ImageData:class {constructor(w,h){this.data=new Uint8ClampedArray(w*h*4);}},Intl};
  vm.createContext(context);vm.runInContext(exposed,context,{filename:sourcePath});return {...context.probe,$,errors,canvases,context,timerCallbacks,downloads,fireDocument:(type,event)=>Promise.all((docListeners[type]||[]).map(fn=>fn(event)))};
 }
 function file(name){return {name,type:'application/pdf',size:12,arrayBuffer:async()=>new ArrayBuffer(8)};}
@@ -207,4 +207,45 @@ test('PNG waiting for detail is cancelled when its current page becomes excluded
 });
 test('empty filter selects a valid newly available pair and handles filtered keyboard navigation',async()=>{
  const {h}=await setup([doc('before'),doc('after')]);h.$('changedOnly').checked=true;await h.$('changedOnly').fire('change');h.S.pairs.push({status:'added',newIndex:1,changed:true,quickDiff:1,textSimilarity:0});await h.$('changedOnly').fire('change');await flush();assert.equal(h.S.current,1);assert.deepEqual([...h.visible()],[1]);assert.equal(h.$('stage').hidden,false);assert.equal(h.$('empty').hidden,true);h.navigate(-1);await flush();assert.equal(h.S.current,1);
+});
+
+const completionStatus={en:'Comparison is ready. Detailed differences are calculated when you open a page.',ja:'比較の準備ができました。ページを選ぶと詳細差分を計算します。'};
+for(const language of ['en','ja'])test(`completion status follows ${language} language switches without reloading or losing results`,async()=>{
+ const h=harness(language);h.S.oldFile=file('before.pdf');h.S.newFile=file('after.pdf');const tasks=engine(h,[doc('before'),doc('after')]);await h.compare();
+ const before={scope:h.S.comparison,pairs:h.S.pairs,old:h.S.oldDoc,new:h.S.newDoc,detail:h.currentDetail(),version:h.S.detailVersion,current:h.S.current};
+ h.S.mode='side';h.S.zoom=2;let pageCalls=0;h.S.oldDoc.getPage=h.S.newDoc.getPage=async()=>{pageCalls++;return page()};
+ for(const expected of [language==='en'?'ja':'en',language]){
+  await h.$('lang').fire('click');await flush();assert.equal(h.$('status').textContent,completionStatus[expected]);assert.equal(h.$('status').classList.contains('error'),false);
+  assert.equal(h.S.comparison,before.scope);assert.equal(h.S.pairs,before.pairs);assert.equal(h.S.oldDoc,before.old);assert.equal(h.S.newDoc,before.new);assert.equal(h.currentDetail(),before.detail);assert.equal(h.S.detailVersion,before.version);assert.equal(h.S.current,before.current);assert.equal(h.S.mode,'side');assert.equal(h.S.zoom,2);assert.equal(pageCalls,0);assert.equal(tasks.length,2);assert.ok(tasks.every(task=>task.destroyCalls===0));
+ }
+ h.exportCsv();assert.match(await h.downloads[0].text(),/"1","1","1","matched"/);
+});
+test('loading status changes language without touching progress or pending document tasks',async()=>{
+ const h=harness(),a=deferred(),b=deferred();h.S.oldFile=file('a.pdf');h.S.newFile=file('b.pdf');const tasks=engine(h,[a,b]);const pending=h.compare();await flush();const scope=h.S.comparison;
+ await h.$('lang').fire('click');assert.equal(h.$('status').textContent,'PDFを読み込んでいます…');assert.equal(h.$('progressBar').style.width,'2%');assert.equal(h.$('progress').classList.contains('show'),true);assert.equal(h.S.comparison,scope);assert.ok(tasks.every(task=>task.destroyCalls===0));
+ a.resolve(doc('a'));b.resolve(doc('b'));await pending;assert.equal(h.$('status').textContent,completionStatus.ja);
+});
+for(const side of ['before','after'])test(`analysis status retranslates ${side} page label and keeps its page count`,async()=>{
+ const h=harness(),gate=deferred(),slow=doc(side);slow.numPages=2;slow.getPage=async n=>n===2?gate.promise:page();h.S.oldFile=file('a.pdf');h.S.newFile=file('b.pdf');engine(h,side==='before'?[slow,doc('after')]:[doc('before'),slow]);const pending=h.compare();await flush();
+ assert.equal(h.$('status').textContent,`Analyzing pages… ${side==='before'?'Before':'After'} 1/2`);const width=h.$('progressBar').style.width;
+ await h.$('lang').fire('click');assert.equal(h.$('status').textContent,`ページを解析しています… ${side==='before'?'変更前':'変更後'} 1/2`);assert.equal(h.$('progressBar').style.width,width);
+ await h.$('lang').fire('click');assert.equal(h.$('status').textContent,`Analyzing pages… ${side==='before'?'Before':'After'} 1/2`);gate.resolve(page());await pending;assert.equal(h.$('status').textContent,completionStatus.en);
+});
+test('failed load status retranslates its prefix and retains error details and styling',async()=>{
+ const h=harness(),failure=deferred();h.S.oldFile=file('valid.pdf');h.S.newFile=file('invalid.pdf');engine(h,[doc('valid'),failure]);const pending=h.compare();await flush();failure.reject(Error('synthetic invalid PDF'));await pending;
+ await h.$('lang').fire('click');assert.equal(h.$('status').textContent,'PDFを開けませんでした。 synthetic invalid PDF');assert.equal(h.$('status').classList.contains('error'),true);assert.equal(h.$('progress').classList.contains('show'),false);
+ await h.$('lang').fire('click');assert.equal(h.$('status').textContent,'Could not open the PDF. synthetic invalid PDF');
+ await h.resetAll();await h.$('lang').fire('click');assert.equal(h.$('status').textContent,'2つのPDFを選択してください。');assert.equal(h.$('status').classList.contains('error'),false);
+});
+test('invalid input status remains an error after language switch even with completed results',async()=>{
+ const {h}=await setup([doc('a'),doc('b')]);const pairs=h.S.pairs,scope=h.S.comparison;h.acceptFile('old',{name:'bad.txt',type:'text/plain'});
+ await h.$('lang').fire('click');await flush();assert.equal(h.$('status').textContent,'PDFファイルを選択してください。');assert.equal(h.$('status').classList.contains('error'),true);assert.equal(h.S.pairs,pairs);assert.equal(h.S.comparison,scope);
+});
+test('cancellation status retranslates without reviving disposed loads',async()=>{
+ const {h,gates,tasks,comparing}=passwordSetup();await flush();tasks.forEach((task,i)=>{task.destroy=async()=>{task.destroyCalls++;gates[i].reject(Error('destroyed'))}});tasks[0].onPassword(()=>{},1);await flush();await h.$('passwordCancel').fire('click');await comparing;
+ await h.$('lang').fire('click');assert.equal(h.$('status').textContent,'処理をキャンセルしました。');assert.equal(h.$('status').classList.contains('error'),false);assert.deepEqual(tasks.map(task=>task.destroyCalls),[1,1]);assert.equal(h.$('passwordDialog').open,false);
+});
+test('language switches after reset cannot restore status from an obsolete comparison',async()=>{
+ const h=harness(),a=deferred(),b=deferred();h.S.oldFile=file('a.pdf');h.S.newFile=file('b.pdf');engine(h,[a,b]);const pending=h.compare();await flush();await h.resetAll();await h.$('lang').fire('click');assert.equal(h.$('status').textContent,'2つのPDFを選択してください。');a.reject(Error('obsolete failure'));b.resolve(doc('late'));await pending;
+ await h.$('lang').fire('click');assert.equal(h.$('status').textContent,'Choose two PDF files.');assert.equal(h.$('status').classList.contains('error'),false);assert.equal(h.S.pairs.length,0);assert.equal(h.errors.length,0);
 });

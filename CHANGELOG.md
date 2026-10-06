@@ -1,3 +1,9 @@
+## 1.0.1 - 2026-10-06
+
+- Retranslate the active comparison status when switching Japanese/English without reloading PDFs or discarding results.
+- Preserve progress page counts, error details/styling, cancellation, and reset ownership across language changes.
+- Add lifecycle regressions against source and standalone builds, and synchronize the header/build version.
+
 ## 1.0.0
 
 - Fixed the build placeholder verifier to avoid false positives from internal PDF.js worker identifiers.
