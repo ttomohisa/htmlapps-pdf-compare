@@ -10,6 +10,8 @@ A privacy-focused, single-HTML app for comparing two PDF revisions entirely in t
 
 Instead of blindly comparing page 1 with page 1, page 2 with page 2, and so on, PDF Compare uses both page appearance and extracted text to align the two document revisions. This keeps an inserted or removed page from making every following page look changed.
 
+![Application screenshot in English](assets/screenshot-en.png)
+
 ## 🚀 Live demo
 
 ### [Open PDF Compare on GitHub Pages](https://ttomohisa.github.io/htmlapps-pdf-compare/)
