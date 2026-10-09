@@ -1,3 +1,7 @@
+## 1.0.2 - 2026-10-09
+
+- Add a genuine English screenshot for the app catalog and documentation.
+
 ## 1.0.1 - 2026-10-06
 
 - Retranslate the active comparison status when switching Japanese/English without reloading PDFs or discarding results.
