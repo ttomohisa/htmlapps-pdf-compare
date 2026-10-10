@@ -1,3 +1,8 @@
+## 1.0.3 - 2026-10-10
+
+- Keep long filenames and existing PNG/CSV export controls within narrow layouts.
+- Keep password/reset/help actions reachable in short windows and stop background scrolling while a modal is open.
+
 ## 1.0.2 - 2026-10-09
 
 - Add a genuine English screenshot for the app catalog and documentation.

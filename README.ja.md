@@ -229,3 +229,5 @@ HTML内の `pdf-compare.invalid` は埋め込みPDF.jsアセットを識別す�
 Copyright © 2026 ttomohisa
 
 このプロジェクトは [MIT License](LICENSE) で公開されています。
+
+狭い画面でも差分PNG・レポートCSVを保存できます。長いファイル名は表示枠内に収まります。低い画面ではダイアログ内をスクロールでき、背景ページは動きません。

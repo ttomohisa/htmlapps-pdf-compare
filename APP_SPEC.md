@@ -70,3 +70,5 @@ Current stable Chromium, Firefox, and Safari on desktop/mobile. Built `dist/inde
 - Standard and self-extract builds use `DecompressionStream` for local gzip expansion; current evergreen browsers are the supported target.
 - Self-extract loader is ASCII-only and inherits the embedded favicon.
 - Same-page revisions, inserted pages, deleted pages, scanned/image pages, and text PDFs are visually comparable.
+
+- Narrow layouts retain PNG/CSV actions and constrain long filenames. Open dialogs lock background scrolling and allocate a shrinking internal body so headers and actions remain reachable.
