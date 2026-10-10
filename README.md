@@ -231,3 +231,5 @@ Bug reports and feature proposals are welcome through GitHub Issues. See [CONTRI
 Copyright © 2026 ttomohisa
 
 Licensed under the [MIT License](LICENSE).
+
+PNG and CSV exports stay available on narrow screens. Long filenames stay within their controls. In short windows, scroll inside dialogs while the background page stays still.

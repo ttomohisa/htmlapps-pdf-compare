@@ -3,7 +3,7 @@
   "name": "PDF Compare",
   "nameJa": "PDF比較",
   "slug": "pdf-compare",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Privacy-friendly local PDF comparison with automatic page matching, visual diff modes, alignment correction, and text differences.",
   "descriptionJa": "ページ自動対応付け、視覚差分、位置ずれ補正、テキスト差分をブラウザー内だけで行うPDF比較ツールです。",
   "defaultLanguage": "auto",

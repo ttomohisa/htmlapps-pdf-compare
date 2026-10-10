@@ -39,6 +39,15 @@ function harness(language='en'){
  vm.createContext(context);vm.runInContext(exposed,context,{filename:sourcePath});return {...context.probe,$,errors,canvases,context,timerCallbacks,downloads,fireDocument:(type,event)=>Promise.all((docListeners[type]||[]).map(fn=>fn(event)))};
 }
 function file(name){return {name,type:'application/pdf',size:12,arrayBuffer:async()=>new ArrayBuffer(8)};}
+for(const side of ['old','new'])test(`${side} file picker clears its native selection so the same file can be retried`,async()=>{
+ const h=harness(),input=h.$(side+'Input'),selected=file('retry-same-file.pdf');
+ input.value='C:\\fakepath\\retry-same-file.pdf';input.files=[selected];
+ await input.fire('change');
+ assert.equal(input.value,'','clear native input value so selecting the same file dispatches another change');
+ assert.equal(h.S[side+'File'],selected,'retain the selected File object for local processing');
+ input.files=[];await input.fire('change');
+ assert.equal(h.S[side+'File'],selected,'dismissing the picker does not discard the current PDF');
+});
 function page(gate=null){return {cleanupCalls:0,cancelCalls:0,getViewport({scale}){return {width:612*scale,height:180*scale};},getTextContent:async()=>({items:[{str:'synthetic'}]}),cleanup(){this.cleanupCalls++;},render(){return {promise:gate?gate.promise:Promise.resolve(),cancel:()=>this.cancelCalls++};}};}
 function doc(name,p=page()){return {name,numPages:1,destroyCalls:0,getPage:async()=>p,async destroy(){this.destroyCalls++;}};}
 
