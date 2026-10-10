@@ -2,6 +2,7 @@
 
 - Keep long filenames and existing PNG/CSV export controls within narrow layouts.
 - Keep password/reset/help actions reachable in short windows and stop background scrolling while a modal is open.
+- Allow choosing the same PDF again after cancelling its password prompt.
 
 ## 1.0.2 - 2026-10-09
 
