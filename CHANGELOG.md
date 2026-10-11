@@ -1,5 +1,9 @@
 ## 1.0.3 - 2026-10-10
 
+## Unreleased
+
+- Clarify Japanese and English help by removing internal layout, implementation, and audit commentary while preserving usage guidance and cautions.
+
 - Keep long filenames and existing PNG/CSV export controls within narrow layouts.
 - Keep password/reset/help actions reachable in short windows and stop background scrolling while a modal is open.
 - Allow choosing the same PDF again after cancelling its password prompt.
