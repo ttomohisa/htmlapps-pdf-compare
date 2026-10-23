@@ -72,3 +72,5 @@ Current stable Chromium, Firefox, and Safari on desktop/mobile. Built `dist/inde
 - Same-page revisions, inserted pages, deleted pages, scanned/image pages, and text PDFs are visually comparable.
 
 - Narrow layouts retain PNG/CSV actions and constrain long filenames. Open dialogs lock background scrolling and allocate a shrinking internal body so headers and actions remain reachable.
+
+- The 完全ローカル処理 badge uses the shared English wording “Fully local processing”; existing Help build information stays at its end.

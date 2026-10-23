@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Standardize the English local-processing badge without changing PDF comparison or existing Help layout.
+
 - Clarify Japanese and English help by removing internal layout, implementation, and audit commentary while preserving usage guidance and cautions.
 
 - Keep long filenames and existing PNG/CSV export controls within narrow layouts.

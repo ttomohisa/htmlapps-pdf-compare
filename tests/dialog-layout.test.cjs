@@ -23,3 +23,7 @@ test('long filenames cannot enlarge upload grid tracks',()=>{
 test('modal dialogs lock document scrolling',()=>{
  assert.match(css,/html:has\(dialog\[open\]\)\s*\{[^}]*overflow:\s*hidden/);
 });
+test('local-processing label stays synchronized in Japanese and English',()=>{
+ const labels=[...source.matchAll(/localOnly:"([^"]+)"/g)].map(match=>match[1]);
+ assert.deepEqual(labels,['完全ローカル処理','Fully local processing']);
+});
