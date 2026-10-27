@@ -74,3 +74,7 @@ Current stable Chromium, Firefox, and Safari on desktop/mobile. Built `dist/inde
 - Narrow layouts retain PNG/CSV actions and constrain long filenames. Open dialogs lock background scrolling and allocate a shrinking internal body so headers and actions remain reachable.
 
 - The 完全ローカル処理 badge uses the shared English wording “Fully local processing”; existing Help build information stays at its end.
+
+## Header visibility
+
+Keep the header version visible on narrow smartphones without overlapping the app name or language/Help controls. Restore the Help dot and use the shared shield for the local-processing badge. Verify Japanese and English at 320px, 360px, 390px and desktop widths.
