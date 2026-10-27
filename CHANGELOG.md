@@ -1,5 +1,9 @@
 ## 1.0.3 - 2026-10-10
 
+## 1.0.4 - 2026-10-27
+
+- Keep the header version visible on narrow smartphones without overlapping the app name or language/Help controls. Restore the Help dot and use the shared shield for the local-processing badge.
+
 ## Unreleased
 
 - Standardize the English local-processing badge without changing PDF comparison or existing Help layout.

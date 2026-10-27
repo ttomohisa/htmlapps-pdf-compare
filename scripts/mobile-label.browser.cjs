@@ -9,7 +9,7 @@ async function main() {
   fs.mkdirSync(evidence, { recursive: true });
   const browser = await chromium.launch();
   try {
-    for (const language of ['ja', 'en']) for (const [width, height] of [[1360,900],[320,568],[393,252]]) {
+    for (const language of ['ja', 'en']) for (const [width, height] of [[1360,900],[320,568],[360,640],[390,844],[393,252]]) {
       const context = await browser.newContext({ viewport: {width,height}, locale: language, reducedMotion:'reduce' });
       const page = await context.newPage();
       const errors=[], requests=[];
@@ -21,6 +21,12 @@ async function main() {
         await page.goto(pathToFileURL(path.resolve(__dirname,'../dist/index.html')).href);
         await page.locator('#lang').waitFor();
         if(await page.locator('html').getAttribute('lang')!==language)await page.locator('#lang').click();
+ assert.equal(await page.locator('#help svg path').last().evaluate(el=>getComputedStyle(el).strokeLinecap),'round',label+': Help dot has round caps');
+ const headerVersion=page.locator('header #version');
+ assert.equal(await headerVersion.isVisible(),true,label+': header version is visible');
+ assert.equal((await headerVersion.textContent()).trim(),'v'+JSON.parse(fs.readFileSync(path.resolve(__dirname,'../app.config.json'),'utf8')).version,label+': current version');
+ assert.ok(await headerVersion.evaluate(el=>{const r=el.getBoundingClientRect();if(r.left<0||r.right>innerWidth||el.scrollWidth>el.clientWidth+1)return false;for(let p=el.parentElement;p;p=p.parentElement){if(/hidden|clip/.test(getComputedStyle(p).overflowX)){const b=p.getBoundingClientRect();if(r.left<b.left-1||r.right>b.right+1)return false;}}return true;}),label+': version is not clipped');
+ assert.equal(await page.locator('.local svg path').first().getAttribute('d'),'M12 3 5 6v5c0 4.6 2.8 8 7 10 4.2-2 7-5.4 7-10V6z',label+': shared privacy shield');
         const badge=page.locator('[data-i18n="localOnly"]');
         assert.equal(await badge.innerText(),language==='ja'?'完全ローカル処理':'Fully local processing');
         assert.equal(await badge.isVisible(), width > 760, label+': preserve existing mobile badge hiding');

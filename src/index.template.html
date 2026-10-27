@@ -30,9 +30,17 @@ dialog{width:min(640px,calc(100% - 28px));max-height:min(760px,calc(100dvh - 28p
 dialog::backdrop{background:rgba(15,17,14,.52);backdrop-filter:blur(4px)}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}.dialog-head h2{margin:0;font-size:17px}.dialog-body{min-height:0;flex:1 1 auto;padding:18px 20px 24px;overflow:auto;overscroll-behavior:contain}.dialog-body h3{margin:22px 0 7px;padding-top:17px;border-top:1px solid var(--line);font-size:13px}.dialog-body h3:first-child{margin-top:0;padding-top:0;border-top:0}.dialog-body p,.dialog-body li{color:var(--muted);font-size:12px;line-height:1.7}.dialog-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--line)}.password{width:100%;min-height:42px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}.password-error{min-height:18px;margin-top:5px;color:var(--danger);font-size:11px}.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[hidden]{display:none!important}
 @media(max-width:960px){.summary{grid-template-columns:repeat(3,1fr)}.workspace{grid-template-columns:190px minmax(0,1fr)}.details{grid-template-columns:1fr}.privacy-panel{display:none}}
 @media(max-width:760px){:root{--header-height:60px}.header-inner{padding:8px 14px}.mark{width:36px;height:36px}.brand-meta{display:none}.header-actions{gap:10px}main{padding:14px 10px calc(84px + env(safe-area-inset-bottom))}.intro{padding:0 4px 12px}.intro h2{font-size:20px}.intro p{font-size:11px}.local{display:none}.upload{padding:10px}.upload-grid{grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr);gap:6px}.drop{min-height:104px;padding:10px}.drop-inner{display:block}.drop-icon{width:30px;height:30px;margin-bottom:6px}.drop-icon svg{width:17px}.drop-title{font-size:11px}.drop-label,.drop-sub{font-size:9px}.swap .icon-button{width:34px;height:34px}.upload-foot{margin-top:8px}.status{font-size:10px}.summary{display:flex;overflow:auto;gap:6px;margin:0 -10px 8px;padding:0 10px 4px;scrollbar-width:none}.summary-card{min-width:105px;padding:9px}.summary-value{font-size:17px}.toolbar{top:calc(var(--header-height) + 4px);margin:0 -2px 8px;padding:5px;flex-wrap:wrap}.modes{flex-wrap:wrap}.mode{white-space:nowrap;padding:6px 8px}.actions{display:flex}.workspace{display:block}.page-panel{position:static;max-height:none;margin-bottom:8px}.page-head{padding:8px 10px}.page-list{display:flex;max-height:none;padding:5px;overflow-x:auto;overflow-y:hidden}.page-item{flex:0 0 auto;width:92px;grid-template-columns:28px 1fr;padding:6px;gap:5px}.page-item .dot{display:none}.page-num{width:27px;height:27px}.page-title{font-size:9px}.page-sub{font-size:8px}.viewer-head{padding:9px 10px}.viewer-actions{display:none}.zoom-toolbar{justify-content:center;padding:6px 7px;gap:4px}.zoom-hint{display:none}.zoom-button{width:36px;height:34px}.zoom-value{min-width:54px}.zoom-fit{padding-inline:8px}.canvas-area{min-height:300px;padding:7px}.stage{justify-content:flex-start;gap:6px}.controls{grid-template-columns:1fr 1fr;padding:8px;gap:6px}.controls .control:last-child{grid-column:1/-1}.detail{padding:10px}.details{margin-top:8px}.text-diff{max-height:180px}.mobile-nav{position:fixed;z-index:55;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:44px 1fr 44px;gap:7px;padding:7px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.94);box-shadow:var(--shadow-md);backdrop-filter:blur(14px)}.mobile-nav .icon-button{width:44px;height:42px}.mobile-page{display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:10px;background:white;font-size:11px;font-weight:750}.toast{right:10px;bottom:calc(76px + env(safe-area-inset-bottom))}.dialog-foot{padding-bottom:calc(12px + env(safe-area-inset-bottom))}}
-@media(max-width:430px){.badge{display:none}.upload-grid{grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr)}.drop{min-height:94px}.drop-icon{display:none}.controls{grid-template-columns:1fr}.controls .control:last-child{grid-column:auto}}
+@media(max-width:430px){.upload-grid{grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr)}.drop{min-height:94px}.drop-icon{display:none}.controls{grid-template-columns:1fr}.controls .control:last-child{grid-column:auto}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-</style>
+
+    @media (max-width: 600px) {
+      .brand-name { display: flex; align-items: center; }
+      .brand-name > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+      .badge { flex: 0 0 auto; white-space: nowrap; }
+      .header-actions { flex: 0 0 auto; }
+      .brand > div { min-width: 0; }
+    }
+  </style>
 </head>
 <body>
 
@@ -40,18 +48,18 @@ dialog::backdrop{background:rgba(15,17,14,.52);backdrop-filter:blur(4px)}.dialog
   <div class="header-inner">
     <div class="brand">
       <div class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#16624f"/><rect x="11" y="9" width="26" height="31" rx="3" fill="none" stroke="#fff" stroke-width="3"/><rect x="27" y="14" width="26" height="31" rx="3" fill="#16624f" stroke="#fff" stroke-width="3"/><text x="31" y="32" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="700">PDF</text><path d="M14 54h36M14 54l6-5M14 54l6 5M50 54l-6-5M50 54l-6 5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div><h1 class="brand-name">PDF Compare <span class="badge" id="version">v1.0.3</span></h1><p class="brand-meta" data-i18n="brandMeta">PDFの変更点を端末内だけで比較</p></div>
+      <div><h1 class="brand-name"><span class="brand-title">PDF Compare</span><span class="badge" id="version">v1.0.4</span></h1><p class="brand-meta" data-i18n="brandMeta">PDFの変更点を端末内だけで比較</p></div>
     </div>
     <div class="header-actions">
       <button class="header-button" id="lang" type="button" aria-label="Switch language">EN</button>
-      <button class="header-button" id="help" type="button" data-i18n-aria="helpAria" aria-label="使い方と注意事項"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 0 1 4.55.8c0 1.8-2.35 2-2.35 4"/><path d="M12 17h.01"/></svg></button>
+      <button class="header-button" id="help" type="button" data-i18n-aria="helpAria" aria-label="使い方と注意事項"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 0 1 4.55.8c0 1.8-2.35 2-2.35 4"/><path d="M12 17h.01"/></svg></button>
     </div>
   </div>
 </header>
 <main>
   <section class="intro">
     <div><h2 data-i18n="introTitle">2つのPDFの「どこが変わった？」を見つける。</h2><p data-i18n="introText">ページ追加・削除にも追従して対応付け。見た目の差分とテキスト差分を、アップロードせずに確認できます。</p></div>
-    <div class="local"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg><span data-i18n="localOnly">完全ローカル処理</span></div>
+    <div class="local"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.8 8 7 10 4.2-2 7-5.4 7-10V6z"/><path d="m9 12 2 2 4-5"/></svg><span data-i18n="localOnly">完全ローカル処理</span></div>
   </section>
 
   <section class="panel upload">
