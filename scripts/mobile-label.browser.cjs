@@ -32,7 +32,9 @@ async function main() {
         assert.equal(await badge.isVisible(), width > 760, label+': preserve existing mobile badge hiding');
         if(width > 760) assert.ok(await badge.evaluate(el=>{const r=el.getBoundingClientRect(),p=el.parentElement.getBoundingClientRect();return r.left>=p.left&&r.right<=p.right+1;}), label+': badge not clipped');
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+': page width');
-        assert.equal(await page.locator('footer').count(),0,'No informational footer is added.');
+        assert.equal(await page.locator('footer').count(),1,'Standard informational footer is added.');
+        assert.equal(await page.locator('footer').isVisible(), width > 760, label+': footer hidden on smartphones');
+        if(width > 760) assert.equal((await page.locator('footer').innerText()).replace(/\s+/g,' ').trim(),language==='ja'?'PDF Compare · MIT License · PDFの比較はブラウザー内で完結':'PDF Compare · MIT License · PDF comparison stays in the browser',label+': footer text');
         if(width!==393) await page.screenshot({path:path.join(evidence,label+'.png')});
         await page.locator('#help').click();
         const body=page.locator('#helpDialog .dialog-body');
